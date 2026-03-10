@@ -4,25 +4,59 @@ from open_biomed.tools.visualization_tools import *
 from open_biomed.tools.third_party_tools import *
 from open_biomed.data.molecule import *
 from open_biomed.scripts.inference import *
+from open_biomed.tools.mcp_tools import get_mcp_tool_registry
 
 
 # TODO: Add pocket prediction as a tool
 class LazyDictForTool(dict):
+    def __init__(self):
+        super().__init__()
+        self._mcp_tools_loaded = False
+        self._mcp_tool_names = []
+
+
+    def _ensure_mcp_tools_loaded(self):
+        """懒加载 MCP 工具列表"""
+        if not self._mcp_tools_loaded:
+            try:
+                mcp_registry = get_mcp_tool_registry()
+                mcp_registry.load()
+                self._mcp_tool_names = mcp_registry.available_tools()
+                self._mcp_tools_loaded = True
+                if self._mcp_tool_names:
+                    print(f"✓ Loaded {len(self._mcp_tool_names)} MCP tools into registry")
+            except Exception as e:
+                print(f"Warning: Failed to load MCP tools: {e}")
+                self._mcp_tool_names = []
+                self._mcp_tools_loaded = True
+
+    
     def available_tools(self):
-        return [
-            "text_based_molecule_editing", "molecule_property_prediction", "structure_based_drug_design",
-            "molecule_question_answering", "protein_question_answering", "mutation_explanation",
-            "mutation_engineering", "apply_mutation_to_sequence", "pocket_molecule_docking",
-            "protein_molecule_docking_score", "protein_folding", "protein_binding_site_prediction",
-            "visualize_molecule", "visualize_protein", "visualize_complex",
-            "visualize_protein_pocket", "molecule_name_request", "pubchemid_search",
-            "molecule_structure_request", "pubchem_bioactivity", "protein_uniprot_request", "protein_pdb_request",
-            "web_search", "import_pocket", "export_molecule", "export_protein",
-            "molecule_qed", "molecule_sa", "molecule_logp", "molecule_lipinski", "molecule_similarity",
+        builtin_tools = [
+            "text_based_molecule_editing", "molecule_property_prediction", "structure_based_drug_design", 
+            "molecule_question_answering", "protein_question_answering", "mutation_explanation", 
+            "mutation_engineering", "apply_mutation_to_sequence", "pocket_molecule_docking", 
+            "protein_molecule_docking_score", "protein_folding", "protein_binding_site_prediction", 
+            "visualize_molecule", "visualize_protein", "visualize_complex", 
+            "visualize_protein_pocket", "molecule_name_request", "pubchemid_search", 
+            "molecule_structure_request", "protein_uniprot_request", "protein_pdb_request", 
+            "web_search", "import_pocket", "export_molecule", "export_protein", 
+            "molecule_qed", "molecule_sa", "molecule_logp", "molecule_lipinski", "molecule_similarity", 
             "extract_molecules_from_pdb_file", "summarize_content"
         ]
+        # 动态添加 MCP 工具
+        self._ensure_mcp_tools_loaded()
+        return builtin_tools + self._mcp_tool_names
     
     def __missing__(self, key):
+        # 先检查是否是 MCP 工具
+        self._ensure_mcp_tools_loaded()
+        if key in self._mcp_tool_names:
+            mcp_registry = get_mcp_tool_registry()
+            mcp_tools = mcp_registry.get_tools()
+            self[key] = mcp_tools[key]
+            return self[key]
+
         if key == "text_based_molecule_editing":
             self[key] = test_text_based_molecule_editing(unit_test=False)
         elif key == "molecule_property_prediction":

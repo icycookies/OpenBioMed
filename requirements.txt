@@ -14,14 +14,16 @@ openai==1.64.0
 uvicorn===0.32.1
 fastapi===0.115.5
 oss2==2.19.1
-dotenv==1.0.1
+python-dotenv==1.0.1
 protobuf==5.28.3
 scanpy==1.10.3
 
 # for mcp
 pubchempy==1.0.4
 biopython==1.84
+langchain-core==0.3.75
 langchain-tavily==0.2.0
+langchain-openai==0.2.14
 graphql-core==3.2.5
 googlesearch-python==1.2.5
 SimpleITK==2.4.0

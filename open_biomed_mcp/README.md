@@ -372,8 +372,8 @@
 # 进入项目目录
 cd /OpenBioMed/open_biomed_mcp
 
-# 创建并激活 conda 环境（推荐 Python 3.10+）
-conda create -n biomed_mcp python=3.10
+# 创建并激活 conda 环境（推荐 Python 3.11+）
+conda create -n biomed_mcp python=3.11
 conda activate biomed_mcp
 
 # 安装依赖
