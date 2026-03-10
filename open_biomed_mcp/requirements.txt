@@ -1,0 +1,12 @@
+pubchempy==1.0.4
+biopython==1.84
+langchain-core==0.3.75
+langchain-tavily==0.2.0
+langchain-openai==0.2.14
+graphql-core==3.2.5
+googlesearch-python==1.2.5
+SimpleITK==2.4.0
+nnunet==1.7.1
+fair-esm==2.0.0
+gget==0.28.6
+fastapi-mcp==0.4.0
