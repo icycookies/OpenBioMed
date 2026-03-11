@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-测试 Agent 使用修复后的 MCP 工具
+测试接入MCP工具后的Agent是否具备调用对应工具的能力
 """
 
 import sys
@@ -9,9 +9,7 @@ import os
 os.chdir('/home/xiaoxiao/OpenBioMed')
 sys.path.insert(0, '/home/xiaoxiao/OpenBioMed')
 
-print("=" * 80)
-print("测试 Agent 使用修复后的 MCP 工具")
-print("=" * 80)
+
 
 # 重新加载模块以使用最新的工具定义
 import importlib
@@ -45,15 +43,31 @@ print("\n" + "=" * 80)
 print("运行测试任务")
 print("=" * 80)
 
+# user_prompt = """
+# 我现在需要你帮我对人类 BRCA1 基因进行系统分析，并完成以下任务：
+# 1、确认 BRCA1 的标准基因信息，包括 Entrez Gene ID、官方符号、全名和基因描述。
+# 2、给出 BRCA1 在人类基因组中的染色体位置与基因组区间。
+# 3、总结 BRCA1 的主要生物学功能，以及它与 DNA 修复、肿瘤抑制相关的功能注释。
+# 4、查询 BRCA1 的主要基因产物信息，说明其对应的转录本或蛋白产物概况。
+# 5、查询 BRCA1 的 ortholog 信息，至少给出小鼠对应同源基因及其基本信息。
+# 6、提取与该基因相关的 NCBI 外部链接资源或下载信息，例如 gene links、dataset report、download summary。
+# """
+
 user_prompt = """
-我现在需要你帮我对人类 BRCA1 基因进行系统分析，并完成以下任务：
-1、确认 BRCA1 的标准基因信息，包括 Entrez Gene ID、官方符号、全名和基因描述。
-2、给出 BRCA1 在人类基因组中的染色体位置与基因组区间。
-3、总结 BRCA1 的主要生物学功能，以及它与 DNA 修复、肿瘤抑制相关的功能注释。
-4、查询 BRCA1 的主要基因产物信息，说明其对应的转录本或蛋白产物概况。
-5、查询 BRCA1 的 ortholog 信息，至少给出小鼠对应同源基因及其基本信息。
-6、提取与该基因相关的 NCBI 外部链接资源或下载信息，例如 gene links、dataset report、download summary。
+对 BRAF 靶点相关的小分子抑制剂进行分析，并找出最有代表性的候选药物。要求完成以下任务：
+1、找到 BRAF 对应的 target ChEMBL ID。
+2、检索 BRAF 相关的小分子活性数据，筛选 IC50 或 Ki 显著较低的化合物。
+3、查询这些高活性化合物的 molecule 信息。
+4、对每个化合物进一步查询 mechanism，判断其是否直接作用于 BRAF，以及作用方式是否为 inhibitor。
+5、查询这些分子的 drug indication / max phase / drug development status（如果工具支持）。
+6、选出 5 个最具代表性的候选分子，并比较它们的：
+6.1、活性强弱
+6.2、机制注释完整性
+6.3、临床开发阶段
+6.4、基本理化性质
+7、输出一个排序报告，并说明推荐依据。
 """
+
 
 print(f"\n任务: {user_prompt.strip()}")
 print("\n开始执行...")
