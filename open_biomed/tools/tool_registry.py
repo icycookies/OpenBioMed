@@ -16,7 +16,7 @@ class LazyDictForTool(dict):
 
 
     def _ensure_mcp_tools_loaded(self):
-        """懒加载 MCP 工具列表"""
+        """Lazy-load the MCP tool list"""
         if not self._mcp_tools_loaded:
             try:
                 mcp_registry = get_mcp_tool_registry()
@@ -44,12 +44,12 @@ class LazyDictForTool(dict):
             "molecule_qed", "molecule_sa", "molecule_logp", "molecule_lipinski", "molecule_similarity", 
             "extract_molecules_from_pdb_file", "summarize_content"
         ]
-        # 动态添加 MCP 工具
+        # Dynamically add MCP tools
         self._ensure_mcp_tools_loaded()
         return builtin_tools + self._mcp_tool_names
     
     def __missing__(self, key):
-        # 先检查是否是 MCP 工具
+        # Check if it is an MCP tool first
         self._ensure_mcp_tools_loaded()
         if key in self._mcp_tool_names:
             mcp_registry = get_mcp_tool_registry()

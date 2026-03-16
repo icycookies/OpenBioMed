@@ -16,9 +16,9 @@ from textwrap import dedent
 
 # Example user prompts that should trigger this skill:
 EXAMPLE_PROMPTS = [
-    "帮我分析一下结直肠癌的创新药研究现状",
-    "阿尔茨海默病最近有哪些值得关注的新药？",
-    "想看NASH领域的前沿在研药和关键靶点",
+    "Help me analyze the current state of innovative drug research in colorectal cancer",
+    "What are the noteworthy new drugs for Alzheimer's disease recently?",
+    "I want to see the frontier pipeline drugs and key targets in the NASH field",
 ]
 
 
@@ -29,7 +29,7 @@ EXAMPLE_PROMPTS = [
 TASK_OBJECT = {
     "task_type": "disease_to_drug",
     "focus": "innovative_drugs",
-    "disease_raw": "结直肠癌",
+    "disease_raw": "Colorectal cancer",
     "time_constraint": None,
     "region_constraint": "global",
     "stage_constraint": None,
@@ -45,10 +45,10 @@ WORKFLOW_OVERVIEW = dedent(
     The skill will usually do the following:
 
     1. Standardize the disease name
-       - Example: "结直肠癌" -> "Colorectal cancer"
+       - Example: "Colorectal cancer" -> "Colorectal cancer"
        - Capture aliases, subtypes, and preferred search terms
 
-    2. Map "创新药" into an actionable scope
+    2. Map "innovative drugs" into an actionable scope
        - Approved representative innovative drugs
        - Mid/late-stage pipeline assets
        - Emerging mechanisms and future directions
@@ -80,8 +80,8 @@ WORKFLOW_OVERVIEW = dedent(
 SIMULATED_RUN = {
     "disease_standardization": {
         "canonical_disease": "Colorectal cancer",
-        "aliases": ["CRC", "结直肠癌", "colorectal neoplasms"],
-        "subtypes": ["MSI-H/dMMR", "BRAF V600E", "HER2阳性", "KRAS G12C"],
+        "aliases": ["CRC", "colorectal cancer", "colorectal neoplasms"],
+        "subtypes": ["MSI-H/dMMR", "BRAF V600E", "HER2-positive", "KRAS G12C"],
     },
     "key_mechanisms": [
         "EGFR-RAS-RAF-MEK-ERK",
@@ -92,31 +92,31 @@ SIMULATED_RUN = {
     "representative_drugs": [
         {
             "name": "encorafenib",
-            "layer": "已上市/已验证",
+            "layer": "Approved/Validated",
             "mechanism": "BRAF inhibitor",
             "population": "BRAF V600E mCRC",
         },
         {
             "name": "adagrasib",
-            "layer": "已上市/分子分层",
+            "layer": "Approved/Molecular stratification",
             "mechanism": "KRAS G12C inhibitor",
             "population": "KRAS G12C CRC, often combined with EGFR blockade",
         },
         {
             "name": "tucatinib",
-            "layer": "已上市/精准治疗",
+            "layer": "Approved/Precision therapy",
             "mechanism": "HER2 TKI",
             "population": "HER2-positive mCRC",
         },
         {
             "name": "trastuzumab deruxtecan",
-            "layer": "中后期在研/重点跟踪",
+            "layer": "Mid/late-stage pipeline/Key tracking",
             "mechanism": "HER2 ADC",
             "population": "HER2-positive mCRC",
         },
         {
             "name": "pelareorep",
-            "layer": "前沿探索",
+            "layer": "Frontier exploration",
             "mechanism": "oncolytic virus / immune activation",
             "population": "KRAS-mutant MSS mCRC",
         },
@@ -130,25 +130,25 @@ SIMULATED_RUN = {
 
 EXPECTED_OUTPUT = dedent(
     """
-    《结直肠癌 创新药情报整合报告》
+    [Colorectal Cancer Innovative Drug Intelligence Integration Report]
 
-    0. 执行摘要
-    - 当前结直肠癌创新药研发已进入分子分层时代。
-    - 最成熟方向集中在 BRAF V600E、HER2阳性、KRAS G12C、MSI-H/dMMR。
-    - 最大未满足需求仍在 MSS/pMMR 人群。
+    0. Executive Summary
+    - Innovative drug R&D for colorectal cancer has entered the era of molecular stratification.
+    - The most mature directions focus on BRAF V600E, HER2-positive, KRAS G12C, and MSI-H/dMMR.
+    - The largest unmet need remains in the MSS/pMMR population.
 
-    4. 疾病机制、通路与分子证据分析
-    - KEGG 支持 CRC 的核心病理轴包括 MAPK、PI3K-AKT、TGF-beta 等。
-    - UniProt/STRING 支持 EGFR、ERBB2、BRAF、KRAS、PDCD1 是关键节点。
+    4. Disease Mechanism, Pathway, and Molecular Evidence Analysis
+    - KEGG supports that the core pathological axes of CRC include MAPK, PI3K-AKT, TGF-beta, etc.
+    - UniProt/STRING support that EGFR, ERBB2, BRAF, KRAS, and PDCD1 are key nodes.
 
-    6. 在研药物与研发格局
-    - 已上市/已验证代表性创新药：encorafenib, tucatinib, pembrolizumab
-    - 中后期重点品种：adagrasib + cetuximab, trastuzumab deruxtecan
-    - 前沿探索方向：病毒治疗、双抗、免疫微环境重塑
+    6. Pipeline Drugs and R&D Landscape
+    - Approved/validated representative innovative drugs: encorafenib, tucatinib, pembrolizumab
+    - Mid/late-stage key assets: adagrasib + cetuximab, trastuzumab deruxtecan
+    - Frontier exploration directions: oncolytic virus therapy, bispecific antibodies, immune microenvironment remodeling
 
-    10. 总结与机会判断
-    - 真正的增量机会不在传统 EGFR/VEGF 拓展，而在 MSS 免疫增敏、
-      新型 ADC、耐药后序贯策略。
+    10. Summary and Opportunity Assessment
+    - The real incremental opportunity lies not in extending traditional EGFR/VEGF approaches,
+      but in MSS immune sensitization, novel ADCs, and post-resistance sequential strategies.
     """
 ).strip()
 

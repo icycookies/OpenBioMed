@@ -1,17 +1,19 @@
 description = [
     {
-        "description": "使用Biopython在DNA序列中查找所有开放阅读框（ORF），搜索正向和反向互补链。",
+        "description": "Find all Open Reading Frames (ORFs) in a DNA sequence using "
+        "Biopython, searching both forward and reverse complement "
+        "strands.",
         "name": "annotate_open_reading_frames",
         "optional_parameters": [
             {
                 "default": False,
-                "description": "是否搜索反向互补链",
+                "description": "Whether to search the reverse complement strand",
                 "name": "search_reverse",
                 "type": "bool",
             },
             {
                 "default": False,
-                "description": "是否过滤掉具有相同终点但较晚起点的ORF",
+                "description": "Whether to filter out ORFs with same end but later start",
                 "name": "filter_subsets",
                 "type": "bool",
             },
@@ -19,25 +21,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "要分析的DNA序列",
+                "description": "DNA sequence to analyze",
                 "name": "sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "ORF的最小长度（核苷酸数）",
+                "description": "Minimum length of ORF in nucleotides",
                 "name": "min_length",
                 "type": "int",
             },
         ],
     },
     {
-        "description": "使用pLannotate的命令行界面注释DNA序列。",
+        "description": "Annotate a DNA sequence using pLannotate's command-line interface.",
         "name": "annotate_plasmid",
         "optional_parameters": [
             {
                 "default": True,
-                "description": "序列是否为环状",
+                "description": "Whether the sequence is circular",
                 "name": "is_circular",
                 "type": "bool",
             }
@@ -45,19 +47,19 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "要注释的DNA序列",
+                "description": "The DNA sequence to annotate",
                 "name": "sequence",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "从NCBI Entrez检索指定基因的编码序列。",
+        "description": "Retrieves the coding sequence(s) of a specified gene from NCBI Entrez.",
         "name": "get_gene_coding_sequence",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "用于NCBI Entrez的电子邮件地址（推荐）",
+                "description": "Email address for NCBI Entrez (recommended)",
                 "name": "email",
                 "type": "str",
             }
@@ -65,25 +67,31 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "基因名称",
+                "description": "Name of the gene",
                 "name": "gene_name",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "生物体名称",
+                "description": "Name of the organism",
                 "name": "organism",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "统一函数，用于从Addgene或NCBI检索质粒序列。如果is_addgene为True或标识符为数字，则使用Addgene。否则使用质粒名称搜索NCBI。",
+        "description": "Unified function to retrieve plasmid sequences from either "
+        "Addgene or NCBI. If is_addgene is True or identifier is "
+        "numeric, uses Addgene. Otherwise searches NCBI using the "
+        "plasmid name.",
         "name": "get_plasmid_sequence",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "如果为True则强制使用Addgene查找，如果为False则强制使用NCBI。如果为None，则根据标识符格式尝试自动检测。",
+                "description": "Force Addgene lookup if True, force "
+                "NCBI if False. If None, attempts to "
+                "auto-detect based on identifier "
+                "format.",
                 "name": "is_addgene",
                 "type": "bool",
             }
@@ -91,38 +99,40 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "Addgene ID或质粒名称",
+                "description": "Either an Addgene ID or plasmid name",
                 "name": "identifier",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "将短序列（引物）比对到较长序列，允许一个错配。检查正向和反向互补链。",
+        "description": "Align short sequences (primers) to a longer sequence, "
+        "allowing for one mismatch. Checks both forward and reverse "
+        "complement strands.",
         "name": "align_sequences",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "目标DNA序列",
+                "description": "Target DNA sequence",
                 "name": "long_seq",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "单个引物或引物列表",
+                "description": "Single primer or list of primers",
                 "name": "short_seqs",
                 "type": "Union[str, List[str]]",
             },
         ],
     },
     {
-        "description": "使用给定的引物和序列模拟PCR扩增。",
+        "description": "Simulate PCR amplification with given primers and sequence.",
         "name": "pcr_simple",
         "optional_parameters": [
             {
                 "default": False,
-                "description": "序列是否为环状",
+                "description": "Whether the sequence is circular",
                 "name": "circular",
                 "type": "bool",
             }
@@ -130,31 +140,32 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "序列字符串或质粒文件路径",
+                "description": "Either a sequence string or path to plasmid file",
                 "name": "sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "正向引物序列（5'到3'）",
+                "description": "Forward primer sequence (5' to 3')",
                 "name": "forward_primer",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "反向引物序列（5'到3'）",
+                "description": "Reverse primer sequence (5' to 3')",
                 "name": "reverse_primer",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "模拟DNA序列的限制性内切酶消化并返回产生的片段及其属性。",
+        "description": "Simulates restriction enzyme digestion of a DNA sequence and "
+        "returns the resulting fragments with their properties.",
         "name": "digest_sequence",
         "optional_parameters": [
             {
                 "default": True,
-                "description": "DNA序列是环状（True）还是线性（False）",
+                "description": "Whether the DNA sequence is circular (True) or linear (False)",
                 "name": "is_circular",
                 "type": "bool",
             }
@@ -162,25 +173,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "要消化的输入DNA序列",
+                "description": "Input DNA sequence to be digested",
                 "name": "dna_sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "用于消化的限制性内切酶名称",
+                "description": "Names of restriction enzymes to use for digestion",
                 "name": "enzyme_names",
                 "type": "List[str]",
             },
         ],
     },
     {
-        "description": "在给定的DNA序列中识别指定酶的限制性内切酶位点。",
+        "description": "Identifies restriction enzyme sites in a given DNA sequence for specified enzymes.",
         "name": "find_restriction_sites",
         "optional_parameters": [
             {
                 "default": True,
-                "description": "DNA序列是环状（True）还是线性（False）",
+                "description": "Whether the DNA sequence is circular (True) or linear (False)",
                 "name": "is_circular",
                 "type": "bool",
             }
@@ -188,25 +199,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "完整的输入DNA序列",
+                "description": "Complete input DNA sequence",
                 "name": "dna_sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要检查的限制性内切酶名称列表",
+                "description": "List of restriction enzyme names to check",
                 "name": "enzymes",
                 "type": "List[str]",
             },
         ],
     },
     {
-        "description": "在DNA序列中查找常见的限制性内切酶位点并返回其切割位置。",
+        "description": "Finds common restriction enzyme sites in a DNA sequence and returns their cut positions.",
         "name": "find_restriction_enzymes",
         "optional_parameters": [
             {
                 "default": False,
-                "description": "序列是否为环状",
+                "description": "Whether the sequence is circular",
                 "name": "is_circular",
                 "type": "bool",
             }
@@ -214,19 +225,19 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "要分析的DNA序列",
+                "description": "DNA sequence to analyze",
                 "name": "sequence",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "将查询序列与参考序列进行比较以识别突变。",
+        "description": "Compare query sequence against reference sequence to identify mutations.",
         "name": "find_sequence_mutations",
         "optional_parameters": [
             {
                 "default": 1,
-                "description": "查询序列的起始位置",
+                "description": "The start position of the query sequence",
                 "name": "query_start",
                 "type": "int",
             }
@@ -234,31 +245,33 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "正在分析的序列",
+                "description": "The sequence being analyzed",
                 "name": "query_sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要比较的参考序列",
+                "description": "The reference sequence to compare against",
                 "name": "reference_sequence",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "通过搜索预计算的sgRNA库为CRISPR敲除设计sgRNA。返回用于靶向特定基因的优化向导RNA。",
+        "description": "Design sgRNAs for CRISPR knockout by searching pre-computed "
+        "sgRNA libraries. Returns optimized guide RNAs for targeting "
+        "a specific gene.",
         "name": "design_knockout_sgrna",
         "optional_parameters": [
             {
                 "default": "human",
-                "description": "目标生物体物种",
+                "description": "Target organism species",
                 "name": "species",
                 "type": "str",
             },
             {
                 "default": 1,
-                "description": "要返回的向导数量",
+                "description": "Number of guides to return",
                 "name": "num_guides",
                 "type": "int",
             },
@@ -266,49 +279,50 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "目标基因符号/名称（例如：'EGFR'、'TP53'）",
+                "description": 'Target gene symbol/name (e.g., "EGFR", "TP53")',
                 "name": "gene_name",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "数据湖的路径",
+                "description": "Path to the data lake",
                 "name": "data_lake_path",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "返回不含磷酸化的寡核苷酸退火标准方案。",
+        "description": "Return a standard protocol for annealing oligonucleotides without phosphorylation.",
         "name": "get_oligo_annealing_protocol",
         "optional_parameters": [],
         "required_parameters": [],
     },
     {
-        "description": "根据插入片段数量和特定DNA序列返回定制的Golden Gate组装方案。",
+        "description": "Return a customized protocol for Golden Gate assembly based "
+        "on the number of inserts and specific DNA sequences.",
         "name": "get_golden_gate_assembly_protocol",
         "optional_parameters": [
             {
                 "default": 1,
-                "description": "要组装的插入片段数量",
+                "description": "Number of inserts to be assembled",
                 "name": "num_inserts",
                 "type": "int",
             },
             {
                 "default": 75.0,
-                "description": "要使用的载体量（ng）",
+                "description": "Amount of vector to use in ng",
                 "name": "vector_amount_ng",
                 "type": "float",
             },
             {
                 "default": None,
-                "description": "插入片段长度列表（bp）",
+                "description": "List of insert lengths in bp",
                 "name": "insert_lengths",
                 "type": "List[int]",
             },
             {
                 "default": False,
-                "description": "是否用于文库制备",
+                "description": "Whether this is for library preparation",
                 "name": "is_library_prep",
                 "type": "bool",
             },
@@ -316,31 +330,31 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "要使用的Type IIS限制性内切酶",
+                "description": "Type IIS restriction enzyme to be used",
                 "name": "enzyme_name",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "目标载体的长度（bp）",
+                "description": "Length of the destination vector in bp",
                 "name": "vector_length",
                 "type": "int",
             },
         ],
     },
     {
-        "description": "返回细菌转化的标准方案。",
+        "description": "Return a standard protocol for bacterial transformation.",
         "name": "get_bacterial_transformation_protocol",
         "optional_parameters": [
             {
                 "default": "ampicillin",
-                "description": "筛选抗生素",
+                "description": "Selection antibiotic",
                 "name": "antibiotic",
                 "type": "str",
             },
             {
                 "default": False,
-                "description": "序列是否包含重复元件",
+                "description": "Whether the sequence contains repetitive elements",
                 "name": "is_repetitive",
                 "type": "bool",
             },
@@ -348,42 +362,42 @@ description = [
         "required_parameters": [],
     },
     {
-        "description": "在给定的序列窗口内设计单个引物。",
+        "description": "Design a single primer within the given sequence window.",
         "name": "design_primer",
         "optional_parameters": [
             {
                 "default": 20,
-                "description": "要设计的引物长度",
+                "description": "Length of the primer to design",
                 "name": "primer_length",
                 "type": "int",
             },
             {
                 "default": 0.4,
-                "description": "最小GC含量",
+                "description": "Minimum GC content",
                 "name": "min_gc",
                 "type": "float",
             },
             {
                 "default": 0.6,
-                "description": "最大GC含量",
+                "description": "Maximum GC content",
                 "name": "max_gc",
                 "type": "float",
             },
             {
                 "default": 55.0,
-                "description": "最小熔解温度（°C）",
+                "description": "Minimum melting temperature in °C",
                 "name": "min_tm",
                 "type": "float",
             },
             {
                 "default": 65.0,
-                "description": "最大熔解温度（°C）",
+                "description": "Maximum melting temperature in °C",
                 "name": "max_tm",
                 "type": "float",
             },
             {
                 "default": 100,
-                "description": "搜索引物的窗口大小",
+                "description": "Size of window to search for primers",
                 "name": "search_window",
                 "type": "int",
             },
@@ -391,67 +405,70 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "目标DNA序列",
+                "description": "Target DNA sequence",
                 "name": "sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "引物搜索的起始位置",
+                "description": "Starting position for primer search",
                 "name": "start_pos",
                 "type": "int",
             },
         ],
     },
     {
-        "description": "设计Sanger测序引物以验证质粒中的特定区域。首先尝试使用现有引物库中的引物。如果它们无法完全覆盖该区域，则根据需要设计额外的引物。",
+        "description": "Design Sanger sequencing primers to verify a specific region "
+        "in a plasmid. First tries to use primers from an existing "
+        "primer pool. If they cannot fully cover the region, designs "
+        "additional primers as needed.",
         "name": "design_verification_primers",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "现有引物列表，包含其序列和可选名称",
+                "description": "List of existing primers with their sequences and optional names",
                 "name": "existing_primers",
                 "type": "Optional[List[Dict[str, str]]]",
             },
             {
                 "default": True,
-                "description": "质粒是否为环状",
+                "description": "Whether the plasmid is circular",
                 "name": "is_circular",
                 "type": "bool",
             },
             {
                 "default": 800,
-                "description": "每个引物的典型读长（碱基对）",
+                "description": "Typical read length for each primer in base pairs",
                 "name": "coverage_length",
                 "type": "int",
             },
             {
                 "default": 20,
-                "description": "新设计引物的长度",
+                "description": "Length of newly designed primers",
                 "name": "primer_length",
                 "type": "int",
             },
             {
                 "default": 0.4,
-                "description": "新引物的最小GC含量",
+                "description": "Minimum GC content for new primers",
                 "name": "min_gc",
                 "type": "float",
             },
             {
                 "default": 0.6,
-                "description": "新引物的最大GC含量",
+                "description": "Maximum GC content for new primers",
                 "name": "max_gc",
                 "type": "float",
             },
             {
                 "default": 55.0,
-                "description": "最小熔解温度（°C）",
+                "description": "Minimum melting temperature in °C",
                 "name": "min_tm",
                 "type": "float",
             },
             {
                 "default": 65.0,
-                "description": "最大熔解温度（°C）",
+                "description": "Maximum melting temperature in °C",
                 "name": "max_tm",
                 "type": "float",
             },
@@ -459,25 +476,27 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "完整的质粒序列",
+                "description": "The complete plasmid sequence",
                 "name": "plasmid_sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要验证的起始和结束位置（基于0的索引）",
+                "description": "Start and end positions to verify (0-based indexing)",
                 "name": "target_region",
                 "type": "Tuple[int, int]",
             },
         ],
     },
     {
-        "description": "基于骨架的限制性位点分析，设计带有Type IIS限制性内切酶突出端的互补寡核苷酸，用于Golden Gate组装。",
+        "description": "Design complementary oligonucleotides with Type IIS "
+        "restriction enzyme overhangs for Golden Gate assembly based "
+        "on restriction site analysis of the backbone.",
         "name": "design_golden_gate_oligos",
         "optional_parameters": [
             {
                 "default": True,
-                "description": "骨架是否为环状",
+                "description": "Whether the backbone is circular",
                 "name": "is_circular",
                 "type": "bool",
             }
@@ -485,31 +504,32 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "完整的骨架序列",
+                "description": "Complete backbone sequence",
                 "name": "backbone_sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要插入的序列（例如：sgRNA靶序列）",
+                "description": "Sequence to be inserted (e.g., sgRNA target sequence)",
                 "name": "insert_sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要使用的Type IIS限制性内切酶",
+                "description": "Type IIS restriction enzyme to be used",
                 "name": "enzyme_name",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "模拟Golden Gate组装以从骨架和片段序列预测最终构建体序列。",
+        "description": "Simulate Golden Gate assembly to predict final construct "
+        "sequences from backbone and fragment sequences.",
         "name": "golden_gate_assembly",
         "optional_parameters": [
             {
                 "default": True,
-                "description": "骨架是否为环状",
+                "description": "Whether the backbone is circular",
                 "name": "is_circular",
                 "type": "bool",
             }
@@ -517,19 +537,21 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "完整的骨架序列",
+                "description": "Complete backbone sequence",
                 "name": "backbone_sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要使用的Type IIS限制性内切酶（例如：'BsmBI'、'BsaI'）",
+                "description": 'Type IIS restriction enzyme to be used (e.g., "BsmBI", "BsaI")',
                 "name": "enzyme_name",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要插入的片段列表，包含以下之一：name + fwd_oligo + rev_oligo（具有匹配突出端的寡核苷酸对）或name + sequence（包含限制性位点的双链DNA片段）",
+                "description": "List of fragments to insert, containing one of: "
+                "name + fwd_oligo + rev_oligo (oligo pair with matching overhangs) or "
+                "name + sequence (double-stranded DNA fragment containing restriction sites)",
                 "name": "fragments",
                 "type": "List[Dict[str, str]]",
             },

@@ -9,16 +9,19 @@ tcga_api = TCGA_API()
 
 @mcp.tool()
 async def get_gene_specific_expression_in_cancer_type(gene: str):
-    """使用 Firebrowse API（TCGA mRNASeq）分析给定基因在不同癌症类型中的组织特异性表达模式。
-    它计算每种癌症（队列）的平均表达量，计算平均表达量的 z 分数，并返回基因高表达或低表达的癌症类型。
+    """
+    Analyze the tissue-specific expression pattern of a given gene across different cancer types
+    using the Firebrowse API (TCGA mRNASeq). It computes mean expression per cancer (cohort),
+    calculates z-score of mean expression, and returns cancer types where the gene is highly
+    or lowly expressed.
 
     Args:
-        gene: 基因符号，例如 "TP53"、"BRCA1"、"EGFR"
+        gene: Gene symbol, such as "TP53", "BRCA1", "EGFR"
 
     Returns:
-        包含两个键的字典：
-        - high_expression_cancers: 基因高表达的癌症类型列表（z > 1）
-        - low_expression_cancers: 基因低表达的癌症类型列表（z < -1）
+        A dictionary with two keys:
+        - high_expression_cancers: List of cancer types where the gene is highly expressed (z > 1)
+        - low_expression_cancers: List of cancer types where the gene is lowly expressed (z < -1)
         
     Query example: {"gene": "TP53"}
     """
@@ -30,11 +33,11 @@ async def get_gene_specific_expression_in_cancer_type(gene: str):
 
 @mcp.prompt()
 def system_prompt():
-    """客户端的系统提示。"""
-    prompt ="""你是一个智能生物医学助手，可以访问癌症基因组学工具。
-    当用户询问特定基因在癌症类型中的表达模式时，
-    你的目标是识别哪些癌症类型显示该基因的高表达或低表达。
-    如果用户没有提供缺失的参数（如基因），请用合理的值填充。
-    清晰简洁地回答，并引用提到的基因符号。"""
+    """System prompt for client."""
+    prompt ="""You are an intelligent biomedical assistant with access to cancer genomics tools.
+    When a user asks about the expression pattern of a specific gene across cancer types, 
+    your goal is to identify which cancer types show high or low expression of that gene.
+    Fill in missing arguments with sensible values if the user hasn't provided them such as the gene. 
+    Answer clearly and concisely, and cite the gene symbol mentioned."""
     return prompt
 

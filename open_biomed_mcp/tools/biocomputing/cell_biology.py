@@ -1,20 +1,20 @@
 def quantify_cell_cycle_phases_from_microscopy(image_paths, output_dir="./results"):
-    """使用Calcofluor white染色的显微镜图像量化各细胞周期阶段的细胞百分比。
+    """Quantify the percentage of cells in each cell cycle phase using Calcofluor white stained microscopy images.
 
-    该函数处理细胞壁/隔膜用Calcofluor white染色的显微镜图像，
-    分割单个细胞，提取特征，并将每个细胞分类为G1、S或G2/M期。
+    This function processes microscopy images where cell walls/septa are stained with Calcofluor white,
+    segments individual cells, extracts features, and classifies each cell into G1, S, or G2/M phase.
 
-    参数
+    Parameters
     ----------
     image_paths : list of str
-        用Calcofluor white染色的细胞显微镜图像文件路径列表
-    output_dir : str, 可选
-        保存结果的目录（默认：'./results'）
+        List of file paths to microscopy images of cells stained with Calcofluor white
+    output_dir : str, optional
+        Directory to save results (default: './results')
 
-    返回值
+    Returns
     -------
     str
-        总结分析过程和结果的研究日志
+        Research log summarizing the analysis process and results
 
     """
     import os
@@ -160,21 +160,21 @@ def quantify_cell_cycle_phases_from_microscopy(image_paths, output_dir="./result
 
 
 def quantify_and_cluster_cell_motility(image_sequence_path, output_dir="./results", num_clusters=3):
-    """从延时显微镜图像量化细胞运动特征，并根据运动模式对细胞进行聚类。
+    """Quantify cell motility features from time-lapse microscopy images and cluster cells based on motility patterns.
 
-    参数
+    Parameters
     ----------
     image_sequence_path : str
-        包含按顺序排列的延时显微镜图像的目录路径
+        Path to directory containing time-lapse microscopy images in sequential order
     output_dir : str
-        保存输出文件的目录（默认："./results"）
+        Directory to save output files (default: "./results")
     num_clusters : int
-        要识别的运动模式聚类数量（默认：3）
+        Number of motility pattern clusters to identify (default: 3)
 
-    返回值
+    Returns
     -------
     str
-        总结分析过程和结果的研究日志
+        Research log summarizing the analysis process and results
 
     """
     import os
@@ -373,25 +373,25 @@ def perform_facs_cell_sorting(
     threshold_max=None,
     output_file="sorted_cells.csv",
 ):
-    """执行荧光激活细胞分选（FACS）以基于荧光特性富集细胞群体。
+    """Performs Fluorescence-Activated Cell Sorting (FACS) to enrich cell populations based on fluorescence characteristics.
 
-    参数
+    Parameters
     ----------
     cell_suspension_data : str
-        包含流式细胞术数据的FCS文件路径
+        Path to the FCS file containing flow cytometry data
     fluorescence_parameter : str
-        用于分选的荧光参数（例如，'GFP'、'FITC'、'PE'）
-    threshold_min : float, 可选
-        荧光参数的最小阈值。低于此值的细胞将被排除
-    threshold_max : float, 可选
-        荧光参数的最大阈值。高于此值的细胞将被排除
-    output_file : str, 可选
-        保存分选后细胞群体数据的文件名
+        The fluorescence parameter to use for sorting (e.g., 'GFP', 'FITC', 'PE')
+    threshold_min : float, optional
+        Minimum threshold for the fluorescence parameter. Cells below this value will be excluded
+    threshold_max : float, optional
+        Maximum threshold for the fluorescence parameter. Cells above this value will be excluded
+    output_file : str, optional
+        Filename to save the sorted cell population data
 
-    返回值
+    Returns
     -------
     str
-        详细说明FACS细胞分选过程的研究日志
+        Research log detailing the FACS cell sorting process
 
     """
     import os
@@ -473,24 +473,24 @@ def perform_facs_cell_sorting(
 def analyze_flow_cytometry_immunophenotyping(
     fcs_file_path, gating_strategy, compensation_matrix=None, output_dir="./results"
 ):
-    """分析流式细胞术数据以基于表面标记物识别和量化特定细胞群体。
+    """Analyze flow cytometry data to identify and quantify specific cell populations based on surface markers.
 
-    参数
+    Parameters
     ----------
     fcs_file_path : str
-        包含流式细胞术数据的FCS文件路径
+        Path to the FCS file containing flow cytometry data
     gating_strategy : dict
-        定义门控策略的字典。每个键是群体名称，每个值是元组列表
-        (标记物, 运算符, 阈值)。例如：{'HSCs': [('Lin', '<', 100), ('Sca1', '>', 1000), ...]}
-    compensation_matrix : numpy.ndarray, 可选
-        用于校正荧光重叠的溢出/补偿矩阵
-    output_dir : str, 可选
-        保存结果的目录
+        Dictionary defining the gating strategy. Each key is a population name, and each value is a list of tuples
+        (marker, operator, threshold). For example: {'HSCs': [('Lin', '<', 100), ('Sca1', '>', 1000), ...]}
+    compensation_matrix : numpy.ndarray, optional
+        Spillover/compensation matrix to correct for fluorescence overlap
+    output_dir : str, optional
+        Directory to save the results
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -572,21 +572,21 @@ def analyze_flow_cytometry_immunophenotyping(
 
 
 def analyze_mitochondrial_morphology_and_potential(morphology_image_path, potential_image_path, output_dir="./output"):
-    """从荧光显微镜图像量化线粒体形态和膜电位的指标。
+    """Quantifies metrics of mitochondrial morphology and membrane potential from fluorescence microscopy images.
 
-    参数
+    Parameters
     ----------
     morphology_image_path : str
-        显示线粒体形态的荧光显微镜图像路径（例如，MTS-GFP）
+        Path to the fluorescence microscopy image showing mitochondrial morphology (e.g., MTS-GFP)
     potential_image_path : str
-        显示线粒体膜电位的荧光显微镜图像路径（例如，TMRE染色）
-    output_dir : str, 可选
-        保存输出文件的目录，默认为"./output"
+        Path to the fluorescence microscopy image showing mitochondrial membrane potential (e.g., TMRE staining)
+    output_dir : str, optional
+        Directory to save output files, default is "./output"
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        A research log summarizing the analysis steps and results
 
     """
     import datetime

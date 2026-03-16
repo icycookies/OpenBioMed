@@ -1,448 +1,448 @@
-# OpenBioMed MCP 服务文档
+# OpenBioMed MCP Service Documentation
 
-## 项目简介
+## Project Overview
 
-`open_biomed_mcp` 是一个基于 FastAPI + MCP（Model Context Protocol）的生物医学工具服务平台。该平台针对当前生物医学工具碎片化的问题，通过对 OrigeneMCP 和 Biomni 等主流开源项目的整合、去重与规范化处理，实现了多源异构生物医学工具的统一封装。它原生支持 MCP（Model Context Protocol） 标准，并同步暴露 FastAPI 驱动的 RESTful 接口，为大模型（LLM）调用、智能 Agent 开发及传统科研流提供了“开箱即用”的多模态接入能力。
+`open_biomed_mcp` is a biomedical tool service platform built on FastAPI and MCP (Model Context Protocol). It addresses the fragmentation of current biomedical tools by integrating, deduplicating, and standardizing tools from mainstream open-source projects such as OrigeneMCP and Biomni. The platform natively supports the MCP standard and simultaneously exposes RESTful interfaces powered by FastAPI, providing out-of-the-box multi-modal access for LLM invocation, intelligent agent development, and traditional research workflows.
 
-项目版本：`0.2.0`
-
----
-
-## 服务总览
-
-本项目共集成 **32 个工具模块**，分为两大类：
-
-### 一、生物数据库 API 服务（13 个模块）
-
-| 模块 | 路径前缀 | 说明 |
-|------|----------|------|
-| **ChEMBL** | `/chembl` | 生物活性数据库，提供化合物活性、检测、药物、靶点等查询 |
-| **NCBI** | `/ncbi` | 美国国家生物技术信息中心，提供基因、基因组、分类学、病毒等数据查询 |
-| **PubChem** | `/pubchem` | 化合物信息数据库，支持按名称/SMILES/CID/分子式搜索化合物及其性质 |
-| **UniProt** | `/uniprot` | 蛋白质知识库，提供 UniProtKB、UniRef、UniParc、蛋白质组等查询 |
-| **KEGG** | `/kegg` | 通路与基因组数据库，支持通路、基因、化合物的检索与转换 |
-| **STRING** | `/string` | 蛋白质相互作用网络数据库，提供网络交互、功能富集、PPI 分析 |
-| **TCGA** | `/tcga` | 癌症基因组图谱，分析基因在不同癌症类型中的表达模式 |
-| **Ensembl** | `/ensembl` | 基因组注释数据库，提供基因查找、变异效应预测（VEP）、同源性分析、序列检索等 |
-| **UCSC** | `/ucsc` | UCSC 基因组浏览器 API，提供基因组序列、轨道数据、染色体信息查询 |
-| **ClinicalTrials** | `/clinicaltrials` | ClinicalTrials.gov 临床试验数据库，支持临床试验搜索与详情查询 |
-| **PDB** | `/pdb` | 蛋白质数据库，提供蛋白质结构、实体、组装、化学组分等查询 |
-| **DBSearch** | `/dbsearch` | 综合数据库搜索工具，集成 ClinVar、Ensembl、GSEA、GTRD、miRDB、MouseMine、PHIPSTER 等 |
-| **Search** | `/search_tools` | 搜索引擎工具，集成 Tavily 搜索和 Jina DeepSearch |
-
-### 二、生物医学计算工具集（19 个模块）
-
-| 模块 | 路径前缀 | 说明 |
-|------|----------|------|
-| **文献检索** | `/literature` | 论文补充信息获取、文献搜索 |
-| **生物化学** | `/biochemistry` | 圆二色谱分析、蛋白质结构分析等 |
-| **生物成像** | `/bioimaging` | 图像分割、显微镜图像分析 |
-| **生物工程** | `/bioengineering` | 细胞迁移分析、组织工程相关工具 |
-| **生物物理** | `/biophysics` | 蛋白质无序区域预测（IUPred2A）等 |
-| **糖工程** | `/glycoengineering` | N-糖基化位点查找等 |
-| **癌症生物学** | `/cancer_biology` | DNA 损伤响应网络分析等 |
-| **细胞生物学** | `/cell_biology` | 细胞周期分析、细胞计数等 |
-| **分子生物学** | `/molecular_biology` | ORF 注释、质粒注释、PCR 模拟、限制性酶切、引物比对等 |
-| **遗传学** | `/genetics` | 基因组坐标转换（hg19/hg38）等 |
-| **免疫学** | `/immunology` | ATAC-seq 峰值检测、差异可及性分析等 |
-| **微生物学** | `/microbiology` | 厌氧消化过程优化等 |
-| **病理学** | `/pathology` | 心血管成像分析、主动脉几何参数计算等 |
-| **药理学** | `/pharmacology` | 分子对接（DiffDock）等 |
-| **生理学** | `/physiology` | MRI 面部解剖 3D 建模等 |
-| **合成生物学** | `/synthetic_biology` | 细菌基因组改造、治疗递送设计等 |
-| **系统生物学** | `/systems_biology` | 通量平衡分析（FBA）等 |
-| **辅助工具** | `/support_tools` | Python REPL 执行、源码读取、Synapse 数据下载 |
-| **实验室自动化** | `/lab_automation` | PyLabRobot 脚本测试等 |
+Project version: `0.2.0`
 
 ---
 
-## 各模块核心功能详解
+## Service Overview
 
-### ChEMBL（生物活性数据）共101个工具
-- 活性数据查询与搜索（`get_activity`、`search_activity`）
-- 检测信息查询（`get_assay_by_id`、`search_assay`）
-- ATC 分类查询（`get_atc_class`）
-- 结合位点查询（`get_binding_site`）
-- 药物信息查询（`get_drug`、`get_drug_indication`、`get_drug_warning`）
-- 化合物记录与结构警报（`get_compound_record`、`get_compound_structural_alert`）
-- 文献查询与相似度分析（`get_document`、`get_document_similarity`）
-- ChEMBL ID 查找（`get_chembl_id_lookup`）
+This project integrates **32 tool modules** in two categories:
 
-### NCBI（基因与基因组）共56个工具
-- 基因元数据查询（`get_gene_metadata_by_gene_name`）
-- 基因 ID/登录号/符号/分类单元查询
-- 基因组注释报告、序列报告、修订历史
-- 病毒注释与基因组数据
-- 分类学信息查询与建议
-- 生物样本报告、细胞器数据
-- 基因直系同源物查询
+### 1. Biological Database API Services (13 modules)
 
-### PubChem（化合物信息）共39个工具
-- 按名称/SMILES/CID/分子式搜索化合物
-- 化合物详细信息（性质、同义词、描述、3D 结构）
-- 物质信息查询（SID）
-- 生物测定摘要
-- 基因/蛋白质/分类学摘要
-- 构象异构体查询
-- 子结构 CAS 号查询
+| Module | Path Prefix | Description |
+|--------|-------------|-------------|
+| **ChEMBL** | `/chembl` | Bioactivity database: compound activity, assays, drugs, targets |
+| **NCBI** | `/ncbi` | National Center for Biotechnology Information: genes, genomes, taxonomy, viruses |
+| **PubChem** | `/pubchem` | Compound database: search by name/SMILES/CID/formula, properties |
+| **UniProt** | `/uniprot` | Protein knowledgebase: UniProtKB, UniRef, UniParc, proteomes |
+| **KEGG** | `/kegg` | Pathway and genome database: pathways, genes, compounds |
+| **STRING** | `/string` | Protein interaction network database: PPI, functional enrichment |
+| **TCGA** | `/tcga` | The Cancer Genome Atlas: gene expression across cancer types |
+| **Ensembl** | `/ensembl` | Genome annotation: gene lookup, VEP, homology, sequence retrieval |
+| **UCSC** | `/ucsc` | UCSC Genome Browser API: sequences, tracks, chromosome info |
+| **ClinicalTrials** | `/clinicaltrials` | ClinicalTrials.gov: trial search and detail queries |
+| **PDB** | `/pdb` | Protein Data Bank: structure, entity, assembly, chemical component queries |
+| **DBSearch** | `/dbsearch` | Multi-database search: ClinVar, Ensembl, GSEA, GTRD, miRDB, MouseMine, PHIPSTER |
+| **Search** | `/search_tools` | Search engine tools: Tavily search and Jina DeepSearch |
 
-### UniProt（蛋白质知识库）共22个工具
-- UniProtKB 条目查询与搜索
-- UniRef 簇查询与成员检索
-- UniParc 条目与交叉引用
-- GeneCentric 基因中心查询
-- 蛋白质组查询
+### 2. Biomedical Computing Toolset (19 modules)
 
-### KEGG（通路与基因组）共6个工具
-- 数据库信息查询（`kegg_info`）
-- 数据搜索（`kegg_find`）
-- 条目列表（`kegg_list`）
-- 条目详情获取（`kegg_get`）
-- ID 转换（`kegg_conv`）
-- 交叉引用链接（`kegg_link`）
-
-### STRING（蛋白质网络）共8个工具
-- 标识符映射（`mapping_identifiers`）
-- 网络交互查询（`get_string_network_interaction`）
-- 全部交互伙伴查询
-- 蛋白质相似性评分
-- 跨物种最佳相似性匹配
-- 功能富集分析
-- 功能注释
-- PPI 富集分析
-
-### Ensembl（基因组注释）共104个工具
-- 基因符号查找（`get_lookup_symbol`）
-- 同源性分析（`get_homology_symbol`、`get_homology_id`）
-- 基因组序列检索（`get_sequence_region`）
-- 变异效应预测 VEP（`get_vep_hgvs`、`get_vep_id`、`get_vep_region`）
-- 基因树与 CAFE 分析
-- 组装信息与区域信息
-- 交叉引用查询
-- 坐标映射（cDNA/CDS/蛋白质 → 基因组）
-- 本体查询
-- 表型关联查询
-- 变异信息与重编码
-
-### UCSC（基因组浏览器）共9个工具
-- 基因组列表与染色体列表
-- 轨道数据查询
-- DNA 序列获取
-- 细胞带信息
-- 公共轨道中心
-
-### ClinicalTrials（临床试验）共8个工具
-- 临床试验搜索（支持复杂查询、过滤、分页）
-- 单个试验详情查询
-- 元数据、搜索区域、枚举值查询
-- 字段统计信息
-
-### PDB（蛋白质结构）共20个工具
-- 结构信息查询
-- PubMed/UniProt/DrugBank 注释
-- 聚合物/分支/非聚合物实体及实例查询
-- 结构组装信息
-- 聚合物界面分析
-- 化学组分查询
-- 残基链信息
-- 实体组查询
-
-### TCGA（癌症基因组图谱）共1个工具
-- 基因在不同癌症类型中的表达模式分析（`get_gene_specific_expression_in_cancer_type`）：基于 Firebrowse API（TCGA mRNASeq），计算指定基因在各癌症队列中的平均表达量及 z 分数，返回高表达（z > 1）和低表达（z < -1）的癌症类型
-
-### Search（搜索引擎工具）共2个工具
-- Tavily 搜索（`tavily_search`）：使用 Tavily 搜索引擎检索并过滤网络结果
-- Jina DeepSearch（`jina_search`）：使用 Jina DeepSearch 引擎进行深度检索
-
-### DBSearch（综合数据库搜索）共14个工具
-- ClinVar 变异显著性查询
-- 蛋白质序列 BLAST 匹配
-- 基因组区域基因查询
-- 细胞遗传学带区域基因提取
-- GSEA 基因集检索
-- GTRD 转录因子靶基因查询
-- miRDB miRNA 靶基因预测
-- MouseMine 表型基因查询
-- PHIPSTER 病毒-人类蛋白质相互作用查询
-
-### 文献检索（Literature）共8个工具
-- 通过 DOI 获取论文补充信息（`fetch_supplementary_info_from_doi`）
-- arXiv 论文搜索（`query_arxiv`）
-- Google Scholar 学术搜索（`query_scholar`）
-- PubMed 文献搜索（`query_pubmed`）
-- Google 搜索（`search_google`）
-- URL 内容提取（`extract_url_content`）
-- PDF 内容提取（`extract_pdf_content`）
-- 基于 Claude 的高级网络搜索（`advanced_web_search_claude`）
-
-### 生物化学（Biochemistry）共6个工具
-- 圆二色谱（CD）光谱分析（`analyze_circular_dichroism_spectra`）
-- RNA 二级结构特征分析（`analyze_rna_secondary_structure_features`）
-- 蛋白酶动力学分析（`analyze_protease_kinetics`）
-- 酶动力学测定分析（`analyze_enzyme_kinetics_assay`）
-- ITC 结合热力学分析（`analyze_itc_binding_thermodynamics`）
-- 蛋白质保守性分析（`analyze_protein_conservation`）
-
-### 生物成像（Bioimaging）共9个工具
-- 多模态图像拆分（`split_modalities`）
-- nnU-Net 输入准备（`prepare_input_for_nnunet`）
-- nnU-Net 图像分割（`segment_with_nn_unet`）
-- 分割结果可视化（`create_segmentation_visualization`）
-- 快速刚性配准（`quick_rigid_registration`）
-- 快速仿射配准（`quick_affine_registration`）
-- 快速可变形配准（`quick_deformable_registration`）
-- 批量图像配准（`batch_register_images`）
-- 相似度指标计算（`calculate_similarity_metrics`）
-- 配准结果可视化（`create_registration_visualization`）
-
-### 生物工程（Bioengineering）共7个工具
-- 细胞迁移指标分析（`analyze_cell_migration_metrics`）
-- CRISPR-Cas9 基因组编辑模拟（`perform_crispr_cas9_genome_editing`）
-- 钙成像数据分析（`analyze_calcium_imaging_data`）
-- 体外药物释放动力学分析（`analyze_in_vitro_drug_release_kinetics`）
-- 肌纤维形态学分析（`analyze_myofiber_morphology`）
-- 神经轨迹行为解码（`decode_behavior_from_neural_trajectories`）
-- 全细胞 ODE 模型模拟（`simulate_whole_cell_ode_model`）
-
-### 生物物理（Biophysics）共3个工具
-- 蛋白质无序区域预测（`predict_protein_disorder_regions`）
-- 细胞形态与细胞骨架分析（`analyze_cell_morphology_and_cytoskeleton`）
-- 组织变形流分析（`analyze_tissue_deformation_flow`）
-
-### 糖工程（Glycoengineering）共3个工具
-- N-糖基化位点查找（`find_n_glycosylation_motifs`）
-- O-糖基化热点预测（`predict_o_glycosylation_hotspots`）
-- 糖工程资源列表（`list_glycoengineering_resources`）
-
-### 癌症生物学（Cancer Biology）共6个工具
-- DNA 损伤响应网络分析（`analyze_ddr_network_in_cancer`）
-- 细胞衰老与凋亡分析（`analyze_cell_senescence_and_apoptosis`）
-- 体细胞突变检测与注释（`detect_and_annotate_somatic_mutations`）
-- 结构变异检测与表征（`detect_and_characterize_structural_variations`）
-- 基因表达 NMF 分析（`perform_gene_expression_nmf_analysis`）
-- 拷贝数/纯度/倍性及局灶事件分析（`analyze_copy_number_purity_ploidy_and_focal_events`）
-
-### 细胞生物学（Cell Biology）共5个工具
-- 显微镜图像细胞周期相位量化（`quantify_cell_cycle_phases_from_microscopy`）
-- 细胞运动性量化与聚类（`quantify_and_cluster_cell_motility`）
-- 荧光激活细胞分选 FACS（`perform_facs_cell_sorting`）
-- 流式细胞术免疫表型分析（`analyze_flow_cytometry_immunophenotyping`）
-- 线粒体形态与膜电位分析（`analyze_mitochondrial_morphology_and_potential`）
-
-### 分子生物学（Molecular Biology）共18个工具
-- 开放阅读框（ORF）注释（`annotate_open_reading_frames`）
-- 质粒注释（`annotate_plasmid`）
-- 基因编码序列检索（`get_gene_coding_sequence`）
-- 质粒序列检索（Addgene/NCBI）（`get_plasmid_sequence`）
-- 引物比对（`align_sequences`）
-- PCR 扩增模拟（`pcr_simple`）
-- 限制性酶切模拟（`digest_sequence`）
-- 限制性酶切位点查找（`find_restriction_sites`、`find_restriction_enzymes`）
-- 序列突变查找（`find_sequence_mutations`）
-- CRISPR sgRNA 设计（`design_knockout_sgrna`）
-- 寡核苷酸退火方案（`get_oligo_annealing_protocol`）
-- Golden Gate 组装方案与模拟（`get_golden_gate_assembly_protocol`、`golden_gate_assembly`）
-- Golden Gate 寡核苷酸设计（`design_golden_gate_oligos`）
-- 细菌转化方案（`get_bacterial_transformation_protocol`）
-- 引物设计（`design_primer`）
-- Sanger 测序验证引物设计（`design_verification_primers`）
-
-### 遗传学（Genetics）共9个工具
-- 基因组坐标转换 hg19/hg38（`liftover_coordinates`）
-- 贝叶斯精细定位（深度变分推断）（`bayesian_finemapping_with_deep_vi`）
-- Cas9 突变结果分析（`analyze_cas9_mutation_outcomes`）
-- CRISPR 基因组编辑结果分析（`analyze_crispr_genome_editing`）
-- 人口统计历史模拟（msprime）（`simulate_demographic_history`）
-- 转录因子结合位点识别（`identify_transcription_factor_binding_sites`）
-- 基因组预测线性混合模型（`fit_genomic_prediction_model`）
-- PCR 扩增与凝胶电泳模拟（`perform_pcr_and_gel_electrophoresis`）
-- 蛋白质系统发育分析（`analyze_protein_phylogeny`）
-
-### 免疫学（Immunology）共10个工具
-- ATAC-seq 差异可及性分析（`analyze_atac_seq_differential_accessibility`）
-- 细菌生长曲线分析（`analyze_bacterial_growth_curve`）
-- 免疫细胞分离与纯化模拟（`isolate_purify_immune_cells`）
-- 细胞周期相位持续时间估算（`estimate_cell_cycle_phase_durations`）
-- 流动条件下免疫细胞追踪（`track_immune_cells_under_flow`）
-- CFSE 细胞增殖分析（`analyze_cfse_cell_proliferation`）
-- CD4+ T 细胞细胞因子产生分析（`analyze_cytokine_production_in_cd4_tcells`）
-- EBV 抗体滴度 ELISA 分析（`analyze_ebv_antibody_titers`）
-- CNS 病变组织学分析（`analyze_cns_lesion_histology`）
-- 免疫组织化学图像分析（`analyze_immunohistochemistry_image`）
-
-### 微生物学（Microbiology）共12个工具
-- 厌氧消化过程优化（`optimize_anaerobic_digestion_process`）
-- 砷形态 HPLC-ICP-MS 分析（`analyze_arsenic_speciation_hplc_icpms`）
-- 细菌菌落计数（计算机视觉）（`count_bacterial_colonies`）
-- 细菌基因组注释（Prokka）（`annotate_bacterial_genome`）
-- 系列稀释 CFU 计数（`enumerate_bacterial_cfu_by_serial_dilution`）
-- 细菌种群动态建模（ODE）（`model_bacterial_growth_dynamics`）
-- 生物膜生物量量化（结晶紫）（`quantify_biofilm_biomass_crystal_violet`）
-- 微生物细胞分割与形态分析（`segment_and_analyze_microbial_cells`）
-- 深度学习细胞分割（Cellpose/Omnipose）（`segment_cells_with_deep_learning`）
-- 微生物群落动态模拟（gLV 模型）（`simulate_generalized_lotka_volterra_dynamics`）
-- RNA 二级结构预测（ViennaRNA）（`predict_rna_secondary_structure`）
-- 微生物种群随机模拟（Gillespie 算法）（`simulate_microbial_population_dynamics`）
-
-### 病理学（Pathology）共7个工具
-- 主动脉直径与几何形状分析（`analyze_aortic_diameter_and_geometry`）
-- ATP 发光测定分析（`analyze_atp_luminescence_assay`）
-- 血栓组织学图像分析（`analyze_thrombus_histology`）
-- 细胞内钙浓度分析（Rhod-2）（`analyze_intracellular_calcium_with_rhod2`）
-- 角膜神经纤维量化（`quantify_corneal_nerve_fibers`）
-- 多通道组织图像细胞分割与蛋白质量化（`segment_and_quantify_cells_in_multiplexed_images`）
-- 骨微结构 micro-CT 分析（`analyze_bone_microct_morphometry`）
-
-### 药理学（Pharmacology）共25个工具
-- DiffDock 分子对接（`run_diffdock_with_smiles`）
-- AutoDock Vina 分子对接（`docking_autodock_vina`）
-- AutoSite 结合位点识别（`run_autosite`）
-- TxGNN 药物重定位预测（`retrieve_topk_repurposing_drugs_from_disease_txgnn`）
-- ADMET 属性预测（`predict_admet_properties`）
-- 蛋白质-小分子结合亲和力预测（`predict_binding_affinity_protein_1d_sequence`）
-- 药物制剂加速稳定性分析（`analyze_accelerated_stability_of_pharmaceutical_formulations`）
-- 3D 软骨聚集培养测定方案（`run_3d_chondrogenic_aggregate_assay`）
-- VCOG-CTCAE 不良事件分级（`grade_adverse_events_using_vcog_ctcae`）
-- 放射性标记抗体生物分布分析（`analyze_radiolabeled_antibody_biodistribution`）
-- α 粒子放射治疗剂量估算（`estimate_alpha_particle_radiotherapy_dosimetry`）
-- 全甲基化组关联研究 MWAS（`perform_mwas_cyp2c19_metabolizer_status`）
-- 理化性质计算（`calculate_physicochemical_properties`）
-- 异种移植肿瘤生长抑制分析（`analyze_xenograft_tumor_growth_inhibition`）
-- Western blot 像素分布分析（`analyze_pixel_distribution`）
-- Western blot ROI 检测（`find_roi_from_image`）
-- Western blot 密度测定分析（`analyze_western_blot`）
-- 药物-药物相互作用查询（DDInter）（`query_drug_interactions`）
-- 药物组合安全性检查（`check_drug_combination_safety`）
-- 药物相互作用机制分析（`analyze_interaction_mechanisms`）
-- 替代药物查找（`find_alternative_drugs_ddinter`）
-- FDA 不良事件查询（`query_fda_adverse_events`）
-- FDA 药物标签信息检索（`get_fda_drug_label_info`）
-- FDA 药物召回检查（`check_fda_drug_recalls`）
-- FDA 安全信号分析（`analyze_fda_safety_signals`）
-
-### 生理学（Physiology）共11个工具
-- MRI 面部解剖 3D 重建（`reconstruct_3d_face_from_mri`）
-- 听觉脑干反应 ABR 波形分析（`analyze_abr_waveform_p1_metrics`）
-- 纤毛摆动频率分析（FFT）（`analyze_ciliary_beat_frequency`）
-- 蛋白质共定位分析（`analyze_protein_colocalization`）
-- 昼夜节律余弦分析（`perform_cosinor_analysis`）
-- 脑 ADC 图计算（扩散加权 MRI）（`calculate_brain_adc_map`）
-- 内溶酶体钙动力学分析（`analyze_endolysosomal_calcium_dynamics`）
-- 脂肪酸组成气相色谱分析（`analyze_fatty_acid_composition_by_gc`）
-- 血流动力学参数分析（`analyze_hemodynamic_data`）
-- 甲状腺激素药代动力学模拟（`simulate_thyroid_hormone_pharmacokinetics`）
-- β-淀粉样蛋白斑块量化（`quantify_amyloid_beta_plaques`）
-
-### 合成生物学（Synthetic Biology）共8个工具
-- 细菌基因组治疗递送改造（`engineer_bacterial_genome_for_therapeutic_delivery`）
-- 细菌生长速率分析（`analyze_bacterial_growth_rate`）
-- 条形码测序数据分析（`analyze_barcode_sequencing_data`）
-- 分岔图分析（`analyze_bifurcation_diagram`）
-- SBML 生化网络模型生成（`create_biochemical_network_sbml_model`）
-- 密码子优化（异源表达）（`optimize_codons_for_heterologous_expression`）
-- 基因调控回路动力学模拟（含生长反馈）（`simulate_gene_circuit_with_growth_feedback`）
-- 脂肪酸合酶功能域识别（`identify_fas_functional_domains`）
-
-### 系统生物学（Systems Biology）共7个工具
-- 通量平衡分析 FBA（`perform_flux_balance_analysis`）
-- 蛋白质二聚化网络建模（`model_protein_dimerization_network`）
-- 代谢网络扰动模拟（`simulate_metabolic_network_perturbation`）
-- 蛋白质信号网络动力学模拟（`simulate_protein_signaling_network`）
-- 蛋白质结构比较（`compare_protein_structures`）
-- 肾素-血管紧张素系统动力学模拟（`simulate_renin_angiotensin_system_dynamics`）
-- DNA 序列功能问答（ChatNT）（`query_chatnt`）
-
-### 辅助工具（Support Tools）共3个工具
-- Python REPL 执行（`run_python_repl`）
-- 函数源码读取（`read_function_source_code`）
-- Synapse 数据下载（`download_synapse_data`）
-
-### 实验室自动化（Lab Automation）共3个工具
-- PyLabRobot 脚本测试（`test_pylabrobot_script`）
-- PyLabRobot 液体处理文档（`get_pylabrobot_documentation_liquid`）
-- PyLabRobot 材料处理文档（`get_pylabrobot_documentation_material`）
+| Module | Path Prefix | Description |
+|--------|-------------|-------------|
+| **Literature** | `/literature` | Supplementary info retrieval, literature search |
+| **Biochemistry** | `/biochemistry` | CD spectra analysis, protein structure analysis |
+| **Bioimaging** | `/bioimaging` | Image segmentation, microscopy image analysis |
+| **Bioengineering** | `/bioengineering` | Cell migration analysis, tissue engineering tools |
+| **Biophysics** | `/biophysics` | Protein disorder region prediction (IUPred2A) |
+| **Glycoengineering** | `/glycoengineering` | N-glycosylation site finding |
+| **Cancer Biology** | `/cancer_biology` | DNA damage response network analysis |
+| **Cell Biology** | `/cell_biology` | Cell cycle analysis, cell counting |
+| **Molecular Biology** | `/molecular_biology` | ORF annotation, plasmid annotation, PCR simulation, restriction digestion, primer alignment |
+| **Genetics** | `/genetics` | Genome coordinate liftover (hg19/hg38) |
+| **Immunology** | `/immunology` | ATAC-seq peak calling, differential accessibility analysis |
+| **Microbiology** | `/microbiology` | Anaerobic digestion process optimization |
+| **Pathology** | `/pathology` | Cardiovascular imaging analysis, aortic geometry |
+| **Pharmacology** | `/pharmacology` | Molecular docking (DiffDock) |
+| **Physiology** | `/physiology` | MRI facial anatomy 3D reconstruction |
+| **Synthetic Biology** | `/synthetic_biology` | Bacterial genome engineering, therapeutic delivery design |
+| **Systems Biology** | `/systems_biology` | Flux balance analysis (FBA) |
+| **Support Tools** | `/support_tools` | Python REPL execution, source code reading, Synapse data download |
+| **Lab Automation** | `/lab_automation` | PyLabRobot script testing |
 
 ---
 
-## 如何启动项目
+## Core Features per Module
 
-### 1. 环境准备
+### ChEMBL (Bioactivity Data) — 101 tools
+- Activity data query and search (`get_activity`, `search_activity`)
+- Assay information query (`get_assay_by_id`, `search_assay`)
+- ATC classification query (`get_atc_class`)
+- Binding site query (`get_binding_site`)
+- Drug information query (`get_drug`, `get_drug_indication`, `get_drug_warning`)
+- Compound records and structural alerts (`get_compound_record`, `get_compound_structural_alert`)
+- Document query and similarity analysis (`get_document`, `get_document_similarity`)
+- ChEMBL ID lookup (`get_chembl_id_lookup`)
+
+### NCBI (Genes and Genomes) — 56 tools
+- Gene metadata query (`get_gene_metadata_by_gene_name`)
+- Gene ID / accession / symbol / taxon queries
+- Genome annotation reports, sequence reports, revision history
+- Virus annotation and genome data
+- Taxonomy information query and suggestions
+- Biosample reports, organelle data
+- Gene ortholog queries
+
+### PubChem (Compound Information) — 39 tools
+- Search compounds by name/SMILES/CID/formula
+- Compound details (properties, synonyms, descriptions, 3D structures)
+- Substance information query (SID)
+- Bioassay summaries
+- Gene/protein/taxonomy summaries
+- Conformer queries
+- Substructure CAS number queries
+
+### UniProt (Protein Knowledgebase) — 22 tools
+- UniProtKB entry query and search
+- UniRef cluster query and member retrieval
+- UniParc entries and cross-references
+- GeneCentric gene-centric queries
+- Proteome queries
+
+### KEGG (Pathways and Genomes) — 6 tools
+- Database information query (`kegg_info`)
+- Data search (`kegg_find`)
+- Entry listing (`kegg_list`)
+- Entry detail retrieval (`kegg_get`)
+- ID conversion (`kegg_conv`)
+- Cross-reference links (`kegg_link`)
+
+### STRING (Protein Networks) — 8 tools
+- Identifier mapping (`mapping_identifiers`)
+- Network interaction query (`get_string_network_interaction`)
+- All interaction partners query
+- Protein similarity scoring
+- Best cross-species similarity matching
+- Functional enrichment analysis
+- Functional annotation
+- PPI enrichment analysis
+
+### Ensembl (Genome Annotation) — 104 tools
+- Gene symbol lookup (`get_lookup_symbol`)
+- Homology analysis (`get_homology_symbol`, `get_homology_id`)
+- Genome sequence retrieval (`get_sequence_region`)
+- Variant Effect Predictor VEP (`get_vep_hgvs`, `get_vep_id`, `get_vep_region`)
+- Gene trees and CAFE analysis
+- Assembly and region information
+- Cross-reference queries
+- Coordinate mapping (cDNA/CDS/protein → genome)
+- Ontology queries
+- Phenotype association queries
+- Variant information and recoding
+
+### UCSC (Genome Browser) — 9 tools
+- Genome list and chromosome list
+- Track data queries
+- DNA sequence retrieval
+- Cytobands information
+- Public track hubs
+
+### ClinicalTrials — 8 tools
+- Clinical trial search (complex queries, filtering, pagination)
+- Single trial detail query
+- Metadata, search areas, enumeration value queries
+- Field statistics
+
+### PDB (Protein Structure) — 20 tools
+- Structure information query
+- PubMed/UniProt/DrugBank annotations
+- Polymer/branched/non-polymer entity and instance queries
+- Structure assembly information
+- Polymer interface analysis
+- Chemical component queries
+- Residue chain information
+- Entity group queries
+
+### TCGA (The Cancer Genome Atlas) — 1 tool
+- Gene expression pattern analysis across cancer types (`get_gene_specific_expression_in_cancer_type`): Based on the Firebrowse API (TCGA mRNASeq), computes mean expression and z-scores for a given gene across cancer cohorts, returning high-expression (z > 1) and low-expression (z < -1) cancer types
+
+### Search (Search Engine Tools) — 2 tools
+- Tavily search (`tavily_search`): Retrieves and filters web results using the Tavily search engine
+- Jina DeepSearch (`jina_search`): Performs deep retrieval using the Jina DeepSearch engine
+
+### DBSearch (Multi-Database Search) — 14 tools
+- ClinVar variant significance queries
+- Protein sequence BLAST matching
+- Genomic region gene queries
+- Cytogenetic band region gene extraction
+- GSEA gene set retrieval
+- GTRD transcription factor target gene queries
+- miRDB miRNA target gene prediction
+- MouseMine phenotype gene queries
+- PHIPSTER virus-human protein interaction queries
+
+### Literature — 8 tools
+- Fetch supplementary info from DOI (`fetch_supplementary_info_from_doi`)
+- arXiv paper search (`query_arxiv`)
+- Google Scholar academic search (`query_scholar`)
+- PubMed literature search (`query_pubmed`)
+- Google search (`search_google`)
+- URL content extraction (`extract_url_content`)
+- PDF content extraction (`extract_pdf_content`)
+- Claude-based advanced web search (`advanced_web_search_claude`)
+
+### Biochemistry — 6 tools
+- Circular dichroism (CD) spectra analysis (`analyze_circular_dichroism_spectra`)
+- RNA secondary structure feature analysis (`analyze_rna_secondary_structure_features`)
+- Protease kinetics analysis (`analyze_protease_kinetics`)
+- Enzyme kinetics assay analysis (`analyze_enzyme_kinetics_assay`)
+- ITC binding thermodynamics analysis (`analyze_itc_binding_thermodynamics`)
+- Protein conservation analysis (`analyze_protein_conservation`)
+
+### Bioimaging — 9 tools
+- Multi-modality image splitting (`split_modalities`)
+- nnU-Net input preparation (`prepare_input_for_nnunet`)
+- nnU-Net image segmentation (`segment_with_nn_unet`)
+- Segmentation result visualization (`create_segmentation_visualization`)
+- Quick rigid registration (`quick_rigid_registration`)
+- Quick affine registration (`quick_affine_registration`)
+- Quick deformable registration (`quick_deformable_registration`)
+- Batch image registration (`batch_register_images`)
+- Similarity metric calculation (`calculate_similarity_metrics`)
+- Registration result visualization (`create_registration_visualization`)
+
+### Bioengineering — 7 tools
+- Cell migration metrics analysis (`analyze_cell_migration_metrics`)
+- CRISPR-Cas9 genome editing simulation (`perform_crispr_cas9_genome_editing`)
+- Calcium imaging data analysis (`analyze_calcium_imaging_data`)
+- In vitro drug release kinetics analysis (`analyze_in_vitro_drug_release_kinetics`)
+- Myofiber morphology analysis (`analyze_myofiber_morphology`)
+- Behavior decoding from neural trajectories (`decode_behavior_from_neural_trajectories`)
+- Whole-cell ODE model simulation (`simulate_whole_cell_ode_model`)
+
+### Biophysics — 3 tools
+- Protein disorder region prediction (`predict_protein_disorder_regions`)
+- Cell morphology and cytoskeleton analysis (`analyze_cell_morphology_and_cytoskeleton`)
+- Tissue deformation flow analysis (`analyze_tissue_deformation_flow`)
+
+### Glycoengineering — 3 tools
+- N-glycosylation motif finding (`find_n_glycosylation_motifs`)
+- O-glycosylation hotspot prediction (`predict_o_glycosylation_hotspots`)
+- Glycoengineering resource listing (`list_glycoengineering_resources`)
+
+### Cancer Biology — 6 tools
+- DDR network analysis in cancer (`analyze_ddr_network_in_cancer`)
+- Cell senescence and apoptosis analysis (`analyze_cell_senescence_and_apoptosis`)
+- Somatic mutation detection and annotation (`detect_and_annotate_somatic_mutations`)
+- Structural variation detection and characterization (`detect_and_characterize_structural_variations`)
+- Gene expression NMF analysis (`perform_gene_expression_nmf_analysis`)
+- Copy number, purity, ploidy, and focal event analysis (`analyze_copy_number_purity_ploidy_and_focal_events`)
+
+### Cell Biology — 5 tools
+- Cell cycle phase quantification from microscopy (`quantify_cell_cycle_phases_from_microscopy`)
+- Cell motility quantification and clustering (`quantify_and_cluster_cell_motility`)
+- Fluorescence-activated cell sorting FACS (`perform_facs_cell_sorting`)
+- Flow cytometry immunophenotyping analysis (`analyze_flow_cytometry_immunophenotyping`)
+- Mitochondrial morphology and membrane potential analysis (`analyze_mitochondrial_morphology_and_potential`)
+
+### Molecular Biology — 18 tools
+- Open reading frame (ORF) annotation (`annotate_open_reading_frames`)
+- Plasmid annotation (`annotate_plasmid`)
+- Gene coding sequence retrieval (`get_gene_coding_sequence`)
+- Plasmid sequence retrieval (Addgene/NCBI) (`get_plasmid_sequence`)
+- Primer alignment (`align_sequences`)
+- PCR amplification simulation (`pcr_simple`)
+- Restriction digestion simulation (`digest_sequence`)
+- Restriction site finding (`find_restriction_sites`, `find_restriction_enzymes`)
+- Sequence mutation finding (`find_sequence_mutations`)
+- CRISPR sgRNA design (`design_knockout_sgrna`)
+- Oligonucleotide annealing protocol (`get_oligo_annealing_protocol`)
+- Golden Gate assembly protocol and simulation (`get_golden_gate_assembly_protocol`, `golden_gate_assembly`)
+- Golden Gate oligo design (`design_golden_gate_oligos`)
+- Bacterial transformation protocol (`get_bacterial_transformation_protocol`)
+- Primer design (`design_primer`)
+- Sanger sequencing verification primer design (`design_verification_primers`)
+
+### Genetics — 9 tools
+- Genome coordinate liftover hg19/hg38 (`liftover_coordinates`)
+- Bayesian fine-mapping with deep variational inference (`bayesian_finemapping_with_deep_vi`)
+- Cas9 mutation outcome analysis (`analyze_cas9_mutation_outcomes`)
+- CRISPR genome editing outcome analysis (`analyze_crispr_genome_editing`)
+- Demographic history simulation (msprime) (`simulate_demographic_history`)
+- Transcription factor binding site identification (`identify_transcription_factor_binding_sites`)
+- Genomic prediction linear mixed model (`fit_genomic_prediction_model`)
+- PCR amplification and gel electrophoresis simulation (`perform_pcr_and_gel_electrophoresis`)
+- Protein phylogeny analysis (`analyze_protein_phylogeny`)
+
+### Immunology — 10 tools
+- ATAC-seq differential accessibility analysis (`analyze_atac_seq_differential_accessibility`)
+- Bacterial growth curve analysis (`analyze_bacterial_growth_curve`)
+- Immune cell isolation and purification simulation (`isolate_purify_immune_cells`)
+- Cell cycle phase duration estimation (`estimate_cell_cycle_phase_durations`)
+- Immune cell tracking under flow conditions (`track_immune_cells_under_flow`)
+- CFSE cell proliferation analysis (`analyze_cfse_cell_proliferation`)
+- CD4+ T cell cytokine production analysis (`analyze_cytokine_production_in_cd4_tcells`)
+- EBV antibody titer ELISA analysis (`analyze_ebv_antibody_titers`)
+- CNS lesion histology analysis (`analyze_cns_lesion_histology`)
+- Immunohistochemistry image analysis (`analyze_immunohistochemistry_image`)
+
+### Microbiology — 12 tools
+- Anaerobic digestion process optimization (`optimize_anaerobic_digestion_process`)
+- Arsenic speciation HPLC-ICP-MS analysis (`analyze_arsenic_speciation_hplc_icpms`)
+- Bacterial colony counting (computer vision) (`count_bacterial_colonies`)
+- Bacterial genome annotation (Prokka) (`annotate_bacterial_genome`)
+- Serial dilution CFU enumeration (`enumerate_bacterial_cfu_by_serial_dilution`)
+- Bacterial population dynamics modeling (ODE) (`model_bacterial_growth_dynamics`)
+- Biofilm biomass quantification (crystal violet) (`quantify_biofilm_biomass_crystal_violet`)
+- Microbial cell segmentation and morphology analysis (`segment_and_analyze_microbial_cells`)
+- Deep learning cell segmentation (Cellpose/Omnipose) (`segment_cells_with_deep_learning`)
+- Microbial community dynamics simulation (gLV model) (`simulate_generalized_lotka_volterra_dynamics`)
+- RNA secondary structure prediction (ViennaRNA) (`predict_rna_secondary_structure`)
+- Microbial population stochastic simulation (Gillespie algorithm) (`simulate_microbial_population_dynamics`)
+
+### Pathology — 7 tools
+- Aortic diameter and geometry analysis (`analyze_aortic_diameter_and_geometry`)
+- ATP luminescence assay analysis (`analyze_atp_luminescence_assay`)
+- Thrombus histology image analysis (`analyze_thrombus_histology`)
+- Intracellular calcium analysis (Rhod-2) (`analyze_intracellular_calcium_with_rhod2`)
+- Corneal nerve fiber quantification (`quantify_corneal_nerve_fibers`)
+- Cell segmentation and protein quantification in multiplexed tissue images (`segment_and_quantify_cells_in_multiplexed_images`)
+- Bone microstructure micro-CT morphometry (`analyze_bone_microct_morphometry`)
+
+### Pharmacology — 25 tools
+- DiffDock molecular docking (`run_diffdock_with_smiles`)
+- AutoDock Vina molecular docking (`docking_autodock_vina`)
+- AutoSite binding site identification (`run_autosite`)
+- TxGNN drug repurposing prediction (`retrieve_topk_repurposing_drugs_from_disease_txgnn`)
+- ADMET property prediction (`predict_admet_properties`)
+- Protein-small molecule binding affinity prediction (`predict_binding_affinity_protein_1d_sequence`)
+- Accelerated stability analysis of pharmaceutical formulations (`analyze_accelerated_stability_of_pharmaceutical_formulations`)
+- 3D chondrogenic aggregate culture assay (`run_3d_chondrogenic_aggregate_assay`)
+- VCOG-CTCAE adverse event grading (`grade_adverse_events_using_vcog_ctcae`)
+- Radiolabeled antibody biodistribution analysis (`analyze_radiolabeled_antibody_biodistribution`)
+- Alpha particle radiotherapy dosimetry estimation (`estimate_alpha_particle_radiotherapy_dosimetry`)
+- Methylome-wide association study MWAS (`perform_mwas_cyp2c19_metabolizer_status`)
+- Physicochemical property calculation (`calculate_physicochemical_properties`)
+- Xenograft tumor growth inhibition analysis (`analyze_xenograft_tumor_growth_inhibition`)
+- Western blot pixel distribution analysis (`analyze_pixel_distribution`)
+- Western blot ROI detection (`find_roi_from_image`)
+- Western blot densitometry analysis (`analyze_western_blot`)
+- Drug-drug interaction query (DDInter) (`query_drug_interactions`)
+- Drug combination safety check (`check_drug_combination_safety`)
+- Drug interaction mechanism analysis (`analyze_interaction_mechanisms`)
+- Alternative drug finding (`find_alternative_drugs_ddinter`)
+- FDA adverse event query (`query_fda_adverse_events`)
+- FDA drug label information retrieval (`get_fda_drug_label_info`)
+- FDA drug recall check (`check_fda_drug_recalls`)
+- FDA safety signal analysis (`analyze_fda_safety_signals`)
+
+### Physiology — 11 tools
+- 3D facial anatomy reconstruction from MRI (`reconstruct_3d_face_from_mri`)
+- Auditory brainstem response (ABR) waveform analysis (`analyze_abr_waveform_p1_metrics`)
+- Ciliary beat frequency analysis (FFT) (`analyze_ciliary_beat_frequency`)
+- Protein colocalization analysis (`analyze_protein_colocalization`)
+- Circadian rhythm cosinor analysis (`perform_cosinor_analysis`)
+- Brain ADC map calculation (diffusion-weighted MRI) (`calculate_brain_adc_map`)
+- Endolysosomal calcium dynamics analysis (`analyze_endolysosomal_calcium_dynamics`)
+- Fatty acid composition analysis by GC (`analyze_fatty_acid_composition_by_gc`)
+- Hemodynamic parameter analysis (`analyze_hemodynamic_data`)
+- Thyroid hormone pharmacokinetics simulation (`simulate_thyroid_hormone_pharmacokinetics`)
+- Amyloid beta plaque quantification (`quantify_amyloid_beta_plaques`)
+
+### Synthetic Biology — 8 tools
+- Bacterial genome engineering for therapeutic delivery (`engineer_bacterial_genome_for_therapeutic_delivery`)
+- Bacterial growth rate analysis (`analyze_bacterial_growth_rate`)
+- Barcode sequencing data analysis (`analyze_barcode_sequencing_data`)
+- Bifurcation diagram analysis (`analyze_bifurcation_diagram`)
+- SBML biochemical network model generation (`create_biochemical_network_sbml_model`)
+- Codon optimization for heterologous expression (`optimize_codons_for_heterologous_expression`)
+- Gene circuit dynamics simulation with growth feedback (`simulate_gene_circuit_with_growth_feedback`)
+- Fatty acid synthase functional domain identification (`identify_fas_functional_domains`)
+
+### Systems Biology — 7 tools
+- Flux balance analysis FBA (`perform_flux_balance_analysis`)
+- Protein dimerization network modeling (`model_protein_dimerization_network`)
+- Metabolic network perturbation simulation (`simulate_metabolic_network_perturbation`)
+- Protein signaling network dynamics simulation (`simulate_protein_signaling_network`)
+- Protein structure comparison (`compare_protein_structures`)
+- Renin-angiotensin system dynamics simulation (`simulate_renin_angiotensin_system_dynamics`)
+- DNA sequence functional Q&A (ChatNT) (`query_chatnt`)
+
+### Support Tools — 3 tools
+- Python REPL execution (`run_python_repl`)
+- Function source code reading (`read_function_source_code`)
+- Synapse data download (`download_synapse_data`)
+
+### Lab Automation — 3 tools
+- PyLabRobot script testing (`test_pylabrobot_script`)
+- PyLabRobot liquid handling documentation (`get_pylabrobot_documentation_liquid`)
+- PyLabRobot material handling documentation (`get_pylabrobot_documentation_material`)
+
+---
+
+## Getting Started
+
+### 1. Environment Setup
 
 ```bash
-# 进入项目目录
+# Navigate to the project directory
 cd /OpenBioMed/open_biomed_mcp
 
-# 创建并激活 conda 环境（推荐 Python 3.11+）
+# Create and activate a conda environment (Python 3.11+ recommended)
 conda create -n biomed_mcp python=3.11
 conda activate biomed_mcp
 
-# 安装依赖
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 2. 配置环境变量
+### 2. Configure Environment Variables
 
-编辑 `.env` 文件，配置必要的 API Key：
+Edit the `.env` file and set the required API keys:
 
 ```env
 tavily_api_key = "your_tavily_api_key"
 jina_api_key = "your_jina_api_key"
 ```
 
-### 3. 启动服务
+### 3. Start the Service
 
 ```bash
-# 使用 uvicorn 启动（开发模式）
+# Start with uvicorn (development mode)
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
-# 或使用 fastapi CLI 启动
+# Or start with fastapi CLI
 fastapi dev main.py --host 0.0.0.0 --port 8000
 ```
 
-启动后可访问：
-- API 文档：`http://localhost:8000/docs`（Swagger UI）
-- 健康检查：`http://localhost:8000/healthz`
-- 工具摘要：`http://localhost:8000/tools/summary`
+Once running, you can access:
+- API docs: `http://localhost:8000/docs` (Swagger UI)
+- Health check: `http://localhost:8000/healthz`
+- Tools summary: `http://localhost:8000/tools/summary`
 
 ---
 
-## 如何使用 MCP 服务
+## How to Use the MCP Service
 
-本项目支持 **三种接入方式**：
+This project supports **three access methods**:
 
-### 方式一：REST API 调用
+### Method 1: REST API
 
-所有工具都注册为 FastAPI 端点，可通过 HTTP POST 请求调用。
+All tools are registered as FastAPI endpoints and can be called via HTTP POST requests.
 
 ```bash
-# 示例：通过基因名称查询基因元数据
+# Example: query gene metadata by gene name
 curl -X POST "http://localhost:8000/tools/ncbi/get_gene_metadata_by_gene_name" \
   -H "Content-Type: application/json" \
   -d '{"name": "BRCA1", "species": "human"}'
 
-# 示例：搜索化合物
+# Example: search for a compound
 curl -X POST "http://localhost:8000/tools/pubchem/search_pubchem_by_name" \
   -H "Content-Type: application/json" \
   -d '{"name": "aspirin"}'
 
-# 示例：查询蛋白质交互网络
+# Example: query protein interaction network
 curl -X POST "http://localhost:8000/tools/string/get_string_network_interaction" \
   -H "Content-Type: application/json" \
   -d '{"identifiers": ["TP53", "BRCA1"], "species": 9606, "required_score": 700, "add_nodes": 5, "network_type": "physical", "show_query_node_labels": 1}'
 ```
 
-完整的 API 文档可在 `http://localhost:8000/docs` 查看。
+Full API documentation is available at `http://localhost:8000/docs`.
 
-### 方式二：MCP SSE 协议接入
+### Method 2: MCP SSE Protocol
 
-项目同时暴露了 MCP SSE 端点，支持 MCP 客户端（如 Kiro、Claude Desktop 等）直接连接。
+The project also exposes MCP SSE endpoints, supporting direct connection from MCP clients (e.g., Kiro, Claude Desktop).
 
-**全局 MCP 端点**（包含所有工具）：
+**Global MCP endpoint** (all tools):
 ```
 http://localhost:8000/mcp
 ```
 
-**按模块拆分的 MCP 端点**（每个模块独立）：
+**Per-module MCP endpoints** (each module independent):
 ```
 http://localhost:8000/chembl/mcp
 http://localhost:8000/ncbi/mcp
@@ -478,11 +478,11 @@ http://localhost:8000/support_tools/mcp
 http://localhost:8000/lab_automation/mcp
 ```
 
-### 方式三：在 AI IDE / Agent 中配置 MCP
+### Method 3: Configure MCP in AI IDE / Agent
 
-在支持 MCP 的 AI 工具（如 Kiro、Claude Desktop、Cursor 等）中配置 MCP 服务器。
+Configure the MCP server in any MCP-compatible AI tool (e.g., Kiro, Claude Desktop, Cursor).
 
-**Kiro 配置示例**（`.kiro/settings/mcp.json`）：
+**Kiro configuration example** (`.kiro/settings/mcp.json`):
 
 ```json
 {
@@ -495,7 +495,7 @@ http://localhost:8000/lab_automation/mcp
 }
 ```
 
-如果只需要特定模块，可以单独配置（用哪个直接配置对应的MCP）例如：
+To use only specific modules, configure them individually, for example:
 
 ```json
 {
@@ -512,7 +512,7 @@ http://localhost:8000/lab_automation/mcp
 }
 ```
 
-**Claude Desktop 配置示例**（`claude_desktop_config.json`）：
+**Claude Desktop configuration example** (`claude_desktop_config.json`):
 
 ```json
 {
@@ -526,91 +526,91 @@ http://localhost:8000/lab_automation/mcp
 
 ---
 
-## 项目结构
+## Project Structure
 
 ```
 open_biomed_mcp/
-├── main.py                    # FastAPI 应用入口
-├── registry.py                # MCP 工具注册中心
-├── mcp_to_fastapi.py          # MCP → FastAPI 适配器
-├── .env                       # 环境变量配置
-├── requirements.txt           # Python 依赖
-└── tools/                     # 工具模块目录
-    ├── biodb/                 # 外部数据库 API 服务
-    │   ├── chembl/            # ChEMBL 数据库
-    │   ├── ncbi/              # NCBI 数据库
-    │   ├── pubchem/           # PubChem 数据库
-    │   ├── uniprot/           # UniProt 数据库
-    │   ├── kegg/              # KEGG 数据库
-    │   ├── STRING/            # STRING 数据库
-    │   ├── search/            # 搜索引擎（Tavily/Jina）
-    │   ├── tcga/              # TCGA 癌症基因组
-    │   ├── ensembl/           # Ensembl 基因组注释
-    │   ├── ucsc/              # UCSC 基因组浏览器
+├── main.py                    # FastAPI application entry point
+├── registry.py                # MCP tool registry
+├── mcp_to_fastapi.py          # MCP → FastAPI adapter
+├── .env                       # Environment variable configuration
+├── requirements.txt           # Python dependencies
+└── tools/                     # Tool module directory
+    ├── biodb/                 # External database API services
+    │   ├── chembl/            # ChEMBL database
+    │   ├── ncbi/              # NCBI database
+    │   ├── pubchem/           # PubChem database
+    │   ├── uniprot/           # UniProt database
+    │   ├── kegg/              # KEGG database
+    │   ├── STRING/            # STRING database
+    │   ├── search/            # Search engines (Tavily/Jina)
+    │   ├── tcga/              # TCGA cancer genome
+    │   ├── ensembl/           # Ensembl genome annotation
+    │   ├── ucsc/              # UCSC genome browser
     │   ├── clinicaltrials/    # ClinicalTrials.gov
-    │   ├── pdb/               # PDB 蛋白质结构
-    │   └── dbsearch/          # 综合数据库搜索
-    └── biocomputing/          # Biocomputing 生物医学计算工具集
-        ├── mcp_to_fastapi.py  # Biocomputing MCP 适配器
-        ├── tool_registry.py   # 工具注册器
-        ├── tool_description/  # 工具描述定义
-        ├── literature.py      # 文献检索
-        ├── biochemistry.py    # 生物化学
-        ├── bioimaging.py      # 生物成像
-        ├── bioengineering.py  # 生物工程
-        ├── biophysics.py      # 生物物理
-        ├── glycoengineering.py # 糖工程
-        ├── cancer_biology.py  # 癌症生物学
-        ├── cell_biology.py    # 细胞生物学
-        ├── molecular_biology.py # 分子生物学
-        ├── genetics.py        # 遗传学
-        ├── immunology.py      # 免疫学
-        ├── microbiology.py    # 微生物学
-        ├── pathology.py       # 病理学
-        ├── pharmacology.py    # 药理学
-        ├── physiology.py      # 生理学
-        ├── synthetic_biology.py # 合成生物学
-        ├── systems_biology.py # 系统生物学
-        ├── support_tools.py   # 辅助工具
-        └── lab_automation.py  # 实验室自动化
+    │   ├── pdb/               # PDB protein structure
+    │   └── dbsearch/          # Multi-database search
+    └── biocomputing/          # Biocomputing biomedical computing toolset
+        ├── mcp_to_fastapi.py  # Biocomputing MCP adapter
+        ├── tool_registry.py   # Tool registry
+        ├── tool_description/  # Tool description definitions
+        ├── literature.py      # Literature retrieval
+        ├── biochemistry.py    # Biochemistry
+        ├── bioimaging.py      # Bioimaging
+        ├── bioengineering.py  # Bioengineering
+        ├── biophysics.py      # Biophysics
+        ├── glycoengineering.py # Glycoengineering
+        ├── cancer_biology.py  # Cancer biology
+        ├── cell_biology.py    # Cell biology
+        ├── molecular_biology.py # Molecular biology
+        ├── genetics.py        # Genetics
+        ├── immunology.py      # Immunology
+        ├── microbiology.py    # Microbiology
+        ├── pathology.py       # Pathology
+        ├── pharmacology.py    # Pharmacology
+        ├── physiology.py      # Physiology
+        ├── synthetic_biology.py # Synthetic biology
+        ├── systems_biology.py # Systems biology
+        ├── support_tools.py   # Support tools
+        └── lab_automation.py  # Lab automation
 ```
 
 ---
 
-## 架构说明
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                    客户端                             │
-│  (AI Agent / 浏览器 / curl / MCP Client)             │
+│                      Client                          │
+│  (AI Agent / Browser / curl / MCP Client)            │
 └──────────┬──────────────────┬───────────────────────┘
            │ REST API         │ MCP SSE
            ▼                  ▼
 ┌──────────────────────────────────────────────────────┐
 │                  FastAPI Application                  │
 │                                                      │
-│  /tools/*          → REST API 端点                   │
-│  /mcp              → 全局 MCP SSE 端点               │
-│  /{module}/mcp     → 模块级 MCP SSE 端点             │
-│  /docs             → Swagger API 文档                │
-│  /healthz          → 健康检查                        │
-│  /tools/summary    → 工具摘要                        │
+│  /tools/*          → REST API endpoints              │
+│  /mcp              → Global MCP SSE endpoint         │
+│  /{module}/mcp     → Module-level MCP SSE endpoint   │
+│  /docs             → Swagger API documentation       │
+│  /healthz          → Health check                    │
+│  /tools/summary    → Tools summary                   │
 └──────────┬───────────────────────────────────────────┘
            │
            ▼
 ┌──────────────────────────────────────────────────────┐
-│              MCPToolsRegistry (注册中心)              │
+│              MCPToolsRegistry                         │
 │                                                      │
 │  ┌─────────┐ ┌──────┐ ┌─────────┐ ┌──────────────┐  │
-│  │ ChEMBL  │ │ NCBI │ │ PubChem │ │ ... 更多模块  │  │
+│  │ ChEMBL  │ │ NCBI │ │ PubChem │ │ ... more     │  │
 │  │ FastMCP │ │FastMCP│ │ FastMCP │ │   FastMCP    │  │
 │  └─────────┘ └──────┘ └─────────┘ └──────────────┘  │
 │                                                      │
 │  ┌──────────────────────────────────────────────┐    │
-│  │         生物计算工具集 (19 个子模块)           │    │
-│  │  每个子模块独立 FastMCP 服务器                 │    │
+│  │    Biocomputing Toolset (19 sub-modules)      │    │
+│  │    Each sub-module has its own FastMCP server │    │
 │  └──────────────────────────────────────────────┘    │
 └──────────────────────────────────────────────────────┘
 ```
 
-每个工具模块内部都是一个独立的 `FastMCP` 服务器实例，通过 `MCPToolsRegistry` 统一注册到 FastAPI 应用中，同时生成 REST API 端点和 MCP SSE 端点。
+Each tool module is an independent `FastMCP` server instance, uniformly registered to the FastAPI application via `MCPToolsRegistry`, generating both REST API endpoints and MCP SSE endpoints simultaneously.

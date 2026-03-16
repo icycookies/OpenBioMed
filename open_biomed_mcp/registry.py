@@ -1,6 +1,6 @@
 """
 MCP Tools Registry
-统一管理所有MCP工具服务的注册和FastAPI转换
+Unified management of registration and FastAPI conversion for all MCP tool services
 """
 
 import logging
@@ -13,31 +13,31 @@ from mcp_to_fastapi import create_mcp_fastapi_router
 logger = logging.getLogger(__name__)
 
 BIOCOMPUTING_MODULE_NAME_MAP = {
-    "literature": "文献检索相关",
-    "biochemistry": "生物化学相关",
-    "bioimaging": "生物成像相关",
-    "bioengineering": "生物工程相关",
-    "biophysics": "生物物理相关",
-    "glycoengineering": "糖工程相关",
-    "cancer_biology": "癌症生物学相关",
-    "cell_biology": "细胞生物学相关",
-    "molecular_biology": "分子生物学相关",
-    "genetics": "遗传学相关",
-    "genomics": "基因组学相关",
-    "immunology": "免疫学相关",
-    "microbiology": "微生物学相关",
-    "pathology": "病理学相关",
-    "pharmacology": "药理学相关",
-    "physiology": "生理学相关",
-    "synthetic_biology": "合成生物学相关",
-    "systems_biology": "系统生物学相关",
-    "support_tools": "辅助工具相关",
-    "lab_automation": "实验室自动化相关",
+    "literature": "Literature Retrieval",
+    "biochemistry": "Biochemistry",
+    "bioimaging": "Bioimaging",
+    "bioengineering": "Bioengineering",
+    "biophysics": "Biophysics",
+    "glycoengineering": "Glycoengineering",
+    "cancer_biology": "Cancer Biology",
+    "cell_biology": "Cell Biology",
+    "molecular_biology": "Molecular Biology",
+    "genetics": "Genetics",
+    "genomics": "Genomics",
+    "immunology": "Immunology",
+    "microbiology": "Microbiology",
+    "pathology": "Pathology",
+    "pharmacology": "Pharmacology",
+    "physiology": "Physiology",
+    "synthetic_biology": "Synthetic Biology",
+    "systems_biology": "Systems Biology",
+    "support_tools": "Support Tools",
+    "lab_automation": "Lab Automation",
 }
 
 
 class MCPToolsRegistry:
-    """MCP工具注册中心"""
+    """MCP Tools Registry"""
     
     def __init__(self):
         self.mcp_servers: List[FastMCP] = []
@@ -51,13 +51,13 @@ class MCPToolsRegistry:
         description: str = ""
     ):
         """
-        注册一个MCP服务器
+        Register an MCP server
         
         Args:
-            mcp_server: FastMCP服务器实例
-            prefix: API路径前缀，例如 "/chembl"
-            tags: FastAPI标签列表
-            description: 服务描述
+            mcp_server: FastMCP server instance
+            prefix: API path prefix, e.g. "/chembl"
+            tags: FastAPI tag list
+            description: Service description
         """
         self.mcp_servers.append(mcp_server)
         self.tool_configs.append({
@@ -70,10 +70,10 @@ class MCPToolsRegistry:
     
     def create_fastapi_routers(self) -> List[APIRouter]:
         """
-        为所有注册的MCP服务器创建FastAPI路由器
+        Create FastAPI routers for all registered MCP servers
         
         Returns:
-            APIRouter列表
+            List of APIRouters
         """
         routers = []
         for config in self.tool_configs:
@@ -87,11 +87,11 @@ class MCPToolsRegistry:
     
     def register_to_app(self, app: FastAPI, base_prefix: str = "/tools"):
         """
-        将所有MCP工具注册到FastAPI应用
+        Register all MCP tools to a FastAPI application
         
         Args:
-            app: FastAPI应用实例
-            base_prefix: 基础路径前缀，默认 "/tools"
+            app: FastAPI application instance
+            base_prefix: Base path prefix, default "/tools"
         """
         routers = self.create_fastapi_routers()
         for router in routers:
@@ -100,10 +100,10 @@ class MCPToolsRegistry:
     
     def get_tools_summary(self) -> Dict[str, Any]:
         """
-        获取所有工具的摘要信息
+        Get summary information of all tools
         
         Returns:
-            工具摘要字典
+            Tools summary dictionary
         """
         summary = {
             "total_servers": len(self.mcp_servers),
@@ -113,13 +113,13 @@ class MCPToolsRegistry:
         for config in self.tool_configs:
             mcp_server = config["mcp_server"]
             
-            # 区分 FastMCP 和 FastApiMCP 两种类型
+            # Distinguish between FastMCP and FastApiMCP types
             tools = {}
             if hasattr(mcp_server, '_tool_manager') and hasattr(mcp_server._tool_manager, '_tools'):
-                # FastMCP 类型
+                # FastMCP type
                 tools = mcp_server._tool_manager._tools
             elif hasattr(mcp_server, '_tools'):
-                # FastApiMCP 类型
+                # FastApiMCP type
                 tools = mcp_server._tools
             
             server_info = {
@@ -135,14 +135,14 @@ class MCPToolsRegistry:
         return summary
 
 
-# 创建全局注册中心实例
+# Create global registry instance
 registry = MCPToolsRegistry()
 
 
 def setup_mcp_tools():
     """
-    设置所有MCP工具服务
-    这个函数会导入所有工具的MCP服务器并注册到registry
+    Set up all MCP tool services.
+    This function imports all tool MCP servers and registers them to the registry.
     """
     # ChEMBL
     try:
@@ -150,8 +150,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             chembl_mcp,
             prefix="/chembl",
-            tags=["生物活性相关"],
-            description="ChEMBL数据库API - 生物活性数据"
+            tags=["Bioactivity"],
+            description="ChEMBL Database API - Bioactivity Data"
         )
     except Exception as e:
         logger.warning(f"Failed to register chembl: {e}")
@@ -162,8 +162,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             ncbi_mcp,
             prefix="/ncbi",
-            tags=["基因相关"],
-            description="NCBI数据库API - 基因和基因组数据"
+            tags=["Genetics"],
+            description="NCBI Database API - Gene and Genome Data"
         )
     except Exception as e:
         logger.warning(f"Failed to register ncbi: {e}")
@@ -174,8 +174,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             pubchem_mcp,
             prefix="/pubchem",
-            tags=["化合物信息相关"],
-            description="PubChem数据库API - 化合物信息"
+            tags=["Compound Information"],
+            description="PubChem Database API - Compound Information"
         )
     except Exception as e:
         logger.warning(f"Failed to register pubchem: {e}")
@@ -186,8 +186,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             uniprot_mcp,
             prefix="/uniprot",
-            tags=["蛋白质信息相关"],
-            description="UniProt数据库API - 蛋白质信息"
+            tags=["Protein Information"],
+            description="UniProt Database API - Protein Information"
         )
     except Exception as e:
         logger.warning(f"Failed to register uniprot: {e}")
@@ -198,8 +198,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             kegg_mcp,
             prefix="/kegg",
-            tags=["通路与基因组相关"],
-            description="KEGG数据库API - 通路和基因组信息"
+            tags=["Pathways and Genomics"],
+            description="KEGG Database API - Pathway and Genome Information"
         )
     except Exception as e:
         logger.warning(f"Failed to register kegg: {e}")
@@ -210,8 +210,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             string_mcp,
             prefix="/string",
-            tags=["蛋白质网络相关"],
-            description="STRING数据库API - 蛋白质相互作用网络"
+            tags=["Protein Networks"],
+            description="STRING Database API - Protein Interaction Networks"
         )
     except Exception as e:
         logger.warning(f"Failed to register string: {e}")
@@ -222,8 +222,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             search_mcp,
             prefix="/search_tools",
-            tags=["搜索工具"],
-            description="搜索工具 - Tavily和Jina搜索"
+            tags=["Search Tools"],
+            description="Search Tools - Tavily and Jina Search"
         )
     except Exception as e:
         logger.warning(f"Failed to register search: {e}")
@@ -234,8 +234,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             tcga_mcp,
             prefix="/tcga",
-            tags=["癌症基因组相关"],
-            description="TCGA数据库API - 癌症基因组数据"
+            tags=["Cancer Genomics"],
+            description="TCGA Database API - Cancer Genome Data"
         )
     except Exception as e:
         logger.warning(f"Failed to register tcga: {e}")
@@ -246,8 +246,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             ensembl_mcp,
             prefix="/ensembl",
-            tags=["基因组注释相关"],
-            description="Ensembl数据库API - 基因组注释"
+            tags=["Genome Annotation"],
+            description="Ensembl Database API - Genome Annotation"
         )
     except Exception as e:
         logger.warning(f"Failed to register ensembl: {e}")
@@ -258,8 +258,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             ucsc_mcp,
             prefix="/ucsc",
-            tags=["基因组API相关"],
-            description="UCSC基因组浏览器API"
+            tags=["Genome Browser API"],
+            description="UCSC Genome Browser API"
         )
     except Exception as e:
         logger.warning(f"Failed to register ucsc: {e}")
@@ -270,8 +270,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             clinicaltrials_mcp,
             prefix="/clinicaltrials",
-            tags=["临床试验相关"],
-            description="ClinicalTrials.gov API - 临床试验数据"
+            tags=["Clinical Trials"],
+            description="ClinicalTrials.gov API - Clinical Trial Data"
         )
     except Exception as e:
         logger.warning(f"Failed to register clinicaltrials: {e}")
@@ -282,8 +282,8 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             pdb_mcp,
             prefix="/pdb",
-            tags=["蛋白质结构相关"],
-            description="PDB数据库API - 蛋白质结构数据"
+            tags=["Protein Structure"],
+            description="PDB Database API - Protein Structure Data"
         )
     except Exception as e:
         logger.warning(f"Failed to register pdb: {e}")
@@ -294,37 +294,37 @@ def setup_mcp_tools():
         registry.register_mcp_server(
             dbsearch_mcp,
             prefix="/dbsearch",
-            tags=["数据库搜索相关"],
-            description="数据库搜索工具"
+            tags=["Database Search"],
+            description="Database Search Tools"
         )
     except Exception as e:
         logger.warning(f"Failed to register dbsearch: {e}")
     
-    # Biocomputing - 生物医学综合工具集
+    # Biocomputing - Comprehensive biomedical toolset
     try:
         from tools.biocomputing.mcp_to_fastapi import BiocomputingMcp
         
         
         biocomputing = BiocomputingMcp()
         
-        # 为每个模块创建独立的 MCP 服务器
+        # Create an independent MCP server for each module
         biocomputing_servers = biocomputing.create_mcp_servers_per_module()
         
-        # 注册每个模块的服务器
+        # Register each module's server
         registered_count = 0
         for module_name, mcp_server in biocomputing_servers.items():
             try:
-                # 格式化模块名称用于显示 - 使用更明确的标签名称
+                # Format module name for display - use more explicit tag names
                 display_name = BIOCOMPUTING_MODULE_NAME_MAP.get(module_name, module_name.replace('_', '-').title())
                 
-                # 获取该服务器中的工具数量
+                # Get the number of tools in this server
                 tool_count = len(mcp_server._tool_manager._tools)
                 
                 registry.register_mcp_server(
                     mcp_server,
                     prefix=f"/{module_name}",
-                    tags=[display_name],    # fastapi中的类别标签
-                    description=f"Biocomputing {module_name.replace('_', ' ').title()} 工具集"
+                    tags=[display_name],    # category tag in fastapi
+                    description=f"Biocomputing {module_name.replace('_', ' ').title()} Toolset"
                 )
                 registered_count += 1
                 # logger.info(f"  ✓ Registered Biocomputing module: {module_name} ({tool_count} tools) with tag [{display_name}]")

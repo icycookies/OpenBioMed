@@ -1,24 +1,24 @@
 description = [
     {
-        "description": "在protocols.io中搜索与关键词匹配的公开实验方案",
+        "description": "Search protocols.io for public protocols matching a keyword.",
         "name": "search_protocols",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "要搜索的最重要关键词或短语（标题、描述、作者）",
+                "description": "Most important keyword or phrase to search (title, description, authors)",
                 "name": "query",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "通过ID检索protocols.io中特定实验方案的详细元数据",
+        "description": "Retrieve detailed metadata for a specific protocols.io protocol by ID.",
         "name": "get_protocol_details",
         "optional_parameters": [
             {
                 "default": 30,
-                "description": "请求超时时间，单位为秒",
+                "description": "Request timeout in seconds",
                 "name": "timeout",
                 "type": "int",
             }
@@ -26,19 +26,19 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "来自protocols.io的数字实验方案ID",
+                "description": "Numeric protocol ID from protocols.io",
                 "name": "protocol_id",
                 "type": "int",
             }
         ],
     },
     {
-        "description": "列出本地biomni/tool/protocols/目录中可用的实验方案文件。包括来自Addgene和Thermo Fisher Scientific的实验方案",
+        "description": "List available protocol files in the local biomni/tool/protocols/ directory. Includes protocols from Addgene and Thermo Fisher Scientific.",
         "name": "list_local_protocols",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "按源目录过滤（例如'addgene'或'thermofisher'）。如果为None，则列出所有实验方案",
+                "description": "Filter by source directory (e.g., 'addgene' or 'thermofisher'). If None, lists all protocols.",
                 "name": "source",
                 "type": "str",
             }
@@ -46,12 +46,12 @@ description = [
         "required_parameters": [],
     },
     {
-        "description": "从biomni/tool/protocols/读取本地实验方案文件的内容。首先使用list_local_protocols()查找可用的实验方案文件名",
+        "description": "Read the contents of a local protocol file from biomni/tool/protocols/. Use list_local_protocols() first to find available protocol filenames.",
         "name": "read_local_protocol",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "源目录（例如'addgene'或'thermofisher'）。如果为None，则搜索所有来源",
+                "description": "Source directory (e.g., 'addgene' or 'thermofisher'). If None, searches all sources.",
                 "name": "source",
                 "type": "str",
             }
@@ -59,7 +59,7 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "实验方案文件名（例如'Addgene_ Protocol - How to Run an Agarose Gel.txt'）",
+                "description": "Name of the protocol file (e.g., 'Addgene_ Protocol - How to Run an Agarose Gel.txt')",
                 "name": "filename",
                 "type": "str",
             }

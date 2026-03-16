@@ -201,10 +201,7 @@ def load_mcp_tools_from_config(config_path: str = None) -> Dict[str, MCPToolWrap
     for server_name, tools in all_tools.items():
         for tool_schema in tools:
             tool_name = tool_schema["name"]
-            # 选项 1: 使用前缀（避免冲突）
-            # wrapper_name = f"{server_name}_{tool_name}"
-            
-            # 选项 2: 不使用前缀（可能有冲突）
+
             wrapper_name = tool_name
             
             tool_wrappers[wrapper_name] = MCPToolWrapper(

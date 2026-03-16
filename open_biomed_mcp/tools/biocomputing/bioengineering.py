@@ -1,4 +1,3 @@
-
 def analyze_cell_migration_metrics(
     image_sequence_path,
     pixel_size_um=1.0,
@@ -6,25 +5,25 @@ def analyze_cell_migration_metrics(
     min_track_length=10,
     output_dir="./",
 ):
-    """从延时显微镜图像分析细胞迁移指标。
+    """Analyze cell migration metrics from time-lapse microscopy images.
 
-    参数
+    Parameters
     ----------
     image_sequence_path : str
-        包含延时图像的目录路径或多帧TIFF文件路径
+        Path to the directory containing time-lapse images or path to a multi-frame TIFF file
     pixel_size_um : float
-        从像素到微米的转换因子（默认：1.0）
+        Conversion factor from pixels to micrometers (default: 1.0)
     time_interval_min : float
-        连续帧之间的时间间隔，单位为分钟（默认：1.0）
+        Time interval between consecutive frames in minutes (default: 1.0)
     min_track_length : int
-        细胞必须被追踪的最小帧数才能纳入分析（默认：10）
+        Minimum number of frames a cell must be tracked to be included in analysis (default: 10)
     output_dir : str
-        保存输出文件的目录（默认："./"）
+        Directory to save output files (default: "./")
 
-    返回值
+    Returns
     -------
     str
-        总结细胞迁移分析过程和结果的研究日志
+        Research log summarizing the cell migration analysis process and results
 
     """
     import os
@@ -233,23 +232,23 @@ Note: Analysis used pixel size of {pixel_size_um} μm and time interval of {time
 
 
 def perform_crispr_cas9_genome_editing(guide_rna_sequences, target_genomic_loci, cell_tissue_type):
-    """模拟CRISPR-Cas9基因组编辑过程，包括向导RNA设计、递送和分析。
+    """Simulates CRISPR-Cas9 genome editing process including guide RNA design, delivery, and analysis.
 
-    参数
+    Parameters
     ----------
     guide_rna_sequences : list of str
-        靶向感兴趣基因组区域的向导RNA序列列表（每个20个核苷酸）
+        List of guide RNA sequences (20 nucleotides each) targeting the genomic region of interest
 
     target_genomic_loci : str
-        要编辑的目标基因组序列（应比向导RNA长并包含目标位点）
+        Target genomic sequence to be edited (should be longer than guide RNA and contain the target sites)
 
     cell_tissue_type : str
-        正在编辑的细胞或组织类型（影响递送效率和编辑结果）
+        Type of cell or tissue being edited (affects delivery efficiency and editing outcomes)
 
-    返回值
+    Returns
     -------
     str
-        详细说明CRISPR-Cas9编辑过程的研究日志，包括所采取的步骤和结果
+        Research log detailing the CRISPR-Cas9 editing process, including steps taken and results
 
     """
     import os
@@ -401,21 +400,23 @@ def perform_crispr_cas9_genome_editing(guide_rna_sequences, target_genomic_loci,
 
 
 def analyze_calcium_imaging_data(image_stack_path, output_dir="./"):
-    """分析钙成像数据以量化神经元活动指标。
+    """Analyze calcium imaging data to quantify neuronal activity metrics.
 
-    本函数处理GCaMP标记神经元的荧光显微镜图像，提取神经元活动的定量指标，包括细胞计数、事件率、衰减时间和信噪比。
+    This function processes fluorescence microscopy images of GCaMP-labeled neurons
+    to extract quantitative metrics of neuronal activity, including cell counts,
+    event rates, decay times, and signal-to-noise ratios.
 
-    参数
+    Parameters
     ----------
     image_stack_path : str
-        荧光显微镜图像时间序列堆栈的路径（TIFF格式）
-    output_dir : str, 可选
-        保存输出文件的目录（默认："./"）
+        Path to the time-series stack of fluorescence microscopy images (TIFF format)
+    output_dir : str, optional
+        Directory to save output files (default: "./")
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -598,26 +599,26 @@ def analyze_in_vitro_drug_release_kinetics(
     total_drug_loaded=None,
     output_dir="./",
 ):
-    """分析生物材料制剂的体外药物释放动力学。
+    """Analyzes in vitro drug release kinetics from biomaterial formulations.
 
-    参数
+    Parameters
     ----------
-    time_points : list 或 numpy.ndarray
-        测量药物浓度的时间点（单位：小时）
-    concentration_data : list 或 numpy.ndarray
-        每个时间点测量的药物浓度
-    drug_name : str, 可选
-        正在分析的药物名称（默认："Drug"）
-    total_drug_loaded : float, 可选
-        制剂中最初装载的药物总量。
-        如果为None，则使用最大浓度作为100%（默认：None）
-    output_dir : str, 可选
-        保存输出文件的目录（默认："./"）
+    time_points : list or numpy.ndarray
+        Time points at which drug concentrations were measured (in hours)
+    concentration_data : list or numpy.ndarray
+        Measured drug concentration at each time point
+    drug_name : str, optional
+        Name of the drug being analyzed (default: "Drug")
+    total_drug_loaded : float, optional
+        Total amount of drug initially loaded in the formulation.
+        If None, the maximum concentration is used as 100% (default: None)
+    output_dir : str, optional
+        Directory to save output files (default: "./")
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤、结果和已保存文件位置的研究日志
+        Research log summarizing the analysis steps, results, and saved file locations
 
     """
     import os
@@ -896,25 +897,25 @@ def analyze_myofiber_morphology(
     threshold_method="otsu",
     output_dir="./",
 ):
-    """量化组织切片显微镜图像中肌纤维的形态学特性。
+    """Quantifies morphological properties of myofibers in microscopy images of tissue sections.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        显微镜图像文件的路径（通常是包含细胞核和肌纤维染色的多通道图像）
-    nuclei_channel : int, 默认=2
-        包含细胞核染色（DAPI、Hoechst等）的通道索引
-    myofiber_channel : int, 默认=1
-        包含肌纤维染色（α-Actinin等）的通道索引
-    threshold_method : str, 默认='otsu'
-        阈值分割方法（'otsu'、'adaptive'或'manual'）
-    output_dir : str, 默认='./'
-        保存输出文件的目录
+        Path to the microscopy image file (typically a multichannel image with nuclei and myofiber staining)
+    nuclei_channel : int, default=2
+        Channel index containing nuclei staining (DAPI, Hoechst, etc.)
+    myofiber_channel : int, default=1
+        Channel index containing myofiber staining (α-Actinin, etc.)
+    threshold_method : str, default='otsu'
+        Method for thresholding ('otsu', 'adaptive', or 'manual')
+    output_dir : str, default='./'
+        Directory to save output files
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -1059,23 +1060,23 @@ FILES GENERATED:
 
 
 def decode_behavior_from_neural_trajectories(neural_data, behavioral_data, n_components=10, output_dir="./"):
-    """建模神经活动轨迹并解码行为变量。
+    """Model neural activity trajectories and decode behavioral variables.
 
-    参数
+    Parameters
     ----------
     neural_data : numpy.ndarray
-        神经放电活动数据，形状为(n_timepoints, n_neurons)
+        Neural spiking activity data, shape (n_timepoints, n_neurons)
     behavioral_data : numpy.ndarray
-        行为数据，形状为(n_timepoints, n_behavioral_variables)
-    n_components : int, 可选
-        用于降维的主成分数量，默认为10
-    output_dir : str, 可选
-        保存输出文件的目录，默认为"./"
+        Behavioral data, shape (n_timepoints, n_behavioral_variables)
+    n_components : int, optional
+        Number of principal components to use for dimensionality reduction, default is 10
+    output_dir : str, optional
+        Directory to save output files, default is "./"
 
-    返回值
+    Returns
     -------
     str
-        总结所采取步骤和结果的研究日志
+        Research log summarizing the steps taken and results
 
     """
     import os
@@ -1247,30 +1248,33 @@ def simulate_whole_cell_ode_model(
     time_points=1000,
     method="LSODA",
 ):
-    """模拟表示为常微分方程（ODE）系统的全细胞模型。
+    """Simulate a whole-cell model represented as a system of ordinary differential equations (ODEs).
 
-    参数
+    Parameters
     ----------
-    initial_conditions : dict 或 array-like
-        模型中每个状态变量的初始值。如果是dict，键为变量名，值为初始浓度/值。
-        如果是array-like，顺序必须与ODE函数期望的顺序匹配。
+    initial_conditions : dict or array-like
+        Initial values for each state variable in the model. If dict, keys are variable names
+        and values are initial concentrations/values. If array-like, order must match the
+        order expected by the ODE function.
     parameters : dict
-        ODE函数所需的模型参数。键为参数名，值为参数值。
-    ode_function : callable, 可选
-        定义ODE系统的函数。应接受参数``(t, y, *args)``，其中``t``是时间，
-        ``y``是状态向量，``args``包含额外参数。
-        如果为None，将使用一个简单的示例全细胞模型。
-    time_span : tuple, 默认=(0, 100)
-        模拟的(start_time, end_time)元组。
-    time_points : int, 默认=1000
-        要评估的时间点数量。
-    method : str, 默认='LSODA'
-        要使用的数值积分方法（例如'RK45'、'LSODA'、'BDF'）。
+        Model parameters required by the ODE function. Keys are parameter names and
+        values are parameter values.
+    ode_function : callable, optional
+        Function defining the system of ODEs. Should take arguments ``(t, y, *args)`` where
+        ``t`` is time, ``y`` is the state vector, and ``args`` contains additional parameters.
+        If None, a simple example whole-cell model will be used.
+    time_span : tuple, default=(0, 100)
+        Tuple of (start_time, end_time) for the simulation.
+    time_points : int, default=1000
+        Number of time points to evaluate.
+    method : str, default='LSODA'
+        Numerical integration method to use (e.g., 'RK45', 'LSODA', 'BDF').
 
-    返回值
+    Returns
     -------
     str
-        总结模拟步骤和结果的研究日志。结果保存到CSV文件，文件名包含在日志中。
+        Research log summarizing the simulation steps and results. Results are saved
+        to a CSV file and the filename is included in the log.
 
     """
     from datetime import datetime
@@ -1283,24 +1287,24 @@ def simulate_whole_cell_ode_model(
     if ode_function is None:
 
         def default_whole_cell_model(t, y, params):
-            # 解包状态变量
-            # 简单模型包含：
+            # Unpack state variables
+            # Simple model with:
             # - mRNA (y[0])
-            # - 蛋白质 (y[1])
-            # - 代谢物 (y[2])
+            # - Protein (y[1])
+            # - Metabolite (y[2])
             # - ATP (y[3])
             mRNA, protein, metabolite, atp = y
 
-            # 解包参数
-            k_transcription = params["k_transcription"]  # mRNA合成速率
-            k_translation = params["k_translation"]  # 蛋白质合成速率
-            k_mrna_deg = params["k_mrna_deg"]  # mRNA降解速率
-            k_protein_deg = params["k_protein_deg"]  # 蛋白质降解速率
-            k_metabolism = params["k_metabolism"]  # 代谢物产生速率
-            k_atp_production = params["k_atp_production"]  # ATP产生速率
-            k_atp_consumption = params["k_atp_consumption"]  # ATP消耗速率
+            # Unpack parameters
+            k_transcription = params["k_transcription"]  # mRNA synthesis rate
+            k_translation = params["k_translation"]  # Protein synthesis rate
+            k_mrna_deg = params["k_mrna_deg"]  # mRNA degradation rate
+            k_protein_deg = params["k_protein_deg"]  # Protein degradation rate
+            k_metabolism = params["k_metabolism"]  # Metabolite production rate
+            k_atp_production = params["k_atp_production"]  # ATP production rate
+            k_atp_consumption = params["k_atp_consumption"]  # ATP consumption rate
 
-            # ODE方程
+            # ODEs
             dmRNA_dt = k_transcription - k_mrna_deg * mRNA
             dprotein_dt = k_translation * mRNA * atp - k_protein_deg * protein
             dmetabolite_dt = k_metabolism * protein - k_atp_production * metabolite

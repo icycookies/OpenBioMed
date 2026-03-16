@@ -1,11 +1,12 @@
 description = [
     {
-        "description": "使用 Calcofluor white 染色的显微镜图像量化每个细胞周期阶段的细胞百分比。",
+        "description": "Quantify the percentage of cells in each cell cycle phase "
+        "using Calcofluor white stained microscopy images.",
         "name": "quantify_cell_cycle_phases_from_microscopy",
         "optional_parameters": [
             {
                 "default": "./results",
-                "description": "保存结果的目录",
+                "description": "Directory to save results",
                 "name": "output_dir",
                 "type": "str",
             }
@@ -13,25 +14,26 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "用 Calcofluor white 染色的细胞显微镜图像文件路径列表",
+                "description": "List of file paths to microscopy images of cells stained with Calcofluor white",
                 "name": "image_paths",
                 "type": "List[str]",
             }
         ],
     },
     {
-        "description": "从延时显微镜图像量化细胞运动特征，并根据运动模式对细胞进行聚类。",
+        "description": "Quantify cell motility features from time-lapse microscopy "
+        "images and cluster cells based on motility patterns.",
         "name": "quantify_and_cluster_cell_motility",
         "optional_parameters": [
             {
                 "default": "./results",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": 3,
-                "description": "要识别的运动模式簇数量",
+                "description": "Number of motility pattern clusters to identify",
                 "name": "num_clusters",
                 "type": "int",
             },
@@ -39,31 +41,37 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含按顺序排列的延时显微镜图像的目录路径",
+                "description": "Path to directory containing time-lapse microscopy images in sequential order",
                 "name": "image_sequence_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "执行荧光激活细胞分选 (FACS)，根据荧光特性富集细胞群体。",
+        "description": "Performs Fluorescence-Activated Cell Sorting (FACS) to "
+        "enrich cell populations based on fluorescence "
+        "characteristics.",
         "name": "perform_facs_cell_sorting",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "荧光参数的最小阈值。低于此值的细胞将被排除",
+                "description": "Minimum threshold for the "
+                "fluorescence parameter. Cells below "
+                "this value will be excluded",
                 "name": "threshold_min",
                 "type": "float",
             },
             {
                 "default": None,
-                "description": "荧光参数的最大阈值。高于此值的细胞将被排除",
+                "description": "Maximum threshold for the "
+                "fluorescence parameter. Cells above "
+                "this value will be excluded",
                 "name": "threshold_max",
                 "type": "float",
             },
             {
                 "default": "sorted_cells.csv",
-                "description": "保存分选细胞群体数据的文件名",
+                "description": "Filename to save the sorted cell population data",
                 "name": "output_file",
                 "type": "str",
             },
@@ -71,31 +79,32 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含流式细胞术数据的 FCS 文件路径",
+                "description": "Path to the FCS file containing flow cytometry data",
                 "name": "cell_suspension_data",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "用于分选的荧光参数（例如 'GFP'、'FITC'、'PE'）",
+                "description": "The fluorescence parameter to use for sorting (e.g., 'GFP', 'FITC', 'PE')",
                 "name": "fluorescence_parameter",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "分析流式细胞术数据，根据表面标记物识别和量化特定细胞群体。",
+        "description": "Analyze flow cytometry data to identify and quantify "
+        "specific cell populations based on surface markers.",
         "name": "analyze_flow_cytometry_immunophenotyping",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "用于校正荧光重叠的溢出/补偿矩阵",
+                "description": "Spillover/compensation matrix to correct for fluorescence overlap",
                 "name": "compensation_matrix",
                 "type": "numpy.ndarray",
             },
             {
                 "default": "./results",
-                "description": "保存结果的目录",
+                "description": "Directory to save the results",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -103,25 +112,30 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含流式细胞术数据的 FCS 文件路径",
+                "description": "Path to the FCS file containing flow cytometry data",
                 "name": "fcs_file_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "定义门控策略的字典。每个键是群体名称，每个值是元组列表 (marker, operator, threshold)",
+                "description": "Dictionary defining the gating "
+                "strategy. Each key is a population "
+                "name, and each value is a list of "
+                "tuples (marker, operator, "
+                "threshold)",
                 "name": "gating_strategy",
                 "type": "dict",
             },
         ],
     },
     {
-        "description": "从荧光显微镜图像量化线粒体形态和膜电位的指标。",
+        "description": "Quantifies metrics of mitochondrial morphology and membrane "
+        "potential from fluorescence microscopy images.",
         "name": "analyze_mitochondrial_morphology_and_potential",
         "optional_parameters": [
             {
                 "default": "./output",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             }
@@ -129,13 +143,18 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "显示线粒体形态的荧光显微镜图像路径（例如 MTS-GFP）",
+                "description": "Path to the fluorescence microscopy "
+                "image showing mitochondrial "
+                "morphology (e.g., MTS-GFP)",
                 "name": "morphology_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "显示线粒体膜电位的荧光显微镜图像路径（例如 TMRE 染色）",
+                "description": "Path to the fluorescence microscopy "
+                "image showing mitochondrial "
+                "membrane potential (e.g., TMRE "
+                "staining)",
                 "name": "potential_image_path",
                 "type": "str",
             },

@@ -1,6 +1,6 @@
 """
 MCP to FastAPI Adapter
-将MCP服务转换为FastAPI端点，使其可以同时作为MCP服务和REST API使用
+Converts MCP services to FastAPI endpoints, enabling them to serve as both MCP services and REST APIs
 """
 
 import inspect
@@ -14,15 +14,15 @@ logger = logging.getLogger(__name__)
 
 
 class MCPToolAdapter:
-    """将MCP工具适配为FastAPI端点"""
+    """Adapts MCP tools as FastAPI endpoints"""
     
     def __init__(self, mcp_server: FastMCP, prefix: str = ""):
         """
-        初始化适配器
+        Initialize the adapter
         
         Args:
-            mcp_server: FastMCP服务器实例
-            prefix: API路径前缀，例如 "/chembl"
+            mcp_server: FastMCP server instance
+            prefix: API path prefix, e.g. "/chembl"
         """
         self.mcp_server = mcp_server
         self.prefix = prefix.rstrip("/")
@@ -30,14 +30,14 @@ class MCPToolAdapter:
         
     def _create_request_model(self, func: Callable, tool_name: str) -> type[BaseModel]:
         """
-        根据函数签名创建Pydantic请求模型
+        Create a Pydantic request model from a function signature
         
         Args:
-            func: 工具函数
-            tool_name: 工具名称
+            func: Tool function
+            tool_name: Tool name
             
         Returns:
-            Pydantic模型类
+            Pydantic model class
         """
         sig = inspect.signature(func)
         type_hints = get_type_hints(func)
@@ -47,30 +47,30 @@ class MCPToolAdapter:
             if param_name == "self":
                 continue
                 
-            # 获取类型注解
+            # Get type annotation
             param_type = type_hints.get(param_name, Any)
             
-            # 获取默认值
+            # Get default value
             if param.default == inspect.Parameter.empty:
-                # 必填参数
+                # Required parameter
                 fields[param_name] = (param_type, ...)
             else:
-                # 可选参数
+                # Optional parameter
                 fields[param_name] = (param_type, param.default)
         
-        # 动态创建模型
+        # Dynamically create model
         model_name = f"{tool_name.title().replace('_', '')}Request"
         return create_model(model_name, **fields)
     
     def _create_response_model(self, tool_name: str) -> type[BaseModel]:
         """
-        创建统一的响应模型
+        Create a unified response model
         
         Args:
-            tool_name: 工具名称
+            tool_name: Tool name
             
         Returns:
-            Pydantic响应模型类
+            Pydantic response model class
         """
         model_name = f"{tool_name.title().replace('_', '')}Response"
         return create_model(
@@ -82,27 +82,27 @@ class MCPToolAdapter:
     
     def _create_endpoint_handler(self, tool_func: Callable, request_model: type[BaseModel]):
         """
-        创建FastAPI端点处理函数
+        Create a FastAPI endpoint handler function
         
         Args:
-            tool_func: MCP工具函数
-            request_model: 请求模型
+            tool_func: MCP tool function
+            request_model: Request model
             
         Returns:
-            异步处理函数
+            Async handler function
         """
         async def handler(request: request_model):
             try:
-                # 将请求模型转换为字典
+                # Convert request model to dict
                 params = request.model_dump()
                 
-                # 调用MCP工具函数
+                # Call the MCP tool function
                 if inspect.iscoroutinefunction(tool_func):
                     result = await tool_func(**params)
                 else:
                     result = tool_func(**params)
                 
-                # 返回统一格式
+                # Return unified format
                 return {
                     "message": "success",
                     "error": "",
@@ -116,43 +116,43 @@ class MCPToolAdapter:
     
     def register_tools(self, tags: Optional[List[str]] = None) -> APIRouter:
         """
-        将MCP服务器中的所有工具注册为FastAPI端点
+        Register all tools from the MCP server as FastAPI endpoints
         
         Args:
-            tags: FastAPI标签列表
+            tags: FastAPI tag list
             
         Returns:
-            配置好的APIRouter
+            Configured APIRouter
         """
         if tags is None:
             tags = [self.mcp_server.name]
         
-        # 获取MCP服务器中注册的所有工具
+        # Get all tools registered in the MCP server
         tools = self.mcp_server._tool_manager._tools
         
         for tool_name, tool_info in tools.items():
             tool_func = tool_info.fn
             
-            # 创建请求和响应模型
+            # Create request and response models
             request_model = self._create_request_model(tool_func, tool_name)
             
-            # 创建端点处理函数
+            # Create endpoint handler
             handler = self._create_endpoint_handler(tool_func, request_model)
             
-            # 构建端点路径
+            # Build endpoint path
             endpoint_path = f"{self.prefix}/{tool_name}"
             
-            # 获取工具描述
+            # Get tool description
             description = tool_func.__doc__ or f"Call {tool_name} tool"
             
-            # 注册到路由器
+            # Register to router
             self.router.post(
                 endpoint_path,
                 tags=tags,
                 summary=tool_name,
                 description=description,
                 operation_id=tool_name,
-                response_model=None  # 使用动态响应
+                response_model=None  # Use dynamic response
             )(handler)
             
             # logger.info(f"Registered FastAPI endpoint: POST {endpoint_path}")
@@ -166,15 +166,15 @@ def create_mcp_fastapi_router(
     tags: Optional[List[str]] = None
 ) -> APIRouter:
     """
-    便捷函数：创建MCP到FastAPI的路由器
+    Convenience function: create a router from MCP to FastAPI
     
     Args:
-        mcp_server: FastMCP服务器实例
-        prefix: API路径前缀
-        tags: FastAPI标签列表
+        mcp_server: FastMCP server instance
+        prefix: API path prefix
+        tags: FastAPI tag list
         
     Returns:
-        配置好的APIRouter
+        Configured APIRouter
         
     Example:
         >>> from tools.chembl.server import mcp as chembl_mcp

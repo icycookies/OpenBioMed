@@ -1,24 +1,25 @@
 def engineer_bacterial_genome_for_therapeutic_delivery(bacterial_genome_file, genetic_parts):
-    """通过整合治疗性遗传元件来改造细菌基因组以实现治疗递送。
+    """Engineer a bacterial genome by integrating therapeutic genetic parts for therapeutic delivery.
 
     Parameters
     ----------
     bacterial_genome_file : str
-        包含FASTA格式细菌基因组序列的文件路径
+        Path to the file containing the bacterial genome sequence in FASTA format
     genetic_parts : dict
-        包含待整合遗传元件的字典::
+        Dictionary containing genetic parts to be integrated::
 
         {
-            'promoters': 包含'name'、'sequence'和'position'的字典列表,
-            'genes': 包含'name'、'sequence'和'position'的字典列表,
-            'terminators': 包含'name'、'sequence'和'position'的字典列表,
-            'cargo': 包含治疗性载荷的'name'和'sequence'的字典
+            'promoters': list of dict with 'name', 'sequence', and 'position',
+            'genes': list of dict with 'name', 'sequence', and 'position',
+            'terminators': list of dict with 'name', 'sequence', and 'position',
+            'cargo': dict with 'name' and 'sequence' of the therapeutic cargo
         }
 
     Returns
     -------
     str
-        总结改造过程的研究日志,包括改造后基因组的文件名和质粒图谱
+        Research log summarizing the engineering process, including the filename of the
+        engineered genome and plasmid map
 
     """
     import datetime
@@ -222,23 +223,23 @@ def engineer_bacterial_genome_for_therapeutic_delivery(bacterial_genome_file, ge
 
 
 def analyze_bacterial_growth_rate(time_points, od_measurements, strain_name="Unknown strain", output_dir="./"):
-    """分析细菌生长数据并从OD600测量值中提取生长参数。
+    """Analyze bacterial growth data and extract growth parameters from OD600 measurements.
 
     Parameters
     ----------
     time_points : list or numpy.ndarray
-        进行OD600测量的时间点(单位:小时)
+        Time points at which OD600 measurements were taken (in hours)
     od_measurements : list or numpy.ndarray
-        对应每个时间点的光密度(OD600)测量值
+        Optical density (OD600) measurements corresponding to each time point
     strain_name : str, optional
-        正在分析的细菌菌株名称,默认为"Unknown strain"
+        Name of the bacterial strain being analyzed, default is "Unknown strain"
     output_dir : str, optional
-        保存输出文件的目录,默认为当前目录
+        Directory where to save the output files, default is current directory
 
     Returns
     -------
     str
-        总结分析步骤、拟合参数和结果的研究日志
+        A research log summarizing the analysis steps, fitted parameters, and results
 
     """
     import os
@@ -360,27 +361,27 @@ def analyze_barcode_sequencing_data(
     min_count=5,
     output_dir="./results",
 ):
-    """分析测序数据以提取、定量和确定条形码的谱系关系。
+    """Analyze sequencing data to extract, quantify and determine lineage relationships of barcodes.
 
     Parameters
     ----------
     input_file : str
-        FASTQ或FASTA格式的输入测序文件路径
+        Path to the input sequencing file in FASTQ or FASTA format
     barcode_pattern : str, optional
-        用于识别条形码的正则表达式模式。如果为None,将使用侧翼序列
+        Regular expression pattern to identify barcodes. If None, will use flanking sequences
     flanking_seq_5prime : str, optional
-        条形码区域的5'侧翼序列
+        5' flanking sequence of the barcode region
     flanking_seq_3prime : str, optional
-        条形码区域的3'侧翼序列
+        3' flanking sequence of the barcode region
     min_count : int, default=5
-        考虑条形码的最小计数阈值
+        Minimum count threshold for considering a barcode
     output_dir : str, default="./results"
-        保存输出文件的目录
+        Directory to save output files
 
     Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -512,25 +513,25 @@ def analyze_barcode_sequencing_data(
 
 
 def analyze_bifurcation_diagram(time_series_data, parameter_values, system_name="Dynamical System", output_dir="./"):
-    """对动力系统执行分岔分析并生成分岔图。
+    """Performs bifurcation analysis on a dynamical system and generates a bifurcation diagram.
 
     Parameters
     ----------
     time_series_data : numpy.ndarray
-        二维数组,其中每一行表示特定参数值的时间序列。
-        形状应为(n_parameter_values, n_time_points)。
+        A 2D array where each row represents a time series for a specific parameter value.
+        Shape should be (n_parameter_values, n_time_points).
     parameter_values : numpy.ndarray
-        对应每个时间序列的参数值的一维数组。
-        形状应为(n_parameter_values,)。
+        1D array of parameter values corresponding to each time series.
+        Shape should be (n_parameter_values,).
     system_name : str, optional
-        正在分析的动力系统名称,用于图表标题。
+        Name of the dynamical system being analyzed, used for plot titles.
     output_dir : str, optional
-        保存输出文件的目录。
+        Directory to save the output files.
 
     Returns
     -------
     str
-        总结分岔分析过程和结果的研究日志。
+        Research log summarizing the bifurcation analysis process and results.
 
     """
     import os
@@ -703,31 +704,31 @@ def analyze_bifurcation_diagram(time_series_data, parameter_values, system_name=
 
 
 def create_biochemical_network_sbml_model(reaction_network, kinetic_parameters, output_file="biochemical_model.xml"):
-    """生成SBML格式的生化网络数学模型。
+    """Generate a mathematical model of a biochemical network in SBML format.
 
     Parameters
     ----------
     reaction_network : list of dict
-        字典列表,每个字典表示一个反应,包含以下键:
-        - 'id': 反应标识符
-        - 'name': 反应名称
-        - 'reactants': 反应物物种ID及其化学计量数的字典
-        - 'products': 产物物种ID及其化学计量数的字典
-        - 'reversible': 布尔值,指示反应是否可逆
+        List of dictionaries, each representing a reaction with keys:
+        - 'id': Reaction identifier
+        - 'name': Reaction name
+        - 'reactants': Dict of reactant species IDs and their stoichiometry
+        - 'products': Dict of product species IDs and their stoichiometry
+        - 'reversible': Boolean indicating if reaction is reversible
 
     kinetic_parameters : dict
-        将反应ID映射到其动力学定律参数的字典。
-        每个条目应包含:
-        - 'law_type': 动力学定律类型(例如,'mass_action','michaelis_menten')
-        - 'parameters': 参数名称和值的字典
+        Dictionary mapping reaction IDs to their kinetic law parameters.
+        Each entry should contain:
+        - 'law_type': Type of kinetic law (e.g., 'mass_action', 'michaelis_menten')
+        - 'parameters': Dict of parameter names and values
 
     output_file : str, optional
-        保存SBML模型的文件路径(默认:"biochemical_model.xml")
+        File path to save the SBML model (default: "biochemical_model.xml")
 
     Returns
     -------
     str
-        总结模型创建过程的研究日志
+        Research log summarizing the model creation process
 
     """
     import os
@@ -857,22 +858,22 @@ def create_biochemical_network_sbml_model(reaction_network, kinetic_parameters, 
 
 
 def optimize_codons_for_heterologous_expression(target_sequence, host_codon_usage):
-    """分析并优化DNA/RNA序列以改善在异源宿主生物中的表达。
+    """Analyzes and optimizes a DNA/RNA sequence for improved expression in a heterologous host organism.
 
     Parameters
     ----------
     target_sequence : str
-        待优化的目标基因的DNA或RNA序列。
-        应包含完整的密码子(长度可被3整除)。
+        The DNA or RNA sequence of the target gene to be optimized.
+        Should contain complete codons (length divisible by 3).
 
     host_codon_usage : dict
-        将密码子映射到其在宿主生物中使用频率的字典。
-        格式:{'AUG': 0.8, 'GCC': 0.6, ...}或{'ATG': 0.8, 'GCC': 0.6, ...}
+        Dictionary mapping codons to their usage frequency in the host organism.
+        Format: {'AUG': 0.8, 'GCC': 0.6, ...} or {'ATG': 0.8, 'GCC': 0.6, ...}
 
     Returns
     -------
     str
-        总结优化过程和结果的研究日志。
+        A research log summarizing the optimization process and results.
 
     """
     from Bio.Data import CodonTable
@@ -976,38 +977,38 @@ def simulate_gene_circuit_with_growth_feedback(
     simulation_time=100,
     time_points=1000,
 ):
-    """模拟具有生长反馈的基因调控回路动力学。
+    """Simulate gene regulatory circuit dynamics with growth feedback.
 
     Parameters
     ----------
     circuit_topology : numpy.ndarray
-        表示基因回路拓扑的邻接矩阵。
-        正值表示激活,负值表示抑制。
-        形状应为(n_genes, n_genes),其中n_genes是回路中的基因数量。
+        Adjacency matrix representing the gene circuit topology.
+        Positive values indicate activation, negative values indicate repression.
+        Shape should be (n_genes, n_genes) where n_genes is the number of genes in the circuit.
 
     kinetic_params : dict
-        包含动力学参数的字典:
-        - 'basal_rates': 每个基因的基础表达速率列表
-        - 'degradation_rates': 每个基因的降解速率列表
-        - 'hill_coefficients': 调控相互作用的Hill系数列表
-        - 'threshold_constants': 调控相互作用的阈值常数列表
+        Dictionary containing kinetic parameters:
+        - 'basal_rates': list of basal expression rates for each gene
+        - 'degradation_rates': list of degradation rates for each gene
+        - 'hill_coefficients': list of Hill coefficients for regulatory interactions
+        - 'threshold_constants': list of threshold constants for regulatory interactions
 
     growth_params : dict
-        包含生长相关参数的字典:
-        - 'max_growth_rate': 最大细胞生长速率
-        - 'growth_inhibition': 基因表达如何影响生长
-        - 'gene_growth_weights': 每个基因如何影响生长的权重
+        Dictionary containing growth-related parameters:
+        - 'max_growth_rate': maximum cell growth rate
+        - 'growth_inhibition': how gene expression affects growth
+        - 'gene_growth_weights': weights for how each gene affects growth
 
     simulation_time : float, optional
-        总模拟时间(默认:100)
+        Total simulation time (default: 100)
 
     time_points : int, optional
-        采样的时间点数量(默认:1000)
+        Number of time points to sample (default: 1000)
 
     Returns
     -------
     str
-        总结模拟和结果的研究日志,包含已保存数据的文件名
+        Research log summarizing the simulation and results with file names of saved data
 
     """
     import datetime
@@ -1149,21 +1150,21 @@ FILES:
 
 
 def identify_fas_functional_domains(sequence, sequence_type="protein", output_file="fas_domains_report.txt"):
-    """识别脂肪酸合酶(FAS)序列中的功能结构域并预测其作用。
+    """Identifies functional domains within a Fatty Acid Synthase (FAS) sequence and predicts their roles.
 
     Parameters
     ----------
     sequence : str
-        FAS基因的核苷酸或蛋白质序列
+        The nucleotide or protein sequence of a FAS gene
     sequence_type : str
-        提供的序列类型 - "protein"或"nucleotide"(默认:"protein")
+        Type of sequence provided - "protein" or "nucleotide" (default: "protein")
     output_file : str
-        保存详细结构域报告的输出文件名(默认:"fas_domains_report.txt")
+        Name of the output file to save the detailed domain report (default: "fas_domains_report.txt")
 
     Returns
     -------
     str
-        总结所采取步骤和结构域分析结果的研究日志
+        A research log summarizing the steps taken and results of the domain analysis
 
     """
     import json

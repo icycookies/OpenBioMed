@@ -1,11 +1,14 @@
 description = [
     {
-        "description": "从心血管成像数据中分析主动脉直径和几何形状，测量主动脉根部直径、升主动脉直径，并计算几何参数，如迂曲度和扩张指数。",
+        "description": "Analyze aortic diameter and geometry from cardiovascular "
+        "imaging data to measure aortic root diameter, ascending "
+        "aorta diameter, and calculate geometric parameters such as "
+        "tortuosity and dilation indices.",
         "name": "analyze_aortic_diameter_and_geometry",
         "optional_parameters": [
             {
                 "default": "./output",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             }
@@ -13,25 +16,27 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "心血管成像数据的路径（DICOM、JPG、PNG）",
+                "description": "Path to the cardiovascular imaging data (DICOM, JPG, PNG)",
                 "name": "image_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "分析基于发光的ATP测定数据以确定细胞内ATP浓度。",
+        "description": "Analyze luminescence-based ATP assay data to determine intracellular ATP concentration.",
         "name": "analyze_atp_luminescence_assay",
         "optional_parameters": [
             {
                 "default": "cell_count",
-                "description": "用于归一化ATP值的方法，可选cell_count或protein_content",
+                "description": "Method used to normalize ATP values, either cell_count or protein_content",
                 "name": "normalization_method",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "包含归一化数据的CSV文件路径或以样品ID为键、归一化值为值的字典",
+                "description": "Path to CSV file with normalization "
+                "data or dictionary with sample IDs "
+                "as keys and normalization values",
                 "name": "normalization_data",
                 "type": "str or dict",
             },
@@ -39,25 +44,34 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含样品发光读数的CSV文件路径，包含Sample_ID和Luminescence_Value列",
+                "description": "Path to CSV file containing "
+                "luminescence readings from samples "
+                "with columns for Sample_ID and "
+                "Luminescence_Value",
                 "name": "data_file",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "包含标准曲线数据的CSV文件路径，包含ATP_Concentration（nM）和Luminescence_Value列",
+                "description": "Path to CSV file containing "
+                "standard curve data with columns "
+                "for ATP_Concentration (in nM) and "
+                "Luminescence_Value",
                 "name": "standard_curve_file",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "分析H&E染色的血栓样本组织学图像，以识别和量化不同的血栓成分（新鲜、细胞溶解、内皮化、成纤维细胞反应）。",
+        "description": "Analyze histological images of thrombus samples stained with "
+        "H&E to identify and quantify different thrombus components "
+        "(fresh, cellular lysis, endothelialization, fibroblastic "
+        "reaction).",
         "name": "analyze_thrombus_histology",
         "optional_parameters": [
             {
                 "default": "./output",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             }
@@ -65,19 +79,20 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "H&E染色的血栓样本组织学图像路径",
+                "description": "Path to the histological image of thrombus sample stained with H&E",
                 "name": "image_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "使用Rhod-2荧光指示剂从显微镜图像中分析细胞内钙浓度。",
+        "description": "Analyzes intracellular calcium concentration using Rhod-2 "
+        "fluorescent indicator from microscopy images.",
         "name": "analyze_intracellular_calcium_with_rhod2",
         "optional_parameters": [
             {
                 "default": "./output",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             }
@@ -85,37 +100,37 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "背景图像的路径（无细胞，仅培养基）",
+                "description": "Path to the background image (no cells, just media)",
                 "name": "background_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "对照图像的路径（无钙刺激的细胞）",
+                "description": "Path to the control image (cells without calcium stimulus)",
                 "name": "control_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "样品图像的路径（有钙刺激的细胞）",
+                "description": "Path to the sample image (cells with calcium stimulus)",
                 "name": "sample_image_path",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "量化免疫荧光标记的角膜神经纤维的体积/密度。",
+        "description": "Quantify the volume/density of immunofluorescence-labeled corneal nerve fibers.",
         "name": "quantify_corneal_nerve_fibers",
         "optional_parameters": [
             {
                 "default": "./output",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": "otsu",
-                "description": "阈值处理方法（'otsu'、'adaptive'、'manual'）",
+                "description": "Method for thresholding ('otsu', 'adaptive', 'manual')",
                 "name": "threshold_method",
                 "type": "str",
             },
@@ -123,31 +138,31 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "免疫荧光显微镜图像文件的路径",
+                "description": "Path to the immunofluorescence microscopy image file",
                 "name": "image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "神经纤维标记物类型（例如：'βIII-tubulin'、'SP'、'L1CAM'）",
+                "description": "Type of nerve fiber marker (e.g., 'βIII-tubulin', 'SP', 'L1CAM')",
                 "name": "marker_type",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "从多通道组织图像中分割细胞并量化蛋白质表达水平。",
+        "description": "Segment cells and quantify protein expression levels from multichannel tissue images.",
         "name": "segment_and_quantify_cells_in_multiplexed_images",
         "optional_parameters": [
             {
                 "default": 0,
-                "description": "核标记物通道的索引（通常为DAPI）",
+                "description": "Index of the nuclear marker channel (typically DAPI)",
                 "name": "nuclear_channel_index",
                 "type": "int",
             },
             {
                 "default": "./output",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -155,31 +170,33 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "多通道图像文件的路径（tiff堆栈或类似格式）",
+                "description": "Path to the multichannel image file (tiff stack or similar format)",
                 "name": "image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "与图像中每个通道对应的标记物名称列表",
+                "description": "List of marker names corresponding to each channel in the image",
                 "name": "markers_list",
                 "type": "List[str]",
             },
         ],
     },
     {
-        "description": "从3D显微CT图像中分析骨微结构参数，计算骨矿物质密度、骨体积、骨小梁数量、厚度和间距。",
+        "description": "Analyze bone microarchitecture parameters from 3D micro-CT "
+        "images to calculate bone mineral density, bone volume, "
+        "trabecular number, thickness, and separation.",
         "name": "analyze_bone_microct_morphometry",
         "optional_parameters": [
             {
                 "default": "./results",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "骨分割的阈值。如果为None，将使用Otsu方法",
+                "description": "Threshold value for bone segmentation. If None, Otsu's method will be used",
                 "name": "threshold_value",
                 "type": "float",
             },
@@ -187,7 +204,7 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "显微CT扫描数据文件的路径（TIFF堆栈或类似的3D格式）",
+                "description": "Path to the micro-CT scan data file (TIFF stack or similar 3D format)",
                 "name": "input_file_path",
                 "type": "str",
             }

@@ -1,20 +1,19 @@
-
 def predict_protein_disorder_regions(protein_sequence, threshold=0.5, output_file="disorder_prediction_results.csv"):
-    """使用IUPred2A预测蛋白质序列中的内在无序区域（IDRs）。
+    """Predicts intrinsically disordered regions (IDRs) in a protein sequence using IUPred2A.
 
-    参数
+    Parameters
     ----------
     protein_sequence : str
-        要分析的蛋白质氨基酸序列
-    threshold : float, 可选
-        无序分数阈值，高于此值的残基被认为是无序的（默认：0.5）
-    output_file : str, 可选
-        保存每个残基无序分数的文件名（默认："disorder_prediction_results.csv"）
+        The amino acid sequence of the protein to analyze
+    threshold : float, optional
+        The disorder score threshold above which a residue is considered disordered (default: 0.5)
+    output_file : str, optional
+        Filename to save the per-residue disorder scores (default: "disorder_prediction_results.csv")
 
-    返回值
+    Returns
     -------
     str
-        总结预测过程和结果的研究日志
+        A research log summarizing the prediction process and results
 
     """
     import csv
@@ -123,21 +122,21 @@ Disordered Regions:
 
 
 def analyze_cell_morphology_and_cytoskeleton(image_path, output_dir="./results", threshold_method="otsu"):
-    """从荧光显微镜图像量化细胞形态和细胞骨架组织。
+    """Quantifies cell morphology and cytoskeletal organization from fluorescence microscopy images.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        荧光显微镜图像文件的路径
-    output_dir : str, 可选
-        保存输出文件的目录（默认：'./results'）
-    threshold_method : str, 可选
-        细胞分割方法（'otsu'、'adaptive'或'manual'）（默认：'otsu'）
+        Path to the fluorescence microscopy image file
+    output_dir : str, optional
+        Directory to save output files (default: './results')
+    threshold_method : str, optional
+        Method for cell segmentation ('otsu', 'adaptive', or 'manual') (default: 'otsu')
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -323,21 +322,21 @@ def analyze_cell_morphology_and_cytoskeleton(image_path, output_dir="./results",
 
 
 def analyze_tissue_deformation_flow(image_sequence, output_dir="results", pixel_scale=1.0):
-    """从显微镜图像序列量化组织变形和流动动力学。
+    """Quantify tissue deformation and flow dynamics from microscopy image sequence.
 
-    参数
+    Parameters
     ----------
-    image_sequence : list 或 numpy.ndarray
-        显微镜图像序列（文件路径列表或3D numpy数组 [时间, 高度, 宽度]）
-    output_dir : str, 可选
-        保存结果的目录（默认："results"）
-    pixel_scale : float, 可选
-        像素的物理尺度（例如μm/像素），用于正确缩放指标（默认：1.0）
+    image_sequence : list or numpy.ndarray
+        Sequence of microscopy images (either a list of file paths or a 3D numpy array [time, height, width])
+    output_dir : str, optional
+        Directory to save results (default: "results")
+    pixel_scale : float, optional
+        Physical scale of pixels (e.g., μm/pixel) for proper scaling of metrics (default: 1.0)
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os

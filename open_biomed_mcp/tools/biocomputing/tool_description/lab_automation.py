@@ -1,29 +1,29 @@
 description = [
     {
-        "description": "基于脚本内容测试PyLabRobot脚本。",
+        "description": "Test a PyLabRobot script based on the script content.",
         "name": "test_pylabrobot_script",
         "optional_parameters": [
             {
                 "default": False,
-                "description": "如果为True，启用脚本执行的跟踪功能",
+                "description": "If True, enable tracking of the script execution",
                 "name": "enable_tracking",
                 "type": "bool",
             },
             {
                 "default": 60,
-                "description": "脚本执行的超时时间（秒）",
+                "description": "Timeout in seconds for the script execution",
                 "name": "timeout_seconds",
                 "type": "int",
             },
             {
                 "default": False,
-                "description": "如果为True，将测试结果保存为.json文件",
+                "description": "If True, save the test results as a .json file",
                 "name": "save_test_report",
                 "type": "bool",
             },
             {
                 "default": None,
-                "description": "保存测试结果的目录。如果提供，测试结果将作为.json文件保存在此目录中",
+                "description": "Directory to save the test results. If provided, the test results will be saved as a .json file in this directory",
                 "name": "test_report_dir",
                 "type": "str",
             },
@@ -31,20 +31,20 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "要测试的脚本内容",
+                "description": "Script content to test",
                 "name": "script_input",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "获取PyLabRobot教程中液体处理部分的文档。",
+        "description": "Get the documentation for the liquid handling section of the PyLabRobot tutorial.",
         "name": "get_pylabrobot_documentation_liquid",
         "optional_parameters": [],
         "required_parameters": [],
     },
     {
-        "description": "获取PyLabRobot教程中材料处理部分的文档。",
+        "description": "Get the documentation for the material handling section of the PyLabRobot tutorial.",
         "name": "get_pylabrobot_documentation_material",
         "optional_parameters": [],
         "required_parameters": [],

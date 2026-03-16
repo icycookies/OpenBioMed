@@ -13,14 +13,14 @@ chembl_api = ChemblAPI()
 @mcp.tool()
 async def get_activity():
     """
-    从 ChEMBL 数据库检索生物活性数据条目列表。注意：此工具不接受任何过滤参数，将返回整个数据库中前几个活性条目的默认列表。要搜索特定活性，请改用 'search_activity' 工具。
+    Retrieves a list of bioactivity data entries from the ChEMBL database. Note: This tool does not accept any filtering parameters and will return a default list of the first few activity entries from the entire database. To search for specific activities, use the 'search_activity' tool instead.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的活性对象列表。
+        A list of activity objects from the ChEMBL database.
     """
 
     try:
@@ -33,15 +33,15 @@ async def get_activity():
 @mcp.tool()
 async def get_activity_by_id(activity_id: int):
     """
-    通过唯一的活性 ID 从 ChEMBL 数据库检索单个生物活性条目的详细信息。
+    Retrieve the details of a single bioactivity entry from the ChEMBL database by its unique activity ID.
     
     Args:
-        activity_id: ChEMBL 活性条目的唯一整数标识符。
+        activity_id: The unique integer identifier for the ChEMBL activity entry.
     
     Query example: {"activity_id": 31863}
     
     Returns:
-        包含指定活性条目详细属性的字典。
+        A dictionary containing the detailed properties of the specified activity entry.
     """
 
     try:
@@ -56,15 +56,15 @@ async def get_activity_by_id(activity_id: int):
 @mcp.tool()
 async def get_activity_by_ids(activity_ids: list[int]):
     """
-    从 ChEMBL 数据库检索生物活性条目列表。注意：此工具目前无法按预期工作。它不会根据提供的 ID 列表正确过滤，而是返回数据库中的默认活性列表。
+    Retrieves a list of bioactivity entries from the ChEMBL database. Note: This tool currently does not function as expected. It does not correctly filter by the provided list of IDs and instead returns a default list of activities from the database.
     
     Args:
-        activity_ids: ChEMBL 活性条目的唯一整数标识符列表。
+        activity_ids: A list of unique integer identifiers for ChEMBL activity entries.
     
     Query example: {"activity_ids": [31863, 31864]}
     
     Returns:
-        来自 ChEMBL 数据库的默认活性对象列表，不限于提供的 ID。
+        A default list of activity objects from the ChEMBL database, not limited to the provided IDs.
     """
 
     try:
@@ -79,15 +79,15 @@ async def get_activity_by_ids(activity_ids: list[int]):
 @mcp.tool()
 async def search_activity(query_str: str):
     """
-    使用查询字符串在 ChEMBL 数据库中对生物活性数据执行全文搜索。此工具可以搜索活性记录中的各个字段，例如检测描述、靶点名称或分子信息。
+    Performs a full-text search for bioactivity data in the ChEMBL database using a query string. This tool can search across various fields in the activity records, such as assay descriptions, target names, or molecule information.
     
     Args:
-        query_str: 搜索字符串。可以是关键字、靶点名称、期刊或预期在活性记录中找到的任何其他文本。
+        query_str: The search string. This can be a keyword, a target name, a journal, or any other text expected to be found in the activity records.
     
     Query example: {"query_str": "cyclooxygenase"}
     
     Returns:
-        与搜索查询匹配的活性对象列表。
+        A list of activity objects that match the search query.
     """
 
     try:
@@ -102,14 +102,14 @@ async def search_activity(query_str: str):
 @mcp.tool()
 async def get_activity_supplementary_data_by_activity():
     """
-    从 ChEMBL 数据库检索补充生物活性数据的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。要检索特定活性的数据，请改用 'get_activity_supplementary_data_by_activity_id' 工具。
+    Retrieves a default list of supplementary bioactivity data from the ChEMBL database. Note: This tool is flawed and does not accept any filtering parameters, ignoring any provided input. To retrieve data for a specific activity, use the 'get_activity_supplementary_data_by_activity_id' tool instead.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的补充活性数据对象的默认列表。
+        A default list of supplementary activity data objects from the ChEMBL database.
     """
 
     try:
@@ -122,13 +122,9 @@ async def get_activity_supplementary_data_by_activity():
 @mcp.tool()
 async def get_activity_supplementary_data_by_activity_by_id(activity_id: int):
     """
-    通过 ID 检索单个活性补充数据对象的详细信息。
-    
-    Args:
-        activity_id: 活性的唯一 ID（整数）
-    
-    Returns:
-        活性补充数据对象的详细信息。
+    Retrieve single activitysupplementarydatabyactivity object details by ID.
+    :param activity_id: Unique ID for the activity (int)
+    :return:
     """
     try:
         result = chembl_api.get_activity_supplementary_data_by_activity_by_id(
@@ -146,13 +142,9 @@ async def get_activity_supplementary_data_by_activity_by_id(activity_id: int):
 @mcp.tool()
 async def get_activity_supplementary_data_by_activity_by_ids(activity_ids: list[int]):
     """
-    通过 ID 列表检索多个活性补充数据对象。
-    
-    Args:
-        activity_ids: 活性的唯一 ID 列表
-    
-    Returns:
-        活性补充数据对象列表。
+    Retrieve multiple activitysupplementarydatabyactivity objects by IDs.
+    :param activity_ids: list of Unique ID for the activity
+    :return:
     """
     try:
         result = chembl_api.get_activity_supplementary_data_by_activity_by_ids(
@@ -167,20 +159,38 @@ async def get_activity_supplementary_data_by_activity_by_ids(activity_ids: list[
     return result
 
 
+@mcp.tool()
+async def get_assay():
+    """
+    [WARNING] This tool is broken and does NOT retrieve assay data. It incorrectly calls the activity endpoint and returns a default list of bioactivity data instead. DO NOT USE. The 'search_assay' tool should be used to find assay information.
+    
+    Args:
+    
+    Query example: {}
+    
+    Returns:
+        A default list of bioactivity objects, NOT assay objects.
+    """
+
+    try:
+        result = chembl_api.get_activity()
+    except Exception as e:
+        return [{"error": f"An error occurred while querying get_activity: {str(e)}"}]
+    return result
 
 
 @mcp.tool()
 async def get_assay_by_id(assay_chembl_id: str):
     """
-    使用唯一的 ChEMBL ID 从 ChEMBL 数据库检索单个检测（实验程序）的详细信息。
+    Retrieves the details for a single assay (experimental procedure) from the ChEMBL database using its unique ChEMBL ID.
     
     Args:
-        assay_chembl_id: 检测的唯一 ChEMBL 标识符（例如 'CHEMBL663853'）。必须是字符串。
+        assay_chembl_id: The unique ChEMBL identifier for the assay (e.g., 'CHEMBL663853'). This must be a string.
     
     Query example: {"assay_chembl_id": "CHEMBL663853"}
     
     Returns:
-        包含指定检测详细属性的字典。
+        A dictionary containing the detailed properties of the specified assay.
     """
 
     try:
@@ -195,15 +205,15 @@ async def get_assay_by_id(assay_chembl_id: str):
 @mcp.tool()
 async def get_assay_by_ids(assay_chembl_ids: list[str]):
     """
-    使用唯一 ChEMBL ID 列表从 ChEMBL 数据库检索多个检测的详细信息。
+    Retrieves detailed information for multiple assays from the ChEMBL database using a list of their unique ChEMBL IDs.
     
     Args:
-        assay_chembl_ids: 检测的唯一 ChEMBL 字符串标识符列表（例如 ['CHEMBL663853', 'CHEMBL872937']）。
+        assay_chembl_ids: A list of unique ChEMBL string identifiers for the assays (e.g., ['CHEMBL663853', 'CHEMBL872937']).
     
     Query example: {"assay_chembl_ids": ["CHEMBL663853", "CHEMBL872937"]}
     
     Returns:
-        字典列表，每个字典包含指定检测的详细属性。
+        A list of dictionaries, where each dictionary contains the detailed properties of a specified assay.
     """
 
     try:
@@ -218,15 +228,15 @@ async def get_assay_by_ids(assay_chembl_ids: list[str]):
 @mcp.tool()
 async def search_assay(query_str: str):
     """
-    使用查询字符串在 ChEMBL 数据库中对检测（实验程序）执行全文搜索。可以搜索各种字段，如检测描述。
+    Performs a full-text search for assays (experimental procedures) in the ChEMBL database using a query string. This can search across various fields like the assay description.
     
     Args:
-        query_str: 搜索字符串，例如蛋白质名称如 'Heparanase' 或检测描述中的其他关键字。
+        query_str: The search string, e.g., a protein name like 'Heparanase' or other keywords from the assay description.
     
     Query example: {"query_str": "Heparanase"}
     
     Returns:
-        与搜索查询匹配的检测对象列表。
+        A list of assay objects that match the search query.
     """
 
     try:
@@ -239,14 +249,14 @@ async def search_assay(query_str: str):
 @mcp.tool()
 async def get_assay_class():
     """
-    从 ChEMBL 数据库检索检测分类的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。
+    Retrieves a default list of assay classifications from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的检测分类对象的默认列表。
+        A default list of assay classification objects from the ChEMBL database.
     """
 
     try:
@@ -261,15 +271,15 @@ async def get_assay_class():
 @mcp.tool()
 async def get_assay_class_by_id(assay_class_id: int):
     """
-    使用唯一整数 ID 从 ChEMBL 数据库检索单个检测分类的详细信息。
+    Retrieves the details for a single assay classification from the ChEMBL database using its unique integer ID.
     
     Args:
-        assay_class_id: 检测分类的唯一整数标识符。
+        assay_class_id: The unique integer identifier for the assay classification.
     
     Query example: {"assay_class_id": 1}
     
     Returns:
-        包含指定检测分类详细属性的字典。
+        A dictionary containing the detailed properties of the specified assay classification.
     """
 
     try:
@@ -286,15 +296,15 @@ async def get_assay_class_by_id(assay_class_id: int):
 @mcp.tool()
 async def get_assay_class_by_ids(assay_class_ids: list[int]):
     """
-    使用唯一整数 ID 列表从 ChEMBL 数据库检索多个检测分类的详细信息。
+    Retrieves detailed information for multiple assay classifications from the ChEMBL database using a list of their unique integer IDs.
     
     Args:
-        assay_class_ids: 检测分类的唯一整数标识符列表。
+        assay_class_ids: A list of unique integer identifiers for the assay classifications.
     
     Query example: {"assay_class_ids": [1, 2]}
     
     Returns:
-        字典列表，每个字典包含指定检测分类的详细属性。
+        A list of dictionaries, where each dictionary contains the detailed properties of a specified assay classification.
     """
 
     try:
@@ -311,14 +321,14 @@ async def get_assay_class_by_ids(assay_class_ids: list[int]):
 @mcp.tool()
 async def get_atc_class():
     """
-    从 ChEMBL 数据库检索 ATC（解剖学治疗学化学分类系统）分类的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。
+    Retrieves a default list of ATC (Anatomical Therapeutic Chemical) classifications from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的 ATC 类对象的默认列表。
+        A default list of ATC class objects from the ChEMBL database.
     """
 
     try:
@@ -331,15 +341,15 @@ async def get_atc_class():
 @mcp.tool()
 async def get_atc_class_by_id(level5: str):
     """
-    从 ChEMBL 数据库检索单个 ATC（解剖学治疗学化学分类系统）分类的详细信息。注意：此工具名为 '_by_id'，但它通过 level 5 ATC 代码字符串搜索，而非数字 ID。
+    Retrieves the details for a single ATC (Anatomical Therapeutic Chemical) classification from the ChEMBL database. Note: This tool is named '_by_id' but it searches by the level 5 ATC code string, not a numerical ID.
     
     Args:
-        level5: 所需分类的 level 5 ATC 代码字符串（例如 'A01AA01'）。
+        level5: The level 5 ATC code string for the desired classification (e.g., 'A01AA01').
     
     Query example: {"level5": "A01AA01"}
     
     Returns:
-        包含指定 ATC 分类详细属性的字典。
+        A dictionary containing the detailed properties of the specified ATC classification.
     """
 
     try:
@@ -354,15 +364,15 @@ async def get_atc_class_by_id(level5: str):
 @mcp.tool()
 async def get_atc_class_by_ids(level5s: list[str]):
     """
-    使用 level 5 ATC 代码列表从 ChEMBL 数据库检索多个 ATC（解剖学治疗学化学分类系统）分类的详细信息。注意：此工具名为 '_by_ids'，但它通过 level 5 ATC 代码字符串列表搜索。
+    Retrieves the details for multiple ATC (Anatomical Therapeutic Chemical) classifications from the ChEMBL database using a list of their level 5 ATC codes. Note: This tool is named '_by_ids' but it searches by a list of level 5 ATC code strings.
     
     Args:
-        level5s: 所需分类的 level 5 ATC 代码字符串列表（例如 ['A01AA01', 'A01AA02']）。
+        level5s: A list of level 5 ATC code strings for the desired classifications (e.g., ['A01AA01', 'A01AA02']).
     
     Query example: {"level5s": ["A01AA01", "A01AA02"]}
     
     Returns:
-        字典列表，每个字典包含指定 ATC 分类的详细属性。
+        A list of dictionaries, where each dictionary contains the detailed properties of a specified ATC classification.
     """
 
     try:
@@ -379,14 +389,14 @@ async def get_atc_class_by_ids(level5s: list[str]):
 @mcp.tool()
 async def get_binding_site():
     """
-    从 ChEMBL 数据库检索结合位点的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。
+    Retrieves a default list of binding sites from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的结合位点对象的默认列表。
+        A default list of binding site objects from the ChEMBL database.
     """
 
     try:
@@ -401,15 +411,15 @@ async def get_binding_site():
 @mcp.tool()
 async def get_binding_site_by_id(site_id: int):
     """
-    使用唯一整数 ID 从 ChEMBL 数据库检索单个结合位点的详细信息。
+    Retrieves the details for a single binding site from the ChEMBL database using its unique integer ID.
     
     Args:
-        site_id: 结合位点的唯一整数标识符。
+        site_id: The unique integer identifier for the binding site.
     
     Query example: {"site_id": 2}
     
     Returns:
-        包含指定结合位点详细属性的字典。
+        A dictionary containing the detailed properties of the specified binding site.
     """
 
     try:
@@ -523,14 +533,14 @@ async def get_biotherapeutic_by_ids(molecule_chembl_ids: list[str]):
 @mcp.tool()
 async def get_cell_line():
     """
-    从 ChEMBL 数据库检索细胞系的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。
+    Retrieves a default list of cell lines from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的细胞系对象的默认列表。
+        A default list of cell line objects from the ChEMBL database.
     """
 
     try:
@@ -543,15 +553,15 @@ async def get_cell_line():
 @mcp.tool()
 async def get_cell_line_by_id(cell_id: int):
     """
-    使用唯一整数 ID 从 ChEMBL 数据库检索单个细胞系的详细信息。
+    Retrieves the details for a single cell line from the ChEMBL database using its unique integer ID.
     
     Args:
-        cell_id: 细胞系的唯一整数标识符。
+        cell_id: The unique integer identifier for the cell line.
     
     Query example: {"cell_id": 1}
     
     Returns:
-        包含指定细胞系详细属性的字典。
+        A dictionary containing the detailed properties of the specified cell line.
     """
 
     try:
@@ -566,15 +576,15 @@ async def get_cell_line_by_id(cell_id: int):
 @mcp.tool()
 async def get_cell_line_by_ids(cell_ids: list[int]):
     """
-    使用唯一整数 ID 列表从 ChEMBL 数据库检索多个细胞系的详细信息。
+    Retrieves detailed information for multiple cell lines from the ChEMBL database using a list of their unique integer IDs.
     
     Args:
-        cell_ids: 细胞系的唯一整数标识符列表。
+        cell_ids: A list of unique integer identifiers for the cell lines.
     
     Query example: {"cell_ids": [1, 2]}
     
     Returns:
-        字典列表，每个字典包含指定细胞系的详细属性。
+        A list of dictionaries, where each dictionary contains the detailed properties of a specified cell line.
     """
 
     try:
@@ -591,14 +601,15 @@ async def get_cell_line_by_ids(cell_ids: list[int]):
 @mcp.tool()
 async def get_chembl_id_lookup():
     """
-    检索 chembl_id_lookup 对象列表。
+    Retrieve chembl_id_lookup object list.
     
     Args:
     
     Query example: {"kwargs": {}}
     
     Returns:
-        XML 格式的数据，包含 ChEMBL ID 查找信息，包括标识符映射和相关属性
+        XML-formatted data containing ChEMBL ID lookup information,
+    including identifier mappings and related attributes
     """
 
     try:
@@ -615,16 +626,16 @@ async def get_chembl_id_lookup():
 @mcp.tool()
 async def get_chembl_id_lookup_by_id(chembl_id: str):
     """
-    通过指定的 chembl_id 获取 ChEMBL 标识符映射，实现与 ChEMBL ID 关联的实体详细信息（例如化合物结构、靶点注释）的反向查找。
+    Fetches ChEMBL identifier mappings by a specified chembl_id, enabling reverse lookup of entity details (e.g., compound structures, target annotations) associated with a ChEMBL ID.
     
     Args:
-        chembl_id: ChEMBL 标识符（例如 'CHEMBL123'）进行查询，格式为字符串（例如 'CHEMBL123'）
+        chembl_id: ChEMBL identifier (e.g., 'CHEMBL123') to query, formatted as a string (e.g., 'CHEMBL123')
     
     
     Query example: {"chembl_id": "CHEMBL145"}
     
     Returns:
-        返回一个 JSON 对象，包含映射到 chembl_id 的详细实体信息。
+        Returns a JSON object with detailed entity information mapped to the chembl_id.
     """
 
     try:
@@ -641,16 +652,16 @@ async def get_chembl_id_lookup_by_id(chembl_id: str):
 @mcp.tool()
 async def get_chembl_id_lookup_by_ids(chembl_ids: list[str]):
     """
-    通过 ID 列表检索多个 chembl_id_lookup 对象。
+    Retrieve multiple chembl_id_lookup objects by IDs.
     
     Args:
-        chembl_ids: ChEMBL ID 数组进行查询（例如 ["CHEMBL145", "CHEMBL235"]）。每个 ID 必须遵循格式 CHEMBL[0-9]+
+        chembl_ids: Array of ChEMBL IDs to query (e.g., ["CHEMBL145", "CHEMBL235"]). Each ID must follow the format CHEMBL[0-9]+
     
     
     Query example: {"chembl_ids": ["CHEMBL145", "CHEMBL235"]}
     
     Returns:
-        返回包含批量查询结果的 JSON 对象。
+        Returns a JSON object with bulk query results.
     """
 
     try:
@@ -667,16 +678,16 @@ async def get_chembl_id_lookup_by_ids(chembl_ids: list[str]):
 @mcp.tool()
 async def search_chembl_id_lookup(query_str: str):
     """
-    使用查询字符串搜索 chemblidlookup。
+    Search chemblidlookup using query string.
     
     Args:
-        query_str: Lucene 语法的搜索查询字符串（例如 'compound:aspirin' 或 'target_name:EGFR AND activity_value:<=10'）
+        query_str: Search query string in Lucene syntax (e.g., 'compound:aspirin' or 'target_name:EGFR AND activity_value:<=10')
     
     
     Query example: {"query_str": "compound:aspirin OR target_name:cyclooxygenase"}
     
     Returns:
-        返回包含搜索结果的分页 JSON 响应。
+        Returns a paginated JSON response with search results.
     """
 
     try:
@@ -693,12 +704,12 @@ async def search_chembl_id_lookup(query_str: str):
 @mcp.tool()
 async def get_chembl_release():
     """
-    检索 chembl_release 对象列表。
+    Retrieve chembl_release object list.
     
     Args:
     
     Returns:
-        返回包含发布元数据的 JSON 对象。
+        Returns a JSON object with release metadata.
     """
 
     try:
@@ -713,16 +724,16 @@ async def get_chembl_release():
 @mcp.tool()
 async def get_chembl_release_by_id(chembl_release: str):
     """
-    通过 ID 检索单个 chembl_release 对象的详细信息。
+    Retrieve single chembl_release object details by ID.
     
     Args:
-        chembl_release: 表示 ChEMBL 发布版本的字符串（例如 "35"）。必须是有效的发布编号（例如与现有发布匹配的数字字符串）。
+        chembl_release: String representing the ChEMBL release version (e.g., "35"). Must be a valid release number (e.g., numeric string matching an existing release).
     
     
     Query example: {"chembl_release": "35"}
     
     Returns:
-        返回包含指定发布的元数据的 JSON 对象。
+        Returns a JSON object with metadata for the specified release.
     """
 
     try:
@@ -739,16 +750,16 @@ async def get_chembl_release_by_id(chembl_release: str):
 @mcp.tool()
 async def get_chembl_release_by_ids(chembl_releases: list[str]):
     """
-    通过 ID 列表检索多个 chembl_release 对象。
+    Retrieve multiple chembl_release objects by IDs.
     
     Args:
-        chembl_releases: ChEMBL 发布版本字符串数组（例如 ["35", "34"]）。每个版本必须是与现有发布匹配的有效数字字符串（例如 "35", "34"）。
+        chembl_releases: Array of ChEMBL release version strings (e.g., ["35", "34"]). Each version must be a valid numeric string matching an existing release (e.g., "35", "34").
     
     
     Query example: {"chembl_releases": ["35", "34"]}
     
     Returns:
-        返回一个 JSON 对象，包含每个指定发布的元数据数组。
+        Returns a JSON object with an array of metadata for each specified release.
     """
 
     try:
@@ -765,14 +776,14 @@ async def get_chembl_release_by_ids(chembl_releases: list[str]):
 @mcp.tool()
 async def get_compound_record():
     """
-    检索化合物记录对象列表。
+    Retrieve compound record object list.
     
     Args: 
     
     Query example: {"chembl_id": "CHEMBL145"}
     
     Returns:
-        返回包含全面化合物元数据的 JSON 对象。
+        Returns a JSON object with comprehensive compound metadata.
     """
 
     try:
@@ -787,16 +798,16 @@ async def get_compound_record():
 @mcp.tool()
 async def get_compound_record_by_id(record_id: int):
     """
-    通过 ID 检索单个 compound_record 对象的详细信息。
+    Retrieve single compound_record object details by ID.
     
     Args:
-        record_id: 表示 ChEMBL 数据库中化合物内部记录 ID 的整数（例如 12345）。此 ID 与 ChEMBL ID（例如 CHEMBL145）不同。
+        record_id: Integer representing the internal record ID of the compound in ChEMBL's database (e.g., 12345). This ID is distinct from the ChEMBL ID (e.g., CHEMBL145).
     
     
     Query example: {"record_id": 12345}
     
     Returns:
-        返回包含化合物元数据的 JSON 对象，类似于 get_compound_record，但通过内部记录 ID 链接。
+        Returns a JSON object with compound metadata, similar to get_compound_record, but linked via the internal record ID.
     """
 
     try:
@@ -813,16 +824,16 @@ async def get_compound_record_by_id(record_id: int):
 @mcp.tool()
 async def get_compound_record_by_ids(record_ids: list[int]):
     """
-    通过 ID 列表检索多个 compound_record 对象。
+    Retrieve multiple compound_record objects by IDs.
     
     Args:
-        record_ids: 表示 ChEMBL 中化合物内部记录 ID 的整数值数组（例如 [12345, 67890]）。每个 ID 必须是数据库中的有效数字记录 ID。
+        record_ids: Array of integer values representing internal record IDs of compounds in ChEMBL (e.g., [12345, 67890]). Each ID must be a valid numeric record ID from the database.
     
     
     Query example: {"record_ids": [12345, 67890]}
     
     Returns:
-        返回一个 JSON 对象，包含每个有效记录 ID 的化合物元数据数组。
+        Returns a JSON object with an array of compound metadata for each valid record ID.
     """
 
     try:
@@ -839,14 +850,14 @@ async def get_compound_record_by_ids(record_ids: list[int]):
 @mcp.tool()
 async def get_compound_structural_alert():
     """
-    检索化合物结构警报对象列表。
+    Retrieve compound structural alert object list.
     
     Args:
     
     Query example: {"chembl_id": "CHEMBL145"}
     
     Returns:
-        返回包含化合物结构警报元数据的 JSON 对象。
+        Returns a JSON object with structural alert metadata for the compound.
     """
 
     try:
@@ -863,16 +874,16 @@ async def get_compound_structural_alert():
 @mcp.tool()
 async def get_compound_structural_alert_by_id(cpd_str_alert_id: int):
     """
-    通过 ID 检索化合物结构警报对象的详细信息。
+    Retrieve compound structural alert object details by ID.
     
     Args:
-        cpd_str_alert_id: 表示 ChEMBL 数据库中结构警报内部 ID 的整数（例如 123）。此 ID 引用与化合物关联的特定子结构注释。
+        cpd_str_alert_id: Integer representing the internal ID of the structural alert in ChEMBL's database (e.g., 123). This ID references a specific substructure annotation associated with compounds.
     
     
     Query example: {"cpd_str_alert_id": 123}
     
     Returns:
-        返回包含结构警报详细信息的 JSON 对象。
+        Returns a JSON object with structural alert details.
     """
 
     try:
@@ -889,16 +900,16 @@ async def get_compound_structural_alert_by_id(cpd_str_alert_id: int):
 @mcp.tool()
 async def get_compound_structural_alert_by_ids(cpd_str_alert_ids: list[int]):
     """
-    通过 ID 列表检索多个化合物结构警报对象。
+    Retrieve multiple compound structural alert objects by IDs.
     
     Args:
-        cpd_str_alert_ids: 表示 ChEMBL 中结构警报内部 ID 的整数值数组（例如 [123, 456]）。每个 ID 引用与化合物关联的特定子结构注释。
+        cpd_str_alert_ids: Array of integer values representing internal IDs of structural alerts in ChEMBL (e.g., [123, 456]). Each ID references a specific substructure annotation linked to compounds.
     
     
     Query example: {"cpd_str_alert_ids": [1, 6]}
     
     Returns:
-        返回一个 JSON 对象，包含每个有效 ID 的结构警报详细信息数组。
+        Returns a JSON object with an array of structural alert details for each valid ID.
     """
 
     try:
@@ -915,14 +926,14 @@ async def get_compound_structural_alert_by_ids(cpd_str_alert_ids: list[int]):
 @mcp.tool()
 async def get_document():
     """
-    检索文档对象列表。
+    Retrieve document object list.
     
     Args:
     
     Query example: {"document_chembl_id": "DOC123"}
     
     Returns:
-        返回包含全面文档元数据的 JSON 对象。
+        Returns a JSON object with comprehensive document metadata.
     """
 
     try:
@@ -935,16 +946,16 @@ async def get_document():
 @mcp.tool()
 async def get_document_by_id(document_chembl_id: str):
     """
-    通过 ID 检索单个文档对象的详细信息。
+    Retrieve single document object details by ID.
     
     Args:
-        document_chembl_id: 文档的 ChEMBL 标识符，格式为字符串（例如 'DOC123'）。ID 遵循模式 DOC[0-9]+（例如 DOC100, DOC256）。
+        document_chembl_id: ChEMBL identifier of the document, formatted as a string (e.g., 'DOC123'). The ID follows the pattern DOC[0-9]+ (e.g., DOC100, DOC256).
     
     
     Query example: {"document_chembl_id": "DOC123"}
     
     Returns:
-        返回包含全面文档元数据的 JSON 对象。
+        Returns a JSON object with comprehensive document metadata.
     """
 
     try:
@@ -959,16 +970,16 @@ async def get_document_by_id(document_chembl_id: str):
 @mcp.tool()
 async def get_document_by_ids(document_chembl_ids: list[str]):
     """
-    通过 ID 列表检索多个文档对象。
+    Retrieve multiple document objects by IDs.
     
     Args:
-        document_chembl_ids: ChEMBL 文档标识符数组（例如 ['DOC123', 'DOC456']）。每个 ID 必须遵循格式 DOC[0-9]+（例如 DOC100, DOC256）。
+        document_chembl_ids: Array of ChEMBL document identifiers (e.g., ['DOC123', 'DOC456']). Each ID must follow the format DOC[0-9]+ (e.g., DOC100, DOC256).
     
     
     Query example: {"document_chembl_ids": ["DOC123", "DOC456"]}
     
     Returns:
-        返回一个 JSON 对象，包含每个有效 ID 的文档元数据数组
+        Returns a JSON object with an array of document metadata for each valid ID
     """
 
     try:
@@ -983,16 +994,16 @@ async def get_document_by_ids(document_chembl_ids: list[str]):
 @mcp.tool()
 async def search_document(query_str: str):
     """
-    使用查询字符串搜索文档。
+    Search document by query string.
     
     Args:
-        query_str: Lucene 语法的搜索查询字符串（例如 'aspirin AND 2020' 或 'title:cyclooxygenase'）。支持字段特定搜索（例如 `author:Smith`, `year:2022`）。
+        query_str: Search query string in Lucene syntax (e.g., 'aspirin AND 2020' or 'title:cyclooxygenase'). Supports field-specific searches (e.g., `author:Smith`, `year:2022`).
     
     
     Query example: {"query_str": "title:aspirin AND year:[2018 TO 2022]"}
     
     Returns:
-        返回包含搜索结果的分页 JSON 响应。
+        Returns a paginated JSON response with search results.
     """
 
     try:
@@ -1007,14 +1018,14 @@ async def search_document(query_str: str):
 @mcp.tool()
 async def get_document_similarity():
     """
-    检索文档相似度对象列表。
+    Retrieve document similarity object list.
     
     Args:
     
     Query example: {"document_chembl_id": "DOC123"}
     
     Returns:
-        返回包含相似文档和相似度分数的 JSON 对象。
+        Returns a JSON object with similar documents and similarity scores.
     """
 
     try:
@@ -1031,16 +1042,16 @@ async def get_document_similarity():
 @mcp.tool()
 async def get_document_similarity_by_id(document_1_chembl_id: str):
     """
-    通过 ID 检索单个文档相似度对象的详细信息。
+    Retrieve single document similarity object details by ID.
     
     Args:
-        document_1_chembl_id: 参考文档的 ChEMBL 标识符（例如 'DOC123'），用作相似度计算的基础。
+        document_1_chembl_id: ChEMBL identifier of the reference document (e.g., 'DOC123'), used as the basis for similarity calculation.
     
     
     Query example: {"document_1_chembl_id": "DOC123"}
     
     Returns:
-        返回包含相似度结果的 JSON 对象。
+        Returns a JSON object with similarity results.
     """
 
     try:
@@ -1057,16 +1068,16 @@ async def get_document_similarity_by_id(document_1_chembl_id: str):
 @mcp.tool()
 async def get_document_similarity_by_ids(document_1_chembl_ids: list[str]):
     """
-    通过 ID 列表检索多个文档相似度对象。
+    Retrieve multiple document similarity objects by IDs.
     
     Args:
-        document_1_chembl_ids: ChEMBL 文档标识符数组（例如 ['DOC123', 'DOC456']），用作相似度计算的参考点。每个 ID 必须遵循格式 DOC[0-9]+
+        document_1_chembl_ids: Array of ChEMBL document identifiers (e.g., ['DOC123', 'DOC456']) to use as reference points for similarity calculation. Each ID must follow the format DOC[0-9]+
     
     
     Query example: {"document_1_chembl_ids": ["DOC123", "DOC456"]}
     
     Returns:
-        返回一个 JSON 对象，包含每个有效输入 ID 的相似度结果。
+        Returns a JSON object with similarity results for each valid input ID.
     """
 
     try:
@@ -1083,14 +1094,14 @@ async def get_document_similarity_by_ids(document_1_chembl_ids: list[str]):
 @mcp.tool()
 async def get_drug():
     """
-    检索药物对象列表。
+    Retrieve drug object list.
     
     Args:
     
     Query example: {"drug_chembl_id": "DRUGB123"}
     
     Returns:
-        返回包含全面药物元数据的 JSON 对象。
+        Returns a JSON object with comprehensive drug metadata.
     """
 
     try:
@@ -1103,16 +1114,16 @@ async def get_drug():
 @mcp.tool()
 async def get_drug_by_id(molecule_chembl_id):
     """
-    通过 ID 检索单个药物对象的详细信息。
+    Retrieve single drug object details by ID.
     
     Args:
-        molecule_chembl_id: 药物的 ChEMBL 标识符，格式为字符串（例如 'CHEMBL145'）。ID 遵循模式 CHEMBL[0-9]+（例如 CHEMBL100, CHEMBL256）。
+        molecule_chembl_id: ChEMBL identifier of the drug, formatted as a string (e.g., 'CHEMBL145'). The ID follows the pattern CHEMBL[0-9]+ (e.g., CHEMBL100, CHEMBL256).
     
     
     Query example: {"molecule_chembl_id": "CHEMBL145"}
     
     Returns:
-        返回包含全面药物元数据的 JSON 对象。
+        Returns a JSON object with comprehensive drug metadata.
     """
 
     try:
@@ -1125,16 +1136,16 @@ async def get_drug_by_id(molecule_chembl_id):
 @mcp.tool()
 async def get_drug_by_ids(molecule_chembl_ids: list[str]):
     """
-    通过 ID 列表检索多个药物对象。
+    Retrieve multiple drus objects by IDs.
     
     Args:
-        molecule_chembl_ids: 药物的 ChEMBL 标识符数组（例如 ['CHEMBL145', 'CHEMBL235']）。每个 ID 必须遵循格式 CHEMBL[0-9]+（例如 CHEMBL100, CHEMBL256）。
+        molecule_chembl_ids: Array of ChEMBL identifiers for drugs (e.g., ['CHEMBL145', 'CHEMBL235']). Each ID must follow the format CHEMBL[0-9]+ (e.g., CHEMBL100, CHEMBL256).
     
     
     Query example: {"molecule_chembl_ids": ["CHEMBL145", "CHEMBL235"]}
     
     Returns:
-        返回一个 JSON 对象，包含每个有效 ID 的药物元数据数组。
+        Returns a JSON object with an array of drug metadata for each valid ID.
     """
 
     try:
@@ -1149,14 +1160,14 @@ async def get_drug_by_ids(molecule_chembl_ids: list[str]):
 @mcp.tool()
 async def get_drug_indication():
     """
-    检索药物适应症对象列表。
+    Retrieve drug indication object list.
     
     Args: 
     
     Query example: {"molecule_chembl_id": "CHEMBL145"}
     
     Returns:
-        返回包含临床适应症数据的 JSON 对象。
+        Returns a JSON object with clinical indication data.
     """
 
     try:
@@ -1171,16 +1182,16 @@ async def get_drug_indication():
 @mcp.tool()
 async def get_drug_indication_by_id(drugind_id: int):
     """
-    通过 ID 检索药物适应症对象的详细信息。
+    Retrieve drug indication object details by ID
     
     Args:
-        drugind_id: 表示 ChEMBL 数据库中临床适应症内部 ID 的整数（例如 123）。此 ID 引用药物的特定治疗用途注释。
+        drugind_id: Integer representing the internal ID of the clinical indication in ChEMBL's database (e.g., 123). This ID references a specific therapeutic use annotation for drugs.
     
     
     Query example: {"drugind_id": 123}
     
     Returns:
-        返回包含全面适应症详细信息的 JSON 对象。
+        Returns a JSON object with comprehensive indication details.
     """
 
     try:
@@ -1197,13 +1208,9 @@ async def get_drug_indication_by_id(drugind_id: int):
 @mcp.tool()
 async def get_drug_indication_by_ids(drugind_ids: list[int]):
     """
-    通过 ID 列表检索多个药物适应症对象。
-    
-    Args:
-        drugind_ids: 药物适应症对象的主键列表
-    
-    Returns:
-        药物适应症对象列表。
+    Retrieve multiple drus objects by IDs.
+    :param drugind_ids:list of primary key of drug indication object
+    :return:
     """
     try:
         result = chembl_api.get_drug_indication_by_ids(drugind_ids)
@@ -1219,14 +1226,14 @@ async def get_drug_indication_by_ids(drugind_ids: list[int]):
 @mcp.tool()
 async def get_drug_warning():
     """
-    检索 drug_warning 对象列表。
+    Retrieve drug_warning object list
     
     Args: 
     
     Query example: {"molecule_chembl_id": "CHEMBL145"}
     
     Returns:
-        返回包含全面安全警告数据的 JSON 对象。
+        Returns a JSON object with comprehensive safety warning data.
     """
 
     try:
@@ -1241,16 +1248,16 @@ async def get_drug_warning():
 @mcp.tool()
 async def get_drug_warning_id(warning_id: int):
     """
-    通过 ID 检索单个 drug_warning 对象的详细信息。
+    Retrieve single drug_warning object details by ID
     
     Args:
-        warning_id: 表示 ChEMBL 数据库中安全警告内部 ID 的整数（例如 789）。此 ID 引用药物的特定安全注释。
+        warning_id: Integer representing the internal ID of the safety warning in ChEMBL's database (e.g., 789). This ID references a specific safety annotation for drugs.
     
     
     Query example: {"warning_id": 145}
     
     Returns:
-        返回包含全面警告详细信息的 JSON 对象。
+        Returns a JSON object with comprehensive warning details.
     """
 
     try:
@@ -1265,16 +1272,16 @@ async def get_drug_warning_id(warning_id: int):
 @mcp.tool()
 async def get_drug_warning_ids(warning_ids: list[int]):
     """
-    通过 ID 列表检索多个 drug_warning 对象。
+    Retrieve multiple drug_warning objects by IDs.
     
     Args:
-        warning_ids: 表示 ChEMBL 中安全警告内部 ID 的整数值数组（例如 [789, 910]）。每个 ID 引用药物的特定安全注释。
+        warning_ids: Array of integer values representing internal IDs of safety warnings in ChEMBL (e.g., [789, 910]). Each ID references a specific safety annotation for drugs.
     
     
     Query example: {"warning_ids": [145, 910]}
     
     Returns:
-        返回一个 JSON 对象，包含每个有效 ID 的警告元数据数组。
+        Returns a JSON object with an array of warning metadata for each valid ID.
     """
 
     try:
@@ -1291,14 +1298,14 @@ async def get_drug_warning_ids(warning_ids: list[int]):
 @mcp.tool()
 async def get_go_slim():
     """
-    从 ChEMBL 数据库检索 GO（基因本体）精简分类的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。
+    Retrieves a default list of GO (Gene Ontology) slim classifications from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的 GO 精简对象的默认列表。
+        A default list of GO slim objects from the ChEMBL database.
     """
 
     try:
@@ -1311,15 +1318,15 @@ async def get_go_slim():
 @mcp.tool()
 async def get_go_slim_id(go_id: str):
     """
-    使用唯一的 GO ID 从 ChEMBL 数据库检索单个 GO（基因本体）精简分类的详细信息。注意：此工具的命名（'_id'）与其他工具系列使用的 '_by_id' 约定不一致。
+    Retrieves the details for a single GO (Gene Ontology) slim classification from the ChEMBL database using its unique GO ID. Note: The naming of this tool ('_id') is inconsistent with the '_by_id' convention used in other tool families.
     
     Args:
-        go_id: GO 精简术语的唯一 GO 标识符字符串（例如 'GO:0000003'）。
+        go_id: The unique GO identifier string for the GO slim term (e.g., 'GO:0000003').
     
     Query example: {"go_id": "GO:0000003"}
     
     Returns:
-        包含指定 GO 精简分类详细属性的字典。
+        A dictionary containing the detailed properties of the specified GO slim classification.
     """
 
     try:
@@ -1332,15 +1339,15 @@ async def get_go_slim_id(go_id: str):
 @mcp.tool()
 async def get_go_slim_ids(go_ids: list[str]):
     """
-    使用唯一 GO ID 列表从 ChEMBL 数据库检索多个 GO（基因本体）精简分类的详细信息。注意：此工具的命名（'_ids'）与其他工具系列使用的 '_by_ids' 约定不一致。
+    Retrieves the details for multiple GO (Gene Ontology) slim classifications from the ChEMBL database using a list of their unique GO IDs. Note: The naming of this tool ('_ids') is inconsistent with the '_by_ids' convention used in other tool families.
     
     Args:
-        go_ids: GO 精简术语的唯一 GO 标识符字符串列表（例如 ['GO:0000003', 'GO:0000149']）。
+        go_ids: A list of unique GO identifier strings for the GO slim terms (e.g., ['GO:0000003', 'GO:0000149']).
     
     Query example: {"go_ids": ["GO:0000003", "GO:0000149"]}
     
     Returns:
-        字典列表，每个字典包含指定 GO 精简分类的详细属性。
+        A list of dictionaries, where each dictionary contains the detailed properties of a specified GO slim classification.
     """
 
     try:
@@ -1355,14 +1362,14 @@ async def get_go_slim_ids(go_ids: list[str]):
 @mcp.tool()
 async def get_mechanism():
     """
-    从 ChEMBL 数据库检索作用机制的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。
+    Retrieves a default list of mechanisms of action from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的机制对象的默认列表。
+        A default list of mechanism objects from the ChEMBL database.
     """
 
     try:
@@ -1375,15 +1382,15 @@ async def get_mechanism():
 @mcp.tool()
 async def get_mechanism_id(mec_id: int):
     """
-    从 ChEMBL 数据库检索单个药物作用机制的详细信息。注意：此工具的命名（'_id'）与其他工具系列使用的 '_by_id' 约定不一致。
+    Retrieves the details for a single drug mechanism of action from the ChEMBL database. Note: The naming of this tool ('_id') is inconsistent with the '_by_id' convention used in other tool families.
     
     Args:
-        mec_id: 药物作用机制的唯一整数标识符。
+        mec_id: The unique integer identifier for the drug mechanism of action.
     
     Query example: {"mec_id": 13}
     
     Returns:
-        包含指定机制详细属性的字典。
+        A dictionary containing the detailed properties of the specified mechanism.
     """
 
     try:
@@ -1398,15 +1405,15 @@ async def get_mechanism_id(mec_id: int):
 @mcp.tool()
 async def get_mechanism_ids(mec_ids: list[int]):
     """
-    使用唯一整数 ID 列表从 ChEMBL 数据库检索多个药物作用机制的详细信息。注意：此工具的命名（'_ids'）与其他工具系列使用的 '_by_ids' 约定不一致。
+    Retrieves detailed information for multiple drug mechanisms of action from the ChEMBL database using a list of their unique integer IDs. Note: The naming of this tool ('_ids') is inconsistent with the '_by_ids' convention used in other tool families.
     
     Args:
-        mec_ids: 药物作用机制的唯一整数标识符列表。
+        mec_ids: A list of unique integer identifiers for the drug mechanisms of action.
     
     Query example: {"mec_ids": [13, 14]}
     
     Returns:
-        字典列表，每个字典包含指定机制的详细属性。
+        A list of dictionaries, where each dictionary contains the detailed properties of a specified mechanism.
     """
 
     try:
@@ -1421,14 +1428,14 @@ async def get_mechanism_ids(mec_ids: list[int]):
 @mcp.tool()
 async def get_metabolism():
     """
-    从 ChEMBL 数据库检索代谢记录的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。
+    Retrieves a default list of metabolism records from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的代谢对象的默认列表。
+        A default list of metabolism objects from the ChEMBL database.
     """
 
     try:
@@ -1441,13 +1448,9 @@ async def get_metabolism():
 @mcp.tool()
 async def get_metabolism_id(met_id: int):
     """
-    通过 ID 检索单个代谢对象的详细信息。
-    
-    Args:
-        met_id: 代谢的主键
-    
-    Returns:
-        代谢对象的详细信息。
+    Retrieve single metabolism object details by ID.
+    :param met_id:Primary key of metabolism
+    :return:
     """
     try:
         result = chembl_api.get_metabolism_id(met_id)
@@ -1461,15 +1464,15 @@ async def get_metabolism_id(met_id: int):
 @mcp.tool()
 async def get_metabolism_ids(met_ids: list[int]):
     """
-    使用唯一整数 ID 列表从 ChEMBL 数据库检索多个药物代谢记录的详细信息。注意：此工具的命名（'_ids'）与其他工具系列使用的 '_by_ids' 约定不一致。
+    Retrieves detailed information for multiple drug metabolism records from the ChEMBL database using a list of their unique integer IDs. Note: The naming of this tool ('_ids') is inconsistent with the '_by_ids' convention used in other tool families.
     
     Args:
-        met_ids: 药物代谢记录的唯一整数标识符列表。
+        met_ids: A list of unique integer identifiers for the drug metabolism records.
     
     Query example: {"met_ids": [119, 120]}
     
     Returns:
-        字典列表，每个字典包含指定代谢记录的详细属性。
+        A list of dictionaries, where each dictionary contains the detailed properties of a specified metabolism record.
     """
 
     try:
@@ -1484,14 +1487,14 @@ async def get_metabolism_ids(met_ids: list[int]):
 @mcp.tool()
 async def get_molecule():
     """
-    从 ChEMBL 数据库检索分子的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。要查找特定分子，请使用 'search_molecule' 工具。
+    Retrieves a default list of molecules from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input. To find specific molecules, use the 'search_molecule' tool.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的分子对象的默认列表。
+        A default list of molecule objects from the ChEMBL database.
     """
 
     try:
@@ -1504,15 +1507,15 @@ async def get_molecule():
 @mcp.tool()
 async def get_molecule_id(molecule_chembl_id: str):
     """
-    使用唯一的分子 ChEMBL ID 从 ChEMBL 数据库检索单个分子的详细信息。注意：此工具的命名（'_id'）与其他工具系列使用的 '_by_id' 约定不一致。
+    Retrieves the details for a single molecule from the ChEMBL database using its unique molecule ChEMBL ID. Note: The naming of this tool ('_id') is inconsistent with the '_by_id' convention used in other tool families.
     
     Args:
-        molecule_chembl_id: 分子的唯一 ChEMBL 标识符（字符串）。
+        molecule_chembl_id: The unique ChEMBL identifier (string) for the molecule.
     
     Query example: {"molecule_chembl_id": "CHEMBL6329"}
     
     Returns:
-        包含指定分子详细属性的字典。
+        A dictionary containing the detailed properties of the specified molecule.
     """
 
     try:
@@ -1527,15 +1530,15 @@ async def get_molecule_id(molecule_chembl_id: str):
 @mcp.tool()
 async def get_molecule_ids(molecule_chembl_ids: list[str]):
     """
-    使用唯一分子 ChEMBL ID 列表从 ChEMBL 数据库检索多个分子的详细信息。注意：此工具的命名（'_ids'）与其他工具系列使用的 '_by_ids' 约定不一致。
+    Retrieves detailed information for multiple molecules from the ChEMBL database using a list of their unique molecule ChEMBL IDs. Note: The naming of this tool ('_ids') is inconsistent with the '_by_ids' convention used in other tool families.
     
     Args:
-        molecule_chembl_ids: 分子的唯一 ChEMBL 标识符字符串列表。
+        molecule_chembl_ids: A list of unique ChEMBL identifier strings for the molecules.
     
     Query example: {"molecule_chembl_ids": ["CHEMBL6329", "CHEMBL19"]}
     
     Returns:
-        字典列表，每个字典包含指定分子的详细属性。
+        A list of dictionaries, where each dictionary contains the detailed properties of a specified molecule.
     """
 
     try:
@@ -1550,15 +1553,15 @@ async def get_molecule_ids(molecule_chembl_ids: list[str]):
 @mcp.tool()
 async def search_molecule(query_str: str):
     """
-    使用查询字符串在 ChEMBL 数据库中对分子执行全文搜索。可以搜索各种字段，如首选名称、同义词或其他分子属性。
+    Performs a full-text search for molecules in the ChEMBL database using a query string. This can search across various fields like the preferred name, synonyms, or other molecule properties.
     
     Args:
-        query_str: 搜索字符串，例如分子名称如 'METHAZOLAMIDE'。
+        query_str: The search string, e.g., a molecule name like 'METHAZOLAMIDE'.
     
     Query example: {"query_str": "METHAZOLAMIDE"}
     
     Returns:
-        与搜索查询匹配的分子对象列表。
+        A list of molecule objects that match the search query.
     """
 
     try:
@@ -1573,14 +1576,14 @@ async def search_molecule(query_str: str):
 @mcp.tool()
 async def get_molecule_form():
     """
-    从 ChEMBL 数据库检索分子形式的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。
+    Retrieves a default list of molecule forms from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的分子形式对象的默认列表。
+        A default list of molecule form objects from the ChEMBL database.
     """
 
     try:
@@ -1595,15 +1598,15 @@ async def get_molecule_form():
 @mcp.tool()
 async def get_molecule_form_id(molecule_chembl_id: str):
     """
-    使用唯一的分子 ChEMBL ID 从 ChEMBL 数据库检索给定分子的分子形式信息。注意：此工具的命名（'_id'）与其他工具系列使用的 '_by_id' 约定不一致。
+    Retrieves molecule form information for a given molecule from the ChEMBL database using its unique molecule ChEMBL ID. Note: The naming of this tool ('_id') is inconsistent with the '_by_id' convention used in other tool families.
     
     Args:
-        molecule_chembl_id: 分子的唯一 ChEMBL 标识符（字符串）。
+        molecule_chembl_id: The unique ChEMBL identifier (string) for the molecule.
     
     Query example: {"molecule_chembl_id": "CHEMBL6329"}
     
     Returns:
-        包含分子形式详细信息的字典列表。
+        A list containing a dictionary with the molecule form details.
     """
 
     try:
@@ -1620,15 +1623,15 @@ async def get_molecule_form_id(molecule_chembl_id: str):
 @mcp.tool()
 async def get_molecule_form_ids(molecule_chembl_ids: list[str]):
     """
-    使用唯一分子 ChEMBL ID 列表从 ChEMBL 数据库检索多个分子的分子形式信息。注意：此工具的命名（'_ids'）与其他工具系列使用的 '_by_ids' 约定不一致。
+    Retrieves molecule form information for multiple molecules from the ChEMBL database using a list of their unique molecule ChEMBL IDs. Note: The naming of this tool ('_ids') is inconsistent with the '_by_ids' convention used in other tool families.
     
     Args:
-        molecule_chembl_ids: 分子的唯一 ChEMBL 标识符字符串列表。
+        molecule_chembl_ids: A list of unique ChEMBL identifier strings for the molecules.
     
     Query example: {"molecule_chembl_ids": ["CHEMBL6329", "CHEMBL6328"]}
     
     Returns:
-        字典列表，每个字典包含给定输入 ID 的分子形式详细信息。
+        A list of dictionaries, where each dictionary contains the molecule form details for a given input ID.
     """
 
     try:
@@ -1645,14 +1648,14 @@ async def get_molecule_form_ids(molecule_chembl_ids: list[str]):
 @mcp.tool()
 async def get_organism():
     """
-    从 ChEMBL 数据库检索生物体的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。
+    Retrieves a default list of organisms from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的生物体对象的默认列表。
+        A default list of organism objects from the ChEMBL database.
     """
 
     try:
@@ -1665,15 +1668,15 @@ async def get_organism():
 @mcp.tool()
 async def get_organism_id(oc_id: int):
     """
-    使用唯一整数 ID 从 ChEMBL 数据库检索单个生物体的详细信息。注意：此工具的命名（'_id'）与其他工具系列使用的 '_by_id' 约定不一致。
+    Retrieves the details for a single organism from the ChEMBL database using its unique integer ID. Note: The naming of this tool ('_id') is inconsistent with the '_by_id' convention used in other tool families.
     
     Args:
-        oc_id: 生物体的唯一整数标识符。
+        oc_id: The unique integer identifier for the organism.
     
     Query example: {"oc_id": 1}
     
     Returns:
-        包含指定生物体详细属性的字典。
+        A dictionary containing the detailed properties of the specified organism.
     """
 
     try:
@@ -1688,15 +1691,15 @@ async def get_organism_id(oc_id: int):
 @mcp.tool()
 async def get_organism_ids(oc_ids: list[int]):
     """
-    使用唯一整数 ID 列表从 ChEMBL 数据库检索多个生物体的详细信息。注意：此工具的命名（'_ids'）与其他工具系列使用的 '_by_ids' 约定不一致。
+    Retrieves detailed information for multiple organisms from the ChEMBL database using a list of their unique integer IDs. Note: The naming of this tool ('_ids') is inconsistent with the '_by_ids' convention used in other tool families.
     
     Args:
-        oc_ids: 生物体的唯一整数标识符列表。
+        oc_ids: A list of unique integer identifiers for the organisms.
     
     Query example: {"oc_ids": [1, 2]}
     
     Returns:
-        字典列表，每个字典包含指定生物体的详细属性。
+        A list of dictionaries, where each dictionary contains the detailed properties of a specified organism.
     """
 
     try:
@@ -1711,14 +1714,14 @@ async def get_organism_ids(oc_ids: list[int]):
 @mcp.tool()
 async def get_protein_classification():
     """
-    从 ChEMBL 数据库检索蛋白质分类的默认列表。注意：此工具存在缺陷，不接受任何过滤参数，会忽略任何提供的输入。
+    Retrieves a default list of protein classifications from the ChEMBL database. Note: This tool is flawed as it does not accept any filtering parameters and ignores any provided input.
     
     Args:
     
     Query example: {}
     
     Returns:
-        来自 ChEMBL 数据库的蛋白质分类对象的默认列表。
+        A default list of protein classification objects from the ChEMBL database.
     """
 
     try:
@@ -1735,15 +1738,15 @@ async def get_protein_classification():
 @mcp.tool()
 async def get_protein_classification_id(protein_class_id: int):
     """
-    使用唯一整数 ID 从 ChEMBL 数据库检索单个蛋白质分类的详细信息。注意：此工具的命名（'_id'）与其他工具系列使用的 '_by_id' 约定不一致。
+    Retrieves the details for a single protein classification from the ChEMBL database using its unique integer ID. Note: The naming of this tool ('_id') is inconsistent with the '_by_id' convention used in other tool families.
     
     Args:
-        protein_class_id: 蛋白质分类的唯一整数标识符。
+        protein_class_id: The unique integer identifier for the protein classification.
     
     Query example: {"protein_class_id": 1}
     
     Returns:
-        包含指定蛋白质分类详细属性的字典。
+        A dictionary containing the detailed properties of the specified protein classification.
     """
 
     try:
@@ -1760,15 +1763,15 @@ async def get_protein_classification_id(protein_class_id: int):
 @mcp.tool()
 async def get_protein_classification_ids(protein_class_ids: list[int]):
     """
-    使用唯一整数 ID 列表从 ChEMBL 数据库检索多个蛋白质分类的详细信息。注意：此工具的命名（'_ids'）与其他工具系列使用的 '_by_ids' 约定不一致。
+    Retrieves detailed information for multiple protein classifications from the ChEMBL database using a list of their unique integer IDs. Note: The naming of this tool ('_ids') is inconsistent with the '_by_ids' convention used in other tool families.
     
     Args:
-        protein_class_ids: 蛋白质分类的唯一整数标识符列表。
+        protein_class_ids: A list of unique integer identifiers for the protein classifications.
     
     Query example: {"protein_class_ids": [0, 1]}
     
     Returns:
-        字典列表，每个字典包含指定蛋白质分类的详细属性。
+        A list of dictionaries, where each dictionary contains the detailed properties of a specified protein classification.
     """
 
     try:
@@ -1785,16 +1788,16 @@ async def get_protein_classification_ids(protein_class_ids: list[int]):
 @mcp.tool()
 async def search_protein_classification(query_str: str):
     """
-    使用查询字符串搜索 protein_classification 对象。
+    Search protein_classification object by query string.
     
     Args:
-        query_str: protein_classification 的查询字符串数据值（例如定义）
+        query_str: a value of query string data of protein_classification (e.g. definition)
         type: string
     
     Query example: {"query_str": "kinase"}
     
     Returns:
-        字典列表，每个字典包含分类详细信息，包括 protein_class_id、pref_name 和层次级别。
+        List of dictionaries, each with classification details including protein_class_id, pref_name and hierarchical levels.
     """
 
     try:
@@ -1811,18 +1814,18 @@ async def search_protein_classification(query_str: str):
 @mcp.tool()
 async def get_similarity_smiles(standard_inchi_key: str, similarity: int):
     """
-    通过 ID 检索单个相似度对象的详细信息。
+    Retrieve single similarity object details by ID.
     
     Args:
-        standard_inchi_key: 化合物的 IUPAC 标准 InChI 键
-        similarity: 指定相似度阈值的固定精度数值数据
+        standard_inchi_key: IUPAC standard InChI key for the compound
+        similarity: Fixed precision numeric data specifying similarity threshold
         type_of_standard_inchi_key: string
         type_of_similarity: integer
     
     Query example: {"standard_inchi_key": "CCO", "similarity": 85}
     
     Returns:
-        具有相似度分数和元数据的化合物列表
+        List of compounds with similarity score and metadata
     """
 
     try:
@@ -1839,12 +1842,12 @@ async def get_similarity_smiles(standard_inchi_key: str, similarity: int):
 @mcp.tool()
 async def get_source():
     """
-    检索 source 对象列表。
+    Retrieve source object list.
     
     Args:
     
     Returns:
-        包含 src_id、src_description、src_short_name 等的字典列表。
+        List of dictionaries with src_id, src_description, src_short_name etc.
     """
 
     try:
@@ -1857,16 +1860,16 @@ async def get_source():
 @mcp.tool()
 async def get_source_id(src_id: int):
     """
-    通过 ID 检索单个 source 对象的详细信息。
+    Retrieve single source object details by ID.
     
     Args:
-        src_id: 每个来源的标识符（用于 compound_records 和 assays 表）
+        src_id: Identifier for each source (used in compound_records and assays tables)
         type: integer
     
     Query example: {"src_id": 1}
     
     Returns:
-        包含 src_id、src_description 等的字典。
+        A dictionary containing src_id, src_description, etc.
     """
 
     try:
@@ -1879,16 +1882,16 @@ async def get_source_id(src_id: int):
 @mcp.tool()
 async def get_source_ids(src_ids: list[int]):
     """
-    通过 ID 列表检索多个 source 对象的详细信息。
+    Retrieve multiple source object details by IDs.
     
     Args:
-        src_ids: 来源的 src 标识符列表
+        src_ids: list of src identifier for source
         type: array
     
     Query example: {"src_ids": [1, 2, 3]}
     
     Returns:
-        来源字典列表，包括 src_short_name、src_comment、src_description
+        List of source dictionaries including src_short_name, src_comment, src_description
     """
 
     try:
@@ -1901,12 +1904,12 @@ async def get_source_ids(src_ids: list[int]):
 @mcp.tool()
 async def get_status():
     """
-    检索 status 对象列表。
+    Retrieve status object list.
     
     Args:
     
     Returns:
-        状态字典列表，包括 activities、chembl_db_version、chembl_release_date、compound_records、disinct_compounds、publications、status 和 targets
+        List of status dictionaries including activities, chembl_db_version, chembl_release_date, compound_records,  disinct_compounds, publications, status and targets
     """
 
     try:
@@ -1919,16 +1922,16 @@ async def get_status():
 @mcp.tool()
 async def substructure_info(molecule_chembl_id: str):
     """
-    通过 ID 检索单个子结构对象的详细信息。
+    Retrieve single substructure object details by ID.
     
     Args:
-        molecule_chembl_id: 子结构的 SMILES 字符串数据
+        molecule_chembl_id: SMILES string data of substructure
         type: string
     
     Query example: {"molecule_chembl_id": "c1ccccc1"}
     
     Returns:
-        化合物匹配列表，每个包含 molecule_chembl_id、pref_name、max_phase、molecule_type、first_approval、black_box_warning 等。
+        List of compound matches, each with molecule_chembl_id, pref_name, max_phase, molecule_type, first_approval, black_box_warning etc.
     """
 
     try:
@@ -1943,12 +1946,12 @@ async def substructure_info(molecule_chembl_id: str):
 @mcp.tool()
 async def get_target():
     """
-    检索 target 对象列表。
+    Retrieve target object list.
     
     Args:
     
     Returns:
-        包含 target_chembl_id、pref_name、organism、target_type、protein_classifications、target_components 等的字典列表。
+        List of dictionaries with target_chembl_id, pref_name, organism, target_type, protein_classifications, target_components etc.
     """
 
     try:
@@ -1961,7 +1964,7 @@ async def get_target():
 @mcp.tool()
 async def get_target_id(target_chembl_id: str):
     """
-    通过 ID 检索单个 target 对象的详细信息。
+    Retrieve single target object details by ID.
     
     Args:
         target_chembl_id: Target Chembl Id
@@ -1970,7 +1973,7 @@ async def get_target_id(target_chembl_id: str):
     Query example: {"target_chembl_id": "CHEMBL203"}
     
     Returns:
-        包含 target_chembl_id、pref_name、organism、target_type、包含蛋白质/登录号信息的 target_components、protein_classifications 的字典
+        Dictionary with target_chembl_id, pref_name, organism, target_type, target_components containing protein/accession info, protein_classifications
     """
 
     try:
@@ -1983,16 +1986,16 @@ async def get_target_id(target_chembl_id: str):
 @mcp.tool()
 async def get_target_ids(target_chembl_ids: list[str]):
     """
-    通过 ID 列表检索多个 target 对象。
+    Retrieve multiple target objects by IDs
     
     Args:
-        target_chembl_ids: target_chembl_ids 列表
+        target_chembl_ids: list of target_chembl_ids
         type: array
     
     Query example: {"target_chembl_ids": ["CHEMBL203", "CHEMBL240", "CHEMBL210"]}
     
     Returns:
-        包含 target_chembl_id、pref_name、organism、target_type、包含蛋白质/登录号信息的 target_components、protein_classifications 的字典列表
+        List of dictionaries with target_chembl_id, pref_name, organism, target_type, target_components containing protein/accession info, protein_classifications
     """
 
     try:
@@ -2005,16 +2008,16 @@ async def get_target_ids(target_chembl_ids: list[str]):
 @mcp.tool()
 async def search_target(query_str: str):
     """
-    使用查询字符串搜索 target。
+    Search target using query string.
     
     Args:
-        query_str: target 的字符串数据值（例如 pref_name）
+        query_str: a value of string data of target (e.g. pref_name)
         type: string
     
     Query example: {"query_str": "kinase"}
     
     Returns:
-        匹配的 target 列表，每个包含 target_chembl_id、pref_name、organism、target_type、protein_classifications、target_components
+        List of matching targets, each with target_chembl_id, pref_name, organism, target_type, protein_classifications, target_components
     """
 
     try:
@@ -2027,12 +2030,12 @@ async def search_target(query_str: str):
 @mcp.tool()
 async def get_target_component():
     """
-    检索 target_component 对象列表。
+    Retrieve target_component object list
     
     Args:
     
     Returns:
-        字典列表，每个描述一个靶点组件（通常是蛋白质或其他生物分子），包括 component_chembl_id、UniProt 登录号 ID、component_type、物种名称、蛋白质家族分类列表、结构或描述性注释等字段
+        A list of dictionaries, each describing a target component (usually a protein or other biomolecule), including fields such as component_chembl_id, UniProt accession ID, component_type, species name, list of protein family classifications, structural or descriptive annotations
     """
 
     try:
@@ -2049,16 +2052,16 @@ async def get_target_component():
 @mcp.tool()
 async def get_target_component_id(component_id: int):
     """
-    通过 ID 检索单个 target_component 对象的详细信息。
+    Retrieve single target_component object details by ID.
     
     Args:
-        component_id: ChEMBL 组件 ID
+        component_id: The ChEMBL component ID
         type: integer
     
     Query example: {"component_id": "135"}
     
     Returns:
-        包含指定靶点组件详细信息的字典，包括：component_chembl_id（唯一组件 ID）、UniProt 登录号、物种名称、component_type、序列、tax ID 或交叉引用等附加元数据
+        A dictionary containing detailed information about the specified target component, including: component_chembl_id: The unique component ID, the UniProt accession, the species name, component_type,  additional metadata such as sequence, tax ID, or cross-references
     """
 
     try:
@@ -2075,16 +2078,16 @@ async def get_target_component_id(component_id: int):
 @mcp.tool()
 async def get_target_component_ids(component_ids: list[int]):
     """
-    通过 ID 列表检索多个 target_component 对象的详细信息。
+    Retrieve multiple target_component object details by IDs.
     
     Args:
-        component_ids: 组件的唯一标识符列表
+        component_ids: A list of unique identifiers for the component
         type: array
     
     Query example: {"component_ids": [135, 136, 137]}
     
     Returns:
-        包含指定靶点组件详细信息的字典列表，包括：component_chembl_id（唯一组件 ID）、UniProt 登录号、物种名称、component_type、序列、tax ID 或交叉引用等附加元数据
+        A list of dictionaries containing detailed information about the specified target component, including: component_chembl_id: The unique component ID, the UniProt accession, the species name, component_type,  additional metadata such as sequence, tax ID, or cross-references
     """
 
     try:
@@ -2101,12 +2104,12 @@ async def get_target_component_ids(component_ids: list[int]):
 @mcp.tool()
 async def get_target_relation():
     """
-    检索 target relation 对象列表。
+    Retrieve target relation object list.
     
     Args:
     
     Returns:
-        字典列表，每个描述一个靶点到靶点的关系，包括来源和目标 ChEMBL ID、关系类型以及可用的置信度级别等信息。
+        A list of dictionaries, each describing a target-to-target relationship, including information such as source and target ChEMBL IDs, relationship type and confidence level if available.
     """
 
     try:
@@ -2121,7 +2124,7 @@ async def get_target_relation():
 @mcp.tool()
 async def get_target_relation_id(related_target_chembl_id: str):
     """
-    通过 ID 检索单个 target_relation 对象的详细信息。
+    Retrieve single target_relation object details by ID
     
     Args:
         related_target_chembl_id: Related Target Chembl Id
@@ -2130,7 +2133,7 @@ async def get_target_relation_id(related_target_chembl_id: str):
     Query example: {"related_target_chembl_id": "CHEMBL2096619"}
     
     Returns:
-        包含靶点关系信息的字典，包括来源和目标 ChEMBL ID、关系类型以及任何相关注释。
+        A dictionary containing information about the target relation, including source and target ChEMBL IDs, the type of relationship and any related annotations.
     """
 
     try:
@@ -2147,16 +2150,16 @@ async def get_target_relation_id(related_target_chembl_id: str):
 @mcp.tool()
 async def get_target_relation_ids(related_target_chembl_ids: list[str]):
     """
-    通过 ID 列表检索多个 target_relation 对象。
+    Retrieve multiple target_relation objects by IDs
     
     Args:
-        related_target_chembl_ids: related target chembl Ids 列表
+        related_target_chembl_ids: list of related target chembl Ids
         type: array
     
     Query example: {"related_target_chembl_ids": ["CHEMBL_TC_5607"]}
     
     Returns:
-        字典列表，每个描述一个靶点到靶点的关系。每个字典包括靶点关系的唯一 ID、来源靶点的 ChEMBL ID、相关（子）靶点的 ChEMBL ID、关系类型、可用的 confidence_score、target_relation_type 等附加元数据
+        A list of dictionaries, each describing a target-to-target relationship. Each dictionary includes the unique ID of the target relation ,the ChEMBL ID of the source target, the ChEMBL ID of the related (child) target, the type of relationship, additional metadata such as confidence_score, target_relation_type if available
     """
 
     try:
@@ -2173,12 +2176,12 @@ async def get_target_relation_ids(related_target_chembl_ids: list[str]):
 @mcp.tool()
 async def get_tissue():
     """
-    检索 tissue 对象列表。
+    Retrieve tissue object list
     
     Args:
     
     Returns:
-        字典列表，每个包含组织的信息，例如其 ChEMBL ID、名称、Uberon ID 和附加注释。
+        A list of dictionaries, each containing information about a tissue, such as its ChEMBL ID, name, Uberon ID, and additional annotations.
     """
 
     try:
@@ -2191,15 +2194,15 @@ async def get_tissue():
 @mcp.tool()
 async def get_tissue_id(tissue_chembl_id: str):
     """
-    通过 ID 检索单个 tissue 对象的详细信息。
+    Retrieve single tissue object details by ID.
     
     Args:
-        tissue_chembl_id: Unicode 字符串数据，例如 tissue_chembl_id（字符串）
+        tissue_chembl_id: Unicode string data, such as tissue_chembl_id(string)
     
     Query example: {"tissue_chembl_id": "CHEMBL3559723"}
     
     Returns:
-        包含组织信息的字典，例如其 pref_name、关联的 Uberon ID、bto_id、caloha_id、efo_id。
+        Dictionary containing information about the tissue, such as its pref_name, associated Uberon ID, bto_id, caloha_id, efo_id.
     """
 
     try:
@@ -2212,10 +2215,10 @@ async def get_tissue_id(tissue_chembl_id: str):
 @mcp.tool()
 async def get_tissue_ids(tissue_chembl_ids: list[str]):
     """
-    通过 ID 列表检索单个 tissue 对象的详细信息。
+    Retrieve single tissue object details by IDs.
     
     Args:
-        tissue_chembl_ids: unicode 字符串数据列表（Tissue Chembl Ids）
+        tissue_chembl_ids: list of unicode string data(Tissue Chembl Ids)
         type: array
     
     Query example: {"tissue_chembl_ids": ["CHEMBL3559723", "CHEMBL3307558", "CHEMBL3307556"]}
@@ -2231,12 +2234,12 @@ async def get_tissue_ids(tissue_chembl_ids: list[str]):
 @mcp.tool()
 async def get_xref_source():
     """
-    检索 xref_source 对象列表。
+    Retrieve xref_source object list
     
     Args:
     
     Returns:
-        字典列表，每个包含交叉引用来源的信息，例如其名称、描述、URL 和 ID 前缀。
+        A list of dictionaries, each containing information about a cross-reference source, such as its name, description, URL, and ID prefix.
     """
 
     try:
@@ -2251,16 +2254,16 @@ async def get_xref_source():
 @mcp.tool()
 async def get_xref_source_id(xref_src_db: str):
     """
-    通过 ID 检索单个 xref_source 对象的详细信息。
+    Retrieve single xref_source object details by ID.
     
     Args:
-        xref_src_db: 从 chembl 交叉引用的来源数据库名称
+        xref_src_db: Name of the source database that is cross-referenced from chembl
         type: string
     
     Query example: {"xref_src_db": "UniProt"}
     
     Returns:
-        包含 xref 来源详细信息的字典，例如名称、描述、URL 和 ID 前缀。
+        Dictionary containing details about the xref source, such as name, description, URL, and ID prefix.
     """
 
     try:
@@ -2275,15 +2278,15 @@ async def get_xref_source_id(xref_src_db: str):
 @mcp.tool()
 async def get_xref_source_ids(xref_src_dbs: list[str]):
     """
-    通过 ID 列表检索多个 xref_source 对象。
+    Retrieve multiple xref_source objects by IDs
     
     Args:
-        xref_src_dbs: 从 chembl 交叉引用的来源数据库名称列表（数组）
+        xref_src_dbs: list of Name of the source database that is cross-referenced from chembl(array)
     
     Query example: {"xref_src_dbs": ["PDB", "UniProt"]}
     
     Returns:
-        字典列表，每个包含一个 xref 来源的详细信息，例如名称、描述、URL 和 ID 前缀。
+        A list of dictionaries, each containing details about one xref source, such as name, description, URL, and ID prefix.
     """
 
     try:
@@ -2298,25 +2301,25 @@ async def get_xref_source_ids(xref_src_dbs: list[str]):
 @mcp.tool()
 async def get_image(chembl_id: str):
     """
-    获取由 ChEMBL ID 或标准 InChI 键指定的化合物图像。
-    您可以指定可选参数：
-    engine - 用于渲染的化学工具包，只能是 rdkit，默认：rdkit。
-    dimensions - 图像大小（正方形图像边的长度）。不能超过 500，默认：500。
-    ignoreCoords - 忽略 molfile 中编码的 2D 坐标，让化学工具包重新计算它们。
+    Get image of the compound, specified by ChEMBL ID or Standard InChI Key
+    You can specify optional parameters:
+    engine - chemistry toolkit used for rendering, can be rdkit only, default: rdkit.
+    dimensions - size of the image (the length of the square image side). Can't be more than 500, default: 500.
+    ignoreCoords - Ignore 2D coordinates encoded in the molfile and let the chemistry toolkit to recompute them.
     
     Args:
-        chembl_id: Chembl Id 或标准 InChI 键
+        chembl_id: Chembl Id or Standard InChI Key
         type_of_chembl_id: string
-        smiles(optional): 有效的 SMILES
+        smiles(optional): valid SMILES
         type_of_smiles(optional): string
-        engine(optional): 用于渲染的化学工具包，只能是 rdkit，默认：rdkit。
-        dimensions(optional): 图像大小（正方形图像边的长度）。不能超过 500，默认：500。
-        ignoreCoords(optional): 忽略 molfile 中编码的 2D 坐标，让化学工具包重新计算它们。
+        engine(optional): chemistry toolkit used for rendering, can be rdkit only, default: rdkit.
+        dimensions(optional): size of the image (the length of the square image side). Can't be more than 500, default: 500.
+        ignoreCoords(optional): Ignore 2D coordinates encoded in the molfile and let the chemistry toolkit to recompute them.
     
     Query example: {"chembl_id": "CHEMBL25"}
     
     Returns:
-        返回表示化合物 2D 化学结构的图像文件（通常为 PNG 格式）。
+        Returns an image file (typically PNG format) representing the compound's 2D chemical structure.
     """
 
     try:
@@ -2329,15 +2332,15 @@ async def get_image(chembl_id: str):
 @mcp.tool()
 async def get_compound_chembl_id_by_name(name: str):
     """
-    通过名称获取化合物 ChEMBL ID。
+    Get compound ChEMBL ID by name.
     
     Args:
-        name: 要搜索的化合物名称
+        name: The compound name to search for
         
     Query example: {"name": "aspirin"}
     
     Returns:
-        如果找到则返回化合物的 ChEMBL ID，否则返回 "No compound found"
+        The ChEMBL ID of the compound if found, otherwise "No compound found"
     """
     try:
         result = chembl_api.search_molecule(name)
@@ -2352,10 +2355,10 @@ async def get_compound_chembl_id_by_name(name: str):
 
 @mcp.prompt()
 def system_prompt():
-    """客户端的系统提示。"""
-    prompt = """您可以访问用于搜索 CHEMBL 的工具：ChEMBL 数据 Web 服务。
-    使用 API 工具提取相关信息。
-    如果用户未提供缺失的参数，请用合理的值填充。"""
+    """System prompt for client."""
+    prompt = """You have access to tools for searching CHEMBL: ChEMBL Data Web Services.
+    Use the API tools to extract the relevant information.
+    Fill in missing arguments with sensible values if the user hasn't provided them. """
     return prompt
 
 

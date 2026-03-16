@@ -1,36 +1,38 @@
 description = [
     {
-        "description": "通过整合治疗性遗传元件来改造细菌基因组以实现治疗递送",
+        "description": "Engineer a bacterial genome by integrating therapeutic genetic parts for therapeutic delivery.",
         "name": "engineer_bacterial_genome_for_therapeutic_delivery",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含FASTA格式细菌基因组序列的文件路径",
+                "description": "Path to the file containing the bacterial genome sequence in FASTA format",
                 "name": "bacterial_genome_file",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "包含要整合的遗传元件的字典（启动子、基因、终止子、载体）",
+                "description": "Dictionary containing genetic parts "
+                "to be integrated (promoters, genes, "
+                "terminators, cargo)",
                 "name": "genetic_parts",
                 "type": "dict",
             },
         ],
     },
     {
-        "description": "分析细菌生长数据并从OD600测量值中提取生长参数",
+        "description": "Analyze bacterial growth data and extract growth parameters from OD600 measurements.",
         "name": "analyze_bacterial_growth_rate",
         "optional_parameters": [
             {
                 "default": "Unknown strain",
-                "description": "正在分析的细菌菌株名称",
+                "description": "Name of the bacterial strain being analyzed",
                 "name": "strain_name",
                 "type": "str",
             },
             {
                 "default": "./",
-                "description": "保存输出文件的目录",
+                "description": "Directory where to save the output files",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -38,49 +40,49 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "进行OD600测量的时间点（小时）",
+                "description": "Time points at which OD600 measurements were taken (in hours)",
                 "name": "time_points",
                 "type": "List or numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "对应每个时间点的光密度（OD600）测量值",
+                "description": "Optical density (OD600) measurements corresponding to each time point",
                 "name": "od_measurements",
                 "type": "List or numpy.ndarray",
             },
         ],
     },
     {
-        "description": "分析测序数据以提取、量化和确定条形码的谱系关系",
+        "description": "Analyze sequencing data to extract, quantify and determine lineage relationships of barcodes.",
         "name": "analyze_barcode_sequencing_data",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "用于识别条形码的正则表达式模式。如果为None，将使用侧翼序列",
+                "description": "Regular expression pattern to identify barcodes. If None, will use flanking sequences",
                 "name": "barcode_pattern",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "条形码区域的5'侧翼序列",
+                "description": "5' flanking sequence of the barcode region",
                 "name": "flanking_seq_5prime",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "条形码区域的3'侧翼序列",
+                "description": "3' flanking sequence of the barcode region",
                 "name": "flanking_seq_3prime",
                 "type": "str",
             },
             {
                 "default": 5,
-                "description": "考虑条形码的最小计数阈值",
+                "description": "Minimum count threshold for considering a barcode",
                 "name": "min_count",
                 "type": "int",
             },
             {
                 "default": "./results",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -88,25 +90,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "FASTQ或FASTA格式的输入测序文件路径",
+                "description": "Path to the input sequencing file in FASTQ or FASTA format",
                 "name": "input_file",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "对动力系统执行分岔分析并生成分岔图",
+        "description": "Performs bifurcation analysis on a dynamical system and generates a bifurcation diagram.",
         "name": "analyze_bifurcation_diagram",
         "optional_parameters": [
             {
                 "default": "Dynamical System",
-                "description": "正在分析的动力系统名称，用于图表标题",
+                "description": "Name of the dynamical system being analyzed, used for plot titles.",
                 "name": "system_name",
                 "type": "str",
             },
             {
                 "default": "./",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save the output files.",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -114,25 +116,32 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "二维数组，其中每行表示特定参数值的时间序列。形状应为(n_parameter_values, n_time_points)",
+                "description": "A 2D array where each row "
+                "represents a time series for a "
+                "specific parameter value. Shape "
+                "should be (n_parameter_values, "
+                "n_time_points).",
                 "name": "time_series_data",
                 "type": "numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "对应每个时间序列的参数值的一维数组。形状应为(n_parameter_values,)",
+                "description": "1D array of parameter values "
+                "corresponding to each time series. "
+                "Shape should be "
+                "(n_parameter_values,).",
                 "name": "parameter_values",
                 "type": "numpy.ndarray",
             },
         ],
     },
     {
-        "description": "生成SBML格式的生化网络数学模型",
+        "description": "Generate a mathematical model of a biochemical network in SBML format.",
         "name": "create_biochemical_network_sbml_model",
         "optional_parameters": [
             {
                 "default": "biochemical_model.xml",
-                "description": "保存SBML模型的文件路径",
+                "description": "File path to save the SBML model",
                 "name": "output_file",
                 "type": "str",
             }
@@ -140,50 +149,60 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "表示反应的字典列表，包含id、name、reactants、products和reversible属性",
+                "description": "List of dictionaries representing "
+                "reactions with id, name, reactants, "
+                "products, and reversible properties",
                 "name": "reaction_network",
                 "type": "List[dict]",
             },
             {
                 "default": None,
-                "description": "将反应ID映射到动力学定律参数的字典，包含law_type和parameters",
+                "description": "Dictionary mapping reaction IDs to kinetic law parameters with law_type and parameters",
                 "name": "kinetic_parameters",
                 "type": "dict",
             },
         ],
     },
     {
-        "description": "分析和优化DNA/RNA序列以改善在异源宿主生物中的表达",
+        "description": "Analyzes and optimizes a DNA/RNA sequence for improved "
+        "expression in a heterologous host organism.",
         "name": "optimize_codons_for_heterologous_expression",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "要优化的目标基因的DNA或RNA序列。应包含完整的密码子（长度可被3整除）",
+                "description": "The DNA or RNA sequence of the "
+                "target gene to be optimized. Should "
+                "contain complete codons (length "
+                "divisible by 3).",
                 "name": "target_sequence",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "将密码子映射到其在宿主生物中使用频率的字典。格式：{'AUG': 0.8, 'GCC': 0.6, ...}或{'ATG': 0.8, 'GCC': 0.6, ...}",
+                "description": "Dictionary mapping codons to their "
+                "usage frequency in the host "
+                "organism. Format: {'AUG': 0.8, "
+                "'GCC': 0.6, ...} or {'ATG': 0.8, "
+                "'GCC': 0.6, ...}",
                 "name": "host_codon_usage",
                 "type": "dict",
             },
         ],
     },
     {
-        "description": "模拟具有生长反馈的基因调控回路动力学",
+        "description": "Simulate gene regulatory circuit dynamics with growth feedback.",
         "name": "simulate_gene_circuit_with_growth_feedback",
         "optional_parameters": [
             {
                 "default": 100,
-                "description": "总模拟时间",
+                "description": "Total simulation time",
                 "name": "simulation_time",
                 "type": "float",
             },
             {
                 "default": 1000,
-                "description": "要采样的时间点数量",
+                "description": "Number of time points to sample",
                 "name": "time_points",
                 "type": "int",
             },
@@ -191,37 +210,53 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "表示基因回路拓扑的邻接矩阵。正值表示激活，负值表示抑制。形状应为(n_genes, n_genes)，其中n_genes是回路中的基因数量",
+                "description": "Adjacency matrix representing the "
+                "gene circuit topology. Positive "
+                "values indicate activation, "
+                "negative values indicate "
+                "repression. Shape should be "
+                "(n_genes, n_genes) where n_genes is "
+                "the number of genes in the circuit.",
                 "name": "circuit_topology",
                 "type": "numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "包含动力学参数的字典：基因回路的'basal_rates'、'degradation_rates'、'hill_coefficients'和'threshold_constants'",
+                "description": "Dictionary containing kinetic "
+                "parameters: 'basal_rates', "
+                "'degradation_rates', "
+                "'hill_coefficients', and "
+                "'threshold_constants' for the gene "
+                "circuit.",
                 "name": "kinetic_params",
                 "type": "dict",
             },
             {
                 "default": None,
-                "description": "包含生长相关参数的字典：'max_growth_rate'、'growth_inhibition'和'gene_growth_weights'",
+                "description": "Dictionary containing "
+                "growth-related parameters: "
+                "'max_growth_rate', "
+                "'growth_inhibition', and "
+                "'gene_growth_weights'.",
                 "name": "growth_params",
                 "type": "dict",
             },
         ],
     },
     {
-        "description": "识别脂肪酸合酶（FAS）序列中的功能域并预测其作用",
+        "description": "Identifies functional domains within a Fatty Acid Synthase "
+        "(FAS) sequence and predicts their roles.",
         "name": "identify_fas_functional_domains",
         "optional_parameters": [
             {
                 "default": "protein",
-                "description": '提供的序列类型 - "protein"或"nucleotide"',
+                "description": 'Type of sequence provided - "protein" or "nucleotide"',
                 "name": "sequence_type",
                 "type": "str",
             },
             {
                 "default": "fas_domains_report.txt",
-                "description": "保存详细域报告的输出文件名",
+                "description": "Name of the output file to save the detailed domain report",
                 "name": "output_file",
                 "type": "str",
             },
@@ -229,7 +264,7 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "FAS基因的核苷酸或蛋白质序列",
+                "description": "The nucleotide or protein sequence of a FAS gene",
                 "name": "sequence",
                 "type": "str",
             }

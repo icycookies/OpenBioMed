@@ -1,17 +1,17 @@
 description = [
     {
-        "description": "使用 IUPred2A 预测蛋白质序列中的内在无序区域 (IDR)。",
+        "description": "Predicts intrinsically disordered regions (IDRs) in a protein sequence using IUPred2A.",
         "name": "predict_protein_disorder_regions",
         "optional_parameters": [
             {
                 "default": 0.5,
-                "description": "无序评分阈值，高于该阈值的残基被认为是无序的",
+                "description": "The disorder score threshold above which a residue is considered disordered",
                 "name": "threshold",
                 "type": "float",
             },
             {
                 "default": "disorder_prediction_results.csv",
-                "description": "保存每个残基无序评分的文件名",
+                "description": "Filename to save the per-residue disorder scores",
                 "name": "output_file",
                 "type": "str",
             },
@@ -19,25 +19,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "要分析的蛋白质的氨基酸序列",
+                "description": "The amino acid sequence of the protein to analyze",
                 "name": "protein_sequence",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "从荧光显微镜图像量化细胞形态和细胞骨架组织。",
+        "description": "Quantifies cell morphology and cytoskeletal organization from fluorescence microscopy images.",
         "name": "analyze_cell_morphology_and_cytoskeleton",
         "optional_parameters": [
             {
                 "default": "./results",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": "otsu",
-                "description": "细胞分割方法（'otsu'、'adaptive' 或 'manual'）",
+                "description": "Method for cell segmentation ('otsu', 'adaptive', or 'manual')",
                 "name": "threshold_method",
                 "type": "str",
             },
@@ -45,25 +45,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "荧光显微镜图像文件的路径",
+                "description": "Path to the fluorescence microscopy image file",
                 "name": "image_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "从显微镜图像序列量化组织变形和流动动力学。",
+        "description": "Quantify tissue deformation and flow dynamics from microscopy image sequence.",
         "name": "analyze_tissue_deformation_flow",
         "optional_parameters": [
             {
                 "default": "results",
-                "description": "保存结果的目录",
+                "description": "Directory to save results",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": 1.0,
-                "description": "像素的物理尺度（例如 μm/pixel），用于正确缩放度量",
+                "description": "Physical scale of pixels (e.g., μm/pixel) for proper scaling of metrics",
                 "name": "pixel_scale",
                 "type": "float",
             },
@@ -71,7 +71,10 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "显微镜图像序列（文件路径列表或 3D numpy 数组 [time, height, width]）",
+                "description": "Sequence of microscopy images "
+                "(either a list of file paths or a "
+                "3D numpy array [time, height, "
+                "width])",
                 "name": "image_sequence",
                 "type": "list or numpy.ndarray",
             }

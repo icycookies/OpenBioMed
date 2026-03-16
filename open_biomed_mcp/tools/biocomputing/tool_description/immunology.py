@@ -1,29 +1,29 @@
 description = [
     {
-        "description": "使用MACS2执行ATAC-seq峰值检测和差异可及性分析。",
+        "description": "Perform ATAC-seq peak calling and differential accessibility analysis using MACS2.",
         "name": "analyze_atac_seq_differential_accessibility",
         "optional_parameters": [
             {
                 "default": "./atac_results",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": "hs",
-                "description": "MACS2的基因组大小参数",
+                "description": "Genome size parameter for MACS2",
                 "name": "genome_size",
                 "type": "str",
             },
             {
                 "default": 0.05,
-                "description": "峰值检测的q值截断值",
+                "description": "q-value cutoff for peak detection",
                 "name": "q_value",
                 "type": "float",
             },
             {
                 "default": "atac",
-                "description": "输出文件名的前缀",
+                "description": "Prefix for output file names",
                 "name": "name_prefix",
                 "type": "str",
             },
@@ -31,25 +31,27 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含比对ATAC-seq读段的处理条件BAM文件路径",
+                "description": "Path to the treatment condition BAM file with aligned ATAC-seq reads",
                 "name": "treatment_bam",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "包含比对ATAC-seq读段的对照条件BAM文件路径",
+                "description": "Path to the control condition BAM file with aligned ATAC-seq reads",
                 "name": "control_bam",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "分析细菌生长曲线数据以确定生长参数，如倍增时间、生长速率和延滞期。",
+        "description": "Analyzes bacterial growth curve data to determine growth "
+        "parameters such as doubling time, growth rate, and lag "
+        "phase.",
         "name": "analyze_bacterial_growth_curve",
         "optional_parameters": [
             {
                 "default": ".",
-                "description": "保存输出文件的目录",
+                "description": "Directory where output files will be saved",
                 "name": "output_dir",
                 "type": "str",
             }
@@ -57,43 +59,43 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "测量的时间点（小时）",
+                "description": "Time points of measurements in hours",
                 "name": "time_points",
                 "type": "List or numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "对应每个时间点的光密度测量值",
+                "description": "Optical density measurements corresponding to each time point",
                 "name": "od_values",
                 "type": "List or numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "正在分析的细菌菌株名称",
+                "description": "Name of the bacterial strain being analyzed",
                 "name": "strain_name",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "模拟从组织样本中分离和纯化免疫细胞的过程。",
+        "description": "Simulates the isolation and purification of immune cells from tissue samples.",
         "name": "isolate_purify_immune_cells",
         "optional_parameters": [
             {
                 "default": "collagenase",
-                "description": "用于组织消化的酶",
+                "description": "The enzyme used for tissue digestion",
                 "name": "enzyme_type",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "用于磁性辅助细胞分选的特异性抗体",
+                "description": "Specific antibody for magnetic-assisted cell sorting",
                 "name": "macs_antibody",
                 "type": "str",
             },
             {
                 "default": 45,
-                "description": "消化时间（分钟）",
+                "description": "Digestion time in minutes",
                 "name": "digestion_time_min",
                 "type": "int",
             },
@@ -101,62 +103,67 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "组织样本类型（例如：'adipose'、'kidney'、'liver'、'lung'、'spleen'）",
+                "description": "The type of tissue sample (e.g., 'adipose', 'kidney', 'liver', 'lung', 'spleen')",
                 "name": "tissue_type",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要分离的免疫细胞群（例如：'macrophages'、'leukocytes'、'T cells'）",
+                "description": "The immune cell population to isolate (e.g., 'macrophages', 'leukocytes', 'T cells')",
                 "name": "target_cell_type",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "使用双核苷脉冲标记数据和数学建模估算细胞周期各阶段的持续时间。",
+        "description": "Estimate cell cycle phase durations using dual-nucleoside "
+        "pulse labeling data and mathematical modeling.",
         "name": "estimate_cell_cycle_phase_durations",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含EdU和BrdU标记流式细胞术实验数据的字典，包括时间点和标记细胞的百分比",
+                "description": "Dictionary containing experimental "
+                "data from flow cytometry with EdU "
+                "and BrdU labeling, including time "
+                "points and percentages of labeled "
+                "cells",
                 "name": "flow_cytometry_data",
                 "type": "dict",
             },
             {
                 "default": None,
-                "description": "细胞周期各阶段持续时间和死亡率的初始估计值",
+                "description": "Initial estimates for cell cycle phase durations and death rates",
                 "name": "initial_estimates",
                 "type": "dict",
             },
         ],
     },
     {
-        "description": "在流动条件下追踪免疫细胞并对其行为进行分类。",
+        "description": "Track immune cells under flow conditions and classify their behaviors.",
         "name": "track_immune_cells_under_flow",
         "optional_parameters": [
             {
                 "default": "./output",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": 1.0,
-                "description": "像素大小（微米）",
+                "description": "Pixel size in micrometers",
                 "name": "pixel_size_um",
                 "type": "float",
             },
             {
                 "default": 1.0,
-                "description": "帧间时间间隔（秒）",
+                "description": "Time interval between frames in seconds",
                 "name": "time_interval_sec",
                 "type": "float",
             },
             {
                 "default": "right",
-                "description": "流动方向（'right'、'left'、'up'、'down'）",
+                "description": "Direction of flow ('right', 'left', 'up', 'down')",
                 "name": "flow_direction",
                 "type": "str",
             },
@@ -164,25 +171,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "图像序列目录或视频文件的路径",
+                "description": "Path to image sequence directory or video file",
                 "name": "image_sequence_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "分析CFSE标记的细胞样本以量化细胞分裂和增殖。",
+        "description": "Analyze CFSE-labeled cell samples to quantify cell division and proliferation.",
         "name": "analyze_cfse_cell_proliferation",
         "optional_parameters": [
             {
                 "default": "FL1-A",
-                "description": "包含CFSE荧光数据的通道名称",
+                "description": "Name of the channel containing CFSE fluorescence data",
                 "name": "cfse_channel",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "用于淋巴细胞门控的元组（min_fsc, max_fsc, min_ssc, max_ssc）",
+                "description": "Tuple of (min_fsc, max_fsc, min_ssc, max_ssc) for lymphocyte gating",
                 "name": "lymphocyte_gate",
                 "type": "tuple or None",
             },
@@ -190,19 +197,19 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含CFSE标记细胞流式细胞术数据的FCS文件路径",
+                "description": "Path to the FCS file containing flow cytometry data from CFSE-labeled cells",
                 "name": "fcs_file_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "分析抗原刺激后CD4+ T细胞中的细胞因子产生（IFN-γ、IL-17）。",
+        "description": "Analyze cytokine production (IFN-γ, IL-17) in CD4+ T cells after antigen stimulation.",
         "name": "analyze_cytokine_production_in_cd4_tcells",
         "optional_parameters": [
             {
                 "default": "./results",
-                "description": "保存结果文件的目录",
+                "description": "Directory to save the results file",
                 "name": "output_dir",
                 "type": "str",
             }
@@ -210,19 +217,22 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "将刺激条件映射到FCS文件路径的字典。预期键：'unstimulated'、'Mtb300'、'CMV'、'SEB'",
+                "description": "Dictionary mapping stimulation "
+                "conditions to FCS file paths. "
+                "Expected keys: 'unstimulated', "
+                "'Mtb300', 'CMV', 'SEB'",
                 "name": "fcs_files_dict",
                 "type": "dict",
             }
         ],
     },
     {
-        "description": "分析ELISA数据以量化血浆/血清样本中的EBV抗体滴度。",
+        "description": "Analyze ELISA data to quantify EBV antibody titers in plasma/serum samples.",
         "name": "analyze_ebv_antibody_titers",
         "optional_parameters": [
             {
                 "default": "./",
-                "description": "保存输出文件的目录。",
+                "description": "Directory to save output files.",
                 "name": "output_dir",
                 "type": "str",
             }
@@ -230,37 +240,50 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含每个样本光密度（OD）读数的字典。格式：{sample_id: {'VCA_IgG': float, 'VCA_IgM': float, 'EA_IgG': float, 'EA_IgM': float, 'EBNA1_IgG': float, 'EBNA1_IgM': float}}",
+                "description": "Dictionary containing optical "
+                "density (OD) readings for each "
+                "sample. Format: {sample_id: "
+                "{'VCA_IgG': float, 'VCA_IgM': "
+                "float, 'EA_IgG': float, 'EA_IgM': "
+                "float, 'EBNA1_IgG': float, "
+                "'EBNA1_IgM': float}}",
                 "name": "raw_od_data",
                 "type": "dict",
             },
             {
                 "default": None,
-                "description": "包含每种抗体类型标准曲线数据的字典。格式：{antibody_type: [(concentration, OD), ...]}",
+                "description": "Dictionary containing standard "
+                "curve data for each antibody type. "
+                "Format: {antibody_type: "
+                "[(concentration, OD), ...]}",
                 "name": "standard_curve_data",
                 "type": "dict",
             },
             {
                 "default": None,
-                "description": "包含每个样本元数据的字典。格式：{sample_id: {'group': str, 'collection_date': str}}",
+                "description": "Dictionary containing metadata for "
+                "each sample. Format: {sample_id: "
+                "{'group': str, 'collection_date': "
+                "str}}",
                 "name": "sample_metadata",
                 "type": "dict",
             },
         ],
     },
     {
-        "description": "分析CNS病变的组织学图像以量化免疫细胞浸润、脱髓鞘和组织损伤。",
+        "description": "Analyzes histological images of CNS lesions to quantify "
+        "immune cell infiltration, demyelination, and tissue damage.",
         "name": "analyze_cns_lesion_histology",
         "optional_parameters": [
             {
                 "default": "./output",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": "H&E",
-                "description": "使用的组织学染色类型（选项：'H&E'、'LFB'、'IHC'）",
+                "description": 'Type of histological stain used (options: "H&E", "LFB", "IHC")',
                 "name": "stain_type",
                 "type": "str",
             },
@@ -268,25 +291,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "脑或脊髓组织切片显微镜图像文件的路径",
+                "description": "Path to the microscopy image file of brain or spinal cord tissue section",
                 "name": "image_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "分析免疫组织化学图像以量化蛋白质表达和空间分布。",
+        "description": "Analyzes immunohistochemistry images to quantify protein expression and spatial distribution.",
         "name": "analyze_immunohistochemistry_image",
         "optional_parameters": [
             {
                 "default": "Unknown",
-                "description": "正在分析的蛋白质名称",
+                "description": "Name of the protein being analyzed",
                 "name": "protein_name",
                 "type": "str",
             },
             {
                 "default": "./ihc_results/",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -294,7 +317,7 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "用抗体染色的组织切片显微镜图像的路径",
+                "description": "Path to the microscopy image of tissue section stained with antibodies",
                 "name": "image_path",
                 "type": "str",
             }

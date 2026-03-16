@@ -1,20 +1,20 @@
 def query_chatnt(question, sequence, device=-1):
     """
-    调用ChatNT来回答关于DNA序列的问题。
+    Call ChatNT to answer a question about a DNA sequence.
 
     Parameters:
     -----------
     question : str
-        关于DNA序列的问题
+        Question to ask about the DNA sequence
     sequence : str
-        待分析的DNA序列
+        DNA sequence to analyze
     device : int, optional
-        用于ChatNT模型的设备。默认为-1(CPU)。
+        Device to use for the ChatNT model. Default is -1 (CPU).
 
     Returns:
     --------
     str
-        问题的答案
+        Answer to the question
     """
     from transformers import pipeline
 
@@ -32,26 +32,28 @@ def query_chatnt(question, sequence, device=-1):
 
 def perform_flux_balance_analysis(model_file, constraints=None, objective_reaction=None, output_file="fba_results.csv"):
     """
-    对基因组规模代谢网络模型执行通量平衡分析(FBA)。
+    Perform Flux Balance Analysis (FBA) on a genome-scale metabolic network model.
 
-    FBA是一种通过制定和求解线性优化问题来预测代谢通量分布的计算技术。
+    FBA is a computational technique that predicts metabolic flux distributions
+    by formulating and solving a linear optimization problem.
 
     Parameters:
     -----------
     model_file : str
-        代谢模型文件路径(SBML或JSON格式)
+        Path to the metabolic model file (SBML or JSON format)
     constraints : dict, optional
-        反应约束字典,其中键为反应ID,值为(下界,上界)元组
+        Dictionary of reaction constraints where keys are reaction IDs and
+        values are tuples of (lower_bound, upper_bound)
     objective_reaction : str, optional
-        用作目标函数的反应ID(例如,生物量反应)
-        如果为None,则使用模型的默认目标
+        Reaction ID to use as the objective function (e.g., biomass reaction)
+        If None, uses the model's default objective
     output_file : str, optional
-        保存通量分布结果的文件名
+        File name to save the flux distribution results
 
     Returns:
     --------
     str
-        总结FBA过程和结果的研究日志
+        Research log summarizing the FBA process and results
     """
 
     import cobra
@@ -147,21 +149,21 @@ def perform_flux_balance_analysis(model_file, constraints=None, objective_reacti
 
 def model_protein_dimerization_network(monomer_concentrations, dimerization_affinities, network_topology):
     """
-    建模蛋白质二聚化网络以找到二聚体的平衡浓度。
+    Model protein dimerization networks to find equilibrium concentrations of dimers.
 
     Parameters:
     -----------
     monomer_concentrations : dict
-        将单体名称映射到其初始浓度(任意单位)的字典
+        Dictionary mapping monomer names to their initial concentrations (in arbitrary units)
     dimerization_affinities : dict
-        将二聚体名称(作为'A-B'字符串)映射到其结合常数(Ka)的字典
+        Dictionary mapping dimer names (as 'A-B' strings) to their association constants (Ka)
     network_topology : list of tuples
-        可以形成二聚体的(单体1,单体2)对列表
+        List of (monomer1, monomer2) pairs that can form dimers
 
     Returns:
     --------
     str
-        总结建模过程和结果的研究日志
+        Research log summarizing the modeling process and results
     """
     import time
 
@@ -293,28 +295,28 @@ def simulate_metabolic_network_perturbation(
     model_file, initial_concentrations, perturbation_params, simulation_time=100, time_points=1000
 ):
     """
-    构建和模拟代谢网络的动力学模型并分析其对扰动的响应。
+    Construct and simulate kinetic models of metabolic networks and analyze their responses to perturbations.
 
     Parameters:
     -----------
     model_file : str
-        COBRA模型文件路径(SBML格式)
+        Path to the COBRA model file (SBML format)
     initial_concentrations : dict
-        将代谢物ID映射到其初始浓度的字典
+        Dictionary mapping metabolite IDs to their initial concentrations
     perturbation_params : dict
-        包含以下键的字典:
-        - 'time': float,应用扰动的时间
-        - 'metabolite': str,待扰动代谢物的ID
-        - 'factor': float,代谢物浓度的乘法因子
+        Dictionary with the following keys:
+        - 'time': float, time at which perturbation is applied
+        - 'metabolite': str, ID of the metabolite to perturb
+        - 'factor': float, multiplication factor for the metabolite concentration
     simulation_time : float, optional
-        总模拟时间(默认:100)
+        Total simulation time (default: 100)
     time_points : int, optional
-        要模拟的时间点数量(默认:1000)
+        Number of time points to simulate (default: 1000)
 
     Returns:
     --------
     str
-        总结所采取步骤和获得结果的研究日志
+        Research log summarizing the steps taken and results obtained
     """
 
     import cobra
@@ -459,32 +461,32 @@ def simulate_protein_signaling_network(
     network_structure, reaction_params, species_params, simulation_time=100, time_points=1000
 ):
     """
-    使用基于ODE的逻辑建模和归一化Hill函数模拟蛋白质信号网络动力学。
+    Simulate protein signaling network dynamics using ODE-based logic modeling with normalized Hill functions.
 
     Parameters:
     -----------
     network_structure : dict
-        定义网络拓扑的字典。每个键是目标蛋白质,其值是元组列表
-        (调节因子,调节类型),其中调节类型为1表示激活,-1表示抑制。
+        Dictionary defining the network topology. Each key is a target protein and its value is a list of tuples
+        (regulator, regulation_type) where regulation_type is 1 for activation and -1 for inhibition.
 
     reaction_params : dict
-        反应参数字典。键为元组(调节因子,目标),值为字典,
-        包含键'W'(权重)、'n'(Hill系数)和'EC50'(半最大有效浓度)。
+        Dictionary of reaction parameters. Keys are tuples (regulator, target) and values are dictionaries
+        with keys 'W' (weight), 'n' (Hill coefficient), and 'EC50' (half-maximal effective concentration).
 
     species_params : dict
-        物种参数字典。键为蛋白质名称,值为字典,
-        包含键'tau'(时间常数)、'y0'(初始浓度)和'ymax'(最大浓度)。
+        Dictionary of species parameters. Keys are protein names and values are dictionaries
+        with keys 'tau' (time constant), 'y0' (initial concentration), and 'ymax' (maximum concentration).
 
     simulation_time : float, optional
-        任意时间单位的总模拟时间。默认为100。
+        Total simulation time in arbitrary time units. Default is 100.
 
     time_points : int, optional
-        模拟的时间点数量。默认为1000。
+        Number of time points for the simulation. Default is 1000.
 
     Returns:
     --------
     str
-        总结模拟过程和结果的研究日志。
+        Research log summarizing the simulation process and results.
     """
     import csv
 
@@ -602,25 +604,25 @@ def simulate_protein_signaling_network(
 
 def compare_protein_structures(pdb_file1, pdb_file2, chain_id1="A", chain_id2="A", output_prefix="protein_comparison"):
     """
-    比较两个蛋白质结构以识别结构差异和构象变化。
+    Compares two protein structures to identify structural differences and conformational changes.
 
     Parameters:
     -----------
     pdb_file1 : str
-        第一个PDB文件的路径
+        Path to the first PDB file
     pdb_file2 : str
-        第二个PDB文件的路径
+        Path to the second PDB file
     chain_id1 : str, optional
-        在第一个结构中分析的链ID(默认:'A')
+        Chain ID to analyze in the first structure (default: 'A')
     chain_id2 : str, optional
-        在第二个结构中分析的链ID(默认:'A')
+        Chain ID to analyze in the second structure (default: 'A')
     output_prefix : str, optional
-        输出文件的前缀(默认:"protein_comparison")
+        Prefix for output files (default: "protein_comparison")
 
     Returns:
     --------
     str
-        总结结构比较分析的研究日志
+        A research log summarizing the structural comparison analysis
     """
     import warnings
 
@@ -774,24 +776,24 @@ def simulate_renin_angiotensin_system_dynamics(
     initial_concentrations, rate_constants, feedback_params, simulation_time=48, time_points=100
 ):
     """
-    模拟肾素-血管紧张素系统(RAS)组分的时间依赖性浓度。
+    Simulate the time-dependent concentrations of renin-angiotensin system (RAS) components.
 
     Parameters:
     -----------
     initial_concentrations : dict
-        RAS组分的初始浓度,包含以下键:
+        Initial concentrations of RAS components with keys:
         'renin', 'angiotensinogen', 'angiotensin_I', 'angiotensin_II',
         'ACE2_angiotensin_II', 'angiotensin_1_7'
 
     rate_constants : dict
-        动力学速率常数,包含以下键:
-        'k_ren'(肾素产生),'k_agt'(血管紧张素原产生),
-        'k_ace'(ACE转化率),'k_ace2'(ACE2转化率),
-        'k_at1r'(AT1R结合率),'k_mas'(Mas受体结合率)
+        Kinetic rate constants with keys:
+        'k_ren' (renin production), 'k_agt' (angiotensinogen production),
+        'k_ace' (ACE conversion rate), 'k_ace2' (ACE2 conversion rate),
+        'k_at1r' (AT1R binding rate), 'k_mas' (Mas receptor binding rate)
 
     feedback_params : dict
-        控制反馈机制的参数,包含以下键:
-        'fb_ang_II'(血管紧张素II反馈),'fb_ace2' (ACE2 feedback)
+        Parameters controlling feedback mechanisms with keys:
+        'fb_ang_II' (angiotensin II feedback), 'fb_ace2' (ACE2 feedback)
 
     simulation_time : float, optional
         Total simulation time in hours (default: 48)
