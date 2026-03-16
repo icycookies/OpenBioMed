@@ -4,36 +4,36 @@ def optimize_anaerobic_digestion_process(
     target_output="methane_yield",
     optimization_method="rsm",
 ):
-    """优化厌氧消化过程条件以最大化VFA产量或甲烷产量。
+    """Optimize anaerobic digestion process conditions to maximize VFA production or methane yield.
 
-    参数
+    Parameters
     ----------
     waste_characteristics : dict
-        包含废物特性的字典，例如：
-        - total_solids (float): 总固体含量（%）
-        - volatile_solids (float): 挥发性固体含量（%）
-        - cod (float): 化学需氧量（mg/L）
+        Dictionary containing waste characteristics such as:
+        - total_solids (float): Total solids content (%)
+        - volatile_solids (float): Volatile solids content (%)
+        - cod (float): Chemical oxygen demand (mg/L)
 
     operational_parameters : dict
-        包含操作参数及其范围的字典：
-        - hrt (tuple): 水力停留时间范围（天）（最小值，最大值）
-        - olr (tuple): 有机负荷率范围（kg VS/(m³·d)）（最小值，最大值）
-        - if_ratio (tuple): 接种物与原料比范围（最小值，最大值）
-        - temperature (tuple): 温度范围（°C）（最小值，最大值）
-        - ph (tuple): pH范围（最小值，最大值）
+        Dictionary containing operational parameters and their ranges:
+        - hrt (tuple): Hydraulic retention time range in days (min, max)
+        - olr (tuple): Organic loading rate range in kg VS/(m³·d) (min, max)
+        - if_ratio (tuple): Inoculum-to-feedstock ratio range (min, max)
+        - temperature (tuple): Temperature range in °C (min, max)
+        - ph (tuple): pH range (min, max)
 
     target_output : str, optional
-        要最大化的目标输出，可以是'vfa_production'或'methane_yield'。
-        默认为'methane_yield'。
+        Target output to maximize, either 'vfa_production' or 'methane_yield'.
+        Default is 'methane_yield'.
 
     optimization_method : str, optional
-        用于优化的方法，可以是'rsm'（响应面方法）或
-        'genetic'（遗传算法）。默认为'rsm'。
+        Method used for optimization, either 'rsm' (Response Surface Methodology) or
+        'genetic' (Genetic Algorithm). Default is 'rsm'.
 
-    返回
+    Returns
     -------
     str
-        总结优化过程和结果的研究日志。
+        Research log summarizing the optimization process and results.
 
     """
     import matplotlib.pyplot as plt
@@ -254,23 +254,23 @@ def optimize_anaerobic_digestion_process(
 
 
 def analyze_arsenic_speciation_hplc_icpms(sample_data, sample_name="Unknown Sample", calibration_data=None):
-    """使用HPLC-ICP-MS技术分析液体样品中的砷形态。
+    """Analyzes arsenic speciation in liquid samples using HPLC-ICP-MS technique.
 
-    参数
+    Parameters
     ----------
     sample_data : dict
-        包含样品数据的字典，键为样品ID，值为字典，
-        其中保留时间（分钟）为键，信号强度为值。
+        Dictionary containing sample data with keys as sample IDs and values as dictionaries
+        with retention times (in minutes) as keys and signal intensities as values.
     sample_name : str, optional
-        正在分析的样品名称（默认："Unknown Sample"）
+        Name of the sample being analyzed (default: "Unknown Sample")
     calibration_data : dict, optional
-        包含每种砷形态已知浓度的校准标准数据的字典。
-        如果为None，将使用默认校准值。
+        Dictionary containing calibration standards data with known concentrations for each arsenic species.
+        If None, default calibration values will be used.
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志。
+        A research log summarizing the steps of the analysis and results.
 
     """
     from datetime import datetime
@@ -391,23 +391,23 @@ def analyze_arsenic_speciation_hplc_icpms(sample_data, sample_name="Unknown Samp
 
 
 def count_bacterial_colonies(image_path, dilution_factor=1, plate_area_cm2=65.0, output_dir="./output"):
-    """使用计算机视觉技术从琼脂平板图像中计数细菌菌落。
+    """Count bacterial colonies from an image of agar plate using computer vision techniques.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        包含琼脂平板上细菌菌落的图像文件路径
+        Path to the image file containing bacterial colonies on agar plate
     dilution_factor : float
-        平板样品的稀释因子（默认=1）
+        Dilution factor of the plated sample (default=1)
     plate_area_cm2 : float
-        琼脂平板的面积（平方厘米）（默认=65.0，标准培养皿）
+        Area of the agar plate in square centimeters (default=65.0, standard Petri dish)
     output_dir : str
-        保存输出图像和结果的目录（默认="./output"）
+        Directory to save output images and results (default="./output")
 
-    返回
+    Returns
     -------
     str
-        总结菌落计数过程和结果的研究日志
+        Research log summarizing the colony counting process and results
 
     """
     import os
@@ -534,27 +534,27 @@ def annotate_bacterial_genome(
     strain="",
     prefix="",
 ):
-    """使用Prokka注释细菌基因组以识别基因、蛋白质和功能特征。
+    """Annotate a bacterial genome using Prokka to identify genes, proteins, and functional features.
 
-    参数
+    Parameters
     ----------
     genome_file_path : str
-        FASTA格式的组装基因组序列文件路径
+        Path to the assembled genome sequence file in FASTA format
     output_dir : str, optional
-        保存注释结果的目录（默认："annotation_results"）
+        Directory where annotation results will be saved (default: "annotation_results")
     genus : str, optional
-        生物体的属名（默认：""）
+        Genus name for the organism (default: "")
     species : str, optional
-        生物体的种名（默认：""）
+        Species name for the organism (default: "")
     strain : str, optional
-        菌株标识符（默认：""）
+        Strain identifier (default: "")
     prefix : str, optional
-        输出文件的前缀（默认：""）
+        Prefix for output files (default: "")
 
-    返回
+    Returns
     -------
     str
-        总结注释过程和结果的研究日志
+        Research log summarizing the annotation process and results
 
     """
     import os
@@ -667,27 +667,27 @@ def enumerate_bacterial_cfu_by_serial_dilution(
     spots_per_dilution=3,
     output_file="cfu_enumeration_results.csv",
 ):
-    """使用系列稀释和点样平板法量化细菌浓度（CFU/mL）。
+    """Quantify bacterial concentration (CFU/mL) using serial dilutions and spot plating.
 
-    参数
+    Parameters
     ----------
     initial_sample_volume_ml : float
-        初始细菌样品的体积（毫升）
+        Volume of the initial bacterial sample in milliliters
     estimated_concentration : float
-        初始样品中细菌的估计浓度（CFU/mL）
+        Estimated concentration of bacteria in the initial sample (CFU/mL)
     dilution_factor : int
-        每次稀释降低浓度的因子（通常为10）
+        Factor by which each dilution reduces the concentration (typically 10)
     num_dilutions : int
-        要执行的系列稀释次数
+        Number of serial dilutions to perform
     spots_per_dilution : int
-        每次稀释要平板的重复点数
+        Number of replicate spots to plate for each dilution
     output_file : str
-        保存CFU计数结果的文件名
+        Filename to save the CFU enumeration results
 
-    返回
+    Returns
     -------
     str
-        总结CFU计数过程的研究日志
+        Research log summarizing the CFU enumeration process
 
     """
     import numpy as np
@@ -813,27 +813,27 @@ def model_bacterial_growth_dynamics(
     simulation_time=24,
     time_step=0.1,
 ):
-    """使用常微分方程对细菌种群动态随时间的变化进行建模。
+    """Model bacterial population dynamics over time using ordinary differential equations.
 
-    参数
+    Parameters
     ----------
     initial_population : float
-        初始细菌种群大小（CFU/ml或细胞数）
+        Initial bacterial population size (CFU/ml or cells)
     growth_rate : float
-        细菌生长率（每小时）
+        Bacterial growth rate (per hour)
     clearance_rate : float
-        细菌从系统中清除的速率（每小时）
+        Rate at which bacteria are cleared from the system (per hour)
     niche_size : float
-        环境的最大承载能力（CFU/ml或细胞数）
+        Maximum carrying capacity of the environment (CFU/ml or cells)
     simulation_time : float, optional
-        总模拟时间（小时）（默认：24）
+        Total simulation time in hours (default: 24)
     time_step : float, optional
-        模拟输出的时间步长（默认：0.1）
+        Time step for simulation output (default: 0.1)
 
-    返回
+    Returns
     -------
     str
-        总结细菌生长动态模拟的研究日志
+        Research log summarizing the bacterial growth dynamics simulation
 
     """
     import numpy as np
@@ -895,25 +895,25 @@ The complete population dynamics data has been saved to '{filename}'.
 
 
 def quantify_biofilm_biomass_crystal_violet(od_values, sample_names=None, control_index=0, save_path=None):
-    """使用结晶紫染色测定数据量化生物膜生物量。
+    """Quantifies biofilm biomass using crystal violet staining assay data.
 
-    参数
+    Parameters
     ----------
     od_values : list or numpy.ndarray
-        结晶紫染色的光密度测量值。
-        每个值代表样品的吸光度读数。
+        Optical density measurements from crystal violet staining.
+        Each value represents the absorbance reading for a sample.
     sample_names : list, optional
-        与od_values对应的生物膜样品名称。
-        如果为None，样品将标记为Sample 1、Sample 2等。
+        Names of the biofilm samples corresponding to od_values.
+        If None, samples will be labeled as Sample 1, Sample 2, etc.
     control_index : int, optional
-        od_values中阴性对照样品的索引。默认为0。
+        Index of the negative control sample in od_values. Default is 0.
     save_path : str, optional
-        保存结果的路径。如果为None，结果不会保存到文件。
+        Path to save the results. If None, results won't be saved to a file.
 
-    返回
+    Returns
     -------
     str
-        详细说明量化过程和结果的研究日志。
+        Research log detailing the quantification process and results.
 
     """
     import os
@@ -997,21 +997,21 @@ def quantify_biofilm_biomass_crystal_violet(od_values, sample_names=None, contro
 
 
 def segment_and_analyze_microbial_cells(image_path, output_dir="./output", min_cell_size=50):
-    """从荧光显微镜图像中执行自动细胞分割并量化形态学指标。
+    """Perform automated cell segmentation and quantify morphological metrics from fluorescence microscopy images.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        荧光显微镜图像文件的路径
+        Path to the fluorescence microscopy image file
     output_dir : str, optional
-        保存输出文件的目录（默认：'./output'）
+        Directory to save output files (default: './output')
     min_cell_size : int, optional
-        过滤噪声的最小细胞大小（像素）（默认：50）
+        Minimum cell size in pixels to filter noise (default: 50)
 
-    返回
+    Returns
     -------
     str
-        总结分割过程、计算的指标和输出文件路径的研究日志
+        Research log summarizing the segmentation process, metrics calculated, and output file paths
 
     """
     import os
@@ -1116,27 +1116,27 @@ def segment_cells_with_deep_learning(
     diameter=None,
     save_dir="segmentation_results",
 ):
-    """使用深度学习对荧光显微镜图像执行细胞分割。
+    """Perform cell segmentation on fluorescence microscopy images using deep learning.
 
-    使用Cellpose/Omnipose库中的预训练模型来识别和分割
-    荧光显微镜图像中的单个细胞。
+    Uses pre-trained models from the Cellpose/Omnipose library to identify and segment
+    individual cells in fluorescence microscopy images.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        荧光显微镜图像文件的路径
+        Path to the fluorescence microscopy image file
     model_type : str, optional
-        要使用的预训练模型名称（默认：'bact_fluor_omni'）
-        选项包括：'bact_fluor_omni'、'cyto'、'nuclei'等。
+        Name of the pre-trained model to use (default: 'bact_fluor_omni')
+        Options include: 'bact_fluor_omni', 'cyto', 'nuclei', etc.
     diameter : float, optional
-        细胞的预期直径（像素）。如果为None，将自动估计直径。
+        Expected diameter of cells in pixels. If None, diameter is automatically estimated.
     save_dir : str, optional
-        保存分割结果的目录（默认：'segmentation_results'）
+        Directory to save segmentation results (default: 'segmentation_results')
 
-    返回
+    Returns
     -------
     str
-        详细说明分割过程和结果的研究日志
+        Research log detailing the segmentation process and results
 
     """
     import os
@@ -1269,25 +1269,25 @@ def simulate_generalized_lotka_volterra_dynamics(
     time_points,
     output_file="glv_simulation_results.csv",
 ):
-    """使用广义Lotka-Volterra（gLV）模型模拟微生物群落动态。
+    """Simulate microbial community dynamics using the Generalized Lotka-Volterra (gLV) model.
 
-    参数
+    Parameters
     ----------
     initial_abundances : numpy.ndarray
-        每个微生物物种的初始丰度（一维数组）
+        Initial abundances of each microbial species (1D array)
     growth_rates : numpy.ndarray
-        每个微生物物种的内在生长率（一维数组）
+        Intrinsic growth rates for each microbial species (1D array)
     interaction_matrix : numpy.ndarray
-        相互作用系数矩阵，其中A[i,j]表示物种j对物种i的影响（二维数组）
+        Matrix of interaction coefficients where A[i,j] represents the effect of species j on species i (2D array)
     time_points : numpy.ndarray
-        评估模型的时间点
+        Time points at which to evaluate the model
     output_file : str, optional
-        保存模拟结果的文件名（默认："glv_simulation_results.csv"）
+        Filename to save the simulation results (default: "glv_simulation_results.csv")
 
-    返回
+    Returns
     -------
     str
-        总结模拟过程和结果的研究日志
+        Research log summarizing the simulation process and results
 
     """
     import numpy as np
@@ -1353,19 +1353,19 @@ Simulation results have been saved to: {output_file}
 
 
 def predict_rna_secondary_structure(rna_sequence, output_prefix="rna_structure"):
-    """使用ViennaRNA预测RNA分子的二级结构。
+    """Predict the secondary structure of an RNA molecule using ViennaRNA.
 
-    参数
+    Parameters
     ----------
     rna_sequence : str
-        RNA序列（由A、U、G、C核苷酸组成）
+        The RNA sequence (consisting of A, U, G, C nucleotides)
     output_prefix : str, optional
-        输出文件的前缀（默认："rna_structure"）
+        Prefix for output files (default: "rna_structure")
 
-    返回
+    Returns
     -------
     str
-        总结预测过程和结果的研究日志
+        A research log summarizing the prediction process and results
 
     """
     try:
@@ -1437,29 +1437,29 @@ def simulate_microbial_population_dynamics(
     num_simulations=100,
     time_points=100,
 ):
-    """使用Gillespie算法执行微生物种群动态的随机模拟。
+    """Performs stochastic simulation of microbial population dynamics using the Gillespie algorithm.
 
-    参数
+    Parameters
     ----------
     initial_populations : list of int
-        每个微生物物种的初始种群大小
+        Initial population sizes for each microbial species
     growth_rates : list of float
-        每个物种的人均生长率
+        Per capita growth rates for each species
     clearance_rates : list of float
-        每个物种的人均死亡/清除率
+        Per capita death/clearance rates for each species
     carrying_capacities : list of float
-        每个物种的最大可持续种群
+        Maximum sustainable population for each species
     max_time : float, optional
-        最大模拟时间（默认：100）
+        Maximum simulation time (default: 100)
     num_simulations : int, optional
-        要运行的随机模拟次数（默认：100）
+        Number of stochastic simulations to run (default: 100)
     time_points : int, optional
-        记录轨迹的时间点数量（默认：100）
+        Number of time points to record for trajectories (default: 100)
 
-    返回
+    Returns
     -------
     str
-        总结模拟结果的研究日志，包括灭绝概率和时间线
+        Research log summarizing the simulation results, including extinction probabilities and timelines
 
     """
     import numpy as np

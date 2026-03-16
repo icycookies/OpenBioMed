@@ -1,16 +1,24 @@
+"""
+Glycoengineering tools: quick, dependency-light utilities for glycosylation analysis
+and curated links to external, specialized software referenced in issue #198.
+
+Functions return research-log style strings to match Biomni tool patterns.
+"""
+
+
 def find_n_glycosylation_motifs(sequence: str, allow_overlap: bool = False) -> str:
-    """扫描蛋白质序列以查找N-连接糖基化序列基序 (N-X-[S/T])。
+    """Scan a protein sequence for N-linked glycosylation sequons (N-X-[S/T]).
 
-    规则
-    - 基序: 天冬酰胺 (N) 后跟任意残基（脯氨酸 (P) 除外），再后跟丝氨酸 (S) 或苏氨酸 (T)
-    - 默认情况下，重叠匹配不会被报告两次
+    Rules
+    - Motif: Asn (N) followed by any residue except Proline (P), followed by Serine (S) or Threonine (T)
+    - By default, overlapping matches are not reported twice
 
-    参数
-    - sequence: 蛋白质序列（单字母氨基酸代码）
-    - allow_overlap: 如果为 True，允许检测重叠基序
+    Parameters
+    - sequence: protein sequence (one-letter amino-acid codes)
+    - allow_overlap: if True, allow overlapping motif detection
 
-    返回
-    - 研究日志字符串，总结基序位置和计数
+    Returns
+    - Research log string summarizing motif locations and counts
     """
     seq = (sequence or "").upper()
     results: list[dict] = []
@@ -44,21 +52,21 @@ def predict_o_glycosylation_hotspots(
     min_st_fraction: float = 0.4,
     disallow_proline_next: bool = True,
 ) -> str:
-    """启发式O-糖基化热点评分。
+    """Heuristic O-glycosylation hotspot scoring.
 
-    背景
-    - O-GalNAc糖基化经常发生在富含Ser/Thr的片段上。
-    - 这个轻量级启发式方法标记局部窗口中富含S/T的残基。
-    - 不能替代NetOGlyc；作为快速、无依赖的基线提供。
+    Background
+    - O-GalNAc glycosylation frequently occurs on Ser/Thr-rich segments.
+    - This lightweight heuristic flags residues in local windows enriched for S/T.
+    - Not a substitute for NetOGlyc; provided as a fast, dependency-free baseline.
 
-    参数
-    - sequence: 蛋白质序列（单字母氨基酸代码）
-    - window: 用于局部S/T密度的奇数窗口大小（默认7）
-    - min_st_fraction: 窗口中标记位点所需的最小S/T比例（0..1）
-    - disallow_proline_next: 如果为True，避免标记紧跟脯氨酸的S/T
+    Parameters
+    - sequence: protein sequence (one-letter AA codes)
+    - window: odd window size for local S/T density (default 7)
+    - min_st_fraction: minimum S/T fraction in window to flag sites (0..1)
+    - disallow_proline_next: if True, avoid flagging S/T immediately followed by Proline
 
-    返回
-    - 包含候选位点和评分的研究日志字符串
+    Returns
+    - Research log string with candidate sites and scores
     """
     if window < 3 or window % 2 == 0:
         window = 7
@@ -105,10 +113,10 @@ def predict_o_glycosylation_hotspots(
 
 
 def list_glycoengineering_resources() -> str:
-    """整理和总结外部糖工程工具和资源。
+    """Curate and summarize external glycoengineering tools and resources.
 
-    包括问题 #198 中引用的链接和简要使用说明。
-    返回研究日志样式的摘要，包含供进一步使用的URL。
+    Includes links referenced in issue #198 and brief usage notes.
+    Returns a research-log style summary with URLs for further use.
     """
     lines = ["# Glycoengineering tools and resources (curated)"]
     lines.append("")

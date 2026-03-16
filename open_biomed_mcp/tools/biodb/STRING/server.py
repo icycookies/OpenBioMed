@@ -12,16 +12,17 @@ string_api = StringAPI()
 
 @mcp.tool()
 async def mapping_identifiers(genes: list[str], species: int):
-    """将常见的蛋白质名称、同义词和 UniProt 标识符映射到 STRING 标识符。
+    """
+    Maps common protein names, synonyms and UniProt identifiers into STRING identifiers
     
     Args:
-        genes: 基因名称列表，必需（数组）
-        species: NCBI/STRING 分类单元编号（整数）
+        genes: A list of names of the genes, required (array)
+        species: A number of NCBI/STRING taxon (integer)
     
     Query example: {"genes": ["TP53", "BRCA1"], "species": 9606}
     
     Returns:
-        包含基因 STRING 标识符的字典列表
+        List of dictionaries containing STRING identifiers for genes
     """
 
     try:
@@ -40,35 +41,36 @@ async def get_string_network_interaction(
     network_type: str,
     show_query_node_labels: int,
 ):
-    """检索一个或多个蛋白质的 STRING 相互作用网络，以各种文本格式呈现。
-    它将告诉你该蛋白质集的综合得分以及所有通道特定得分。
-    你还可以通过设置 "add_nodes" 来扩展网络邻域，这将按置信度顺序向你的网络添加新的相互作用伙伴。
+    """
+    Retrieve STRING interaction network for one or multiple proteins in various text formats.
+    It will tell you the combined score and all the channel specific scores for the set of proteins.
+    You can also extend the network neighborhood by setting "add_nodes", which will add, to your network, new interaction partners in order of their confidence.
     
     Args:
-        identifiers: 多个项目列表的必需参数（数组）
-        species: NCBI/STRING 分类单元编号（例如人类为 9606，或小鼠为 STRG0A10090）（整数）
-        required_score: 过滤低质量相互作用，介于 0 和 1000 之间的数字（整数）
-        add_nodes: 除初始查询基因外添加的关联基因数量（整数）
-        network_type: 网络类型：functional（默认）、physical（字符串）
-        show_query_node_labels: 是否在结果中标记查询基因（1 表示是，0 表示否）（整数）
+        identifiers: required parameter for a list of multiple items (array)
+        species: A number of NCBI/STRING taxon (e.g. 9606 for human, or STRG0A10090 for house mouse) (integer)
+        required_score:  Filtering low-quality interactions ,a number between 0 and 1000 (integer)
+        add_nodes: Number of associated genes added in addition to the initial query genesAdd Nodes (integer)
+        network_type: network type: functional (default), physical (string)
+        show_query_node_labels: Whether to label the query gene in the result (1 for yes, 0 for no) (integer)
     
     Query example: {"identifiers": ["TP53", "BRCA1"], "species": 9606, "required_score": 700, "add_nodes": 5, "network_type": "physical", "show_query_node_labels": 1}
     
     Returns:
-        包含以下字段的字典：
-        stringId_A:     STRING 标识符（蛋白质 A）
-        stringId_B:     STRING 标识符（蛋白质 B）
-        preferredName_A: 常见蛋白质名称（蛋白质 A）
-        preferredName_B: 常见蛋白质名称（蛋白质 B）
-        ncbiTaxonId: NCBI 分类单元标识符
-        score:  综合得分
-        nscore: 基因邻域得分
-        fscore: 基因融合得分
-        pscore: 系统发育谱得分
-        ascore: 共表达得分
-        escore: 实验得分
-        dscore: 数据库得分
-        tscore: 文本挖掘得分
+        A dictionary containing the following fields:
+        stringId_A:     STRING identifier (protein A)
+        stringId_B:     STRING identifier (protein B)
+        preferredName_A: common protein name (protein A)
+        preferredName_B: common protein name (protein B)
+        ncbiTaxonId: NCBI taxon identifier
+        score:  combined score
+        nscore: gene neighborhood score
+        fscore: gene fusion score
+        pscore: phylogenetic profile score
+        ascore: coexpression score
+        escore: experimental score
+        dscore: database score
+        tscore: textmining score
     """
 
     try:
@@ -97,31 +99,32 @@ async def get_all_interaction_partners_of_the_protein_set(
     required_score: int,
     network_type: str,
 ):
-    """此方法提供你提供的蛋白质集与所有其他 STRING 蛋白质之间的相互作用。
-    由于 STRING 网络通常有很多低得分的相互作用，你可能希望使用 "limit" 参数限制每个蛋白质检索的相互作用伙伴数量。
+    """
+    This method provides the interactions between your provided set of proteins and all the other STRING proteins.
+    As STRING network usually has a lot of low scoring interactions, you may want to limit the number of retrieved interaction per protein using "limit" parameter.
     
     Args:
-        identifiers: 多个项目列表的必需参数
-        species: NCBI/STRING 分类单元（例如人类为 9606，或 STRG0AXXXXX）
-        limit: 限制每个蛋白质检索的相互作用伙伴数量（最可信的相互作用优先）
-        required_score: 包含相互作用的显著性阈值，介于 0 和 1000 之间的数字（默认取决于网络）
-        network_type: 网络类型：functional（默认）、physical
+        identifiers:required parameter for a list of multiple items
+        species:NCBI/STRING taxon (e.g. 9606 for human, or STRG0AXXXXX).
+        limit:  limits the number of interaction partners retrieved per protein (most confident interactions come first)
+        required_score: threshold of significance to include a interaction, a number between 0 and 1000 (default depends on the network)
+        network_type:   network type: functional (default), physical
         
     Returns:
-        包含以下字段的字典：
-        stringId_A:     STRING 标识符（蛋白质 A）
-        stringId_B:     STRING 标识符（蛋白质 B）
-        preferredName_A: 常见蛋白质名称（蛋白质 A）
-        preferredName_B: 常见蛋白质名称（蛋白质 B）
-        ncbiTaxonId: NCBI 分类单元标识符
-        score:  综合得分
-        nscore: 基因邻域得分
-        fscore: 基因融合得分
-        pscore: 系统发育谱得分
-        ascore: 共表达得分
-        escore: 实验得分
-        dscore: 数据库得分
-        tscore: 文本挖掘得分
+        A dictionary containing the following fields:
+        stringId_A:     STRING identifier (protein A)
+        stringId_B:     STRING identifier (protein B)
+        preferredName_A:common protein name (protein A)
+        preferredName_B:common protein name (protein B)
+        ncbiTaxonId:NCBI taxon identifier
+        score:  combined score
+        nscore: gene neighborhood score
+        fscore: gene fusion score
+        pscore: phylogenetic profile score
+        ascore: coexpression score
+        escore: experimental score
+        dscore: database score
+        tscore: textmining score
     
     Query example: {"identifiers": ["TP53", "BRCA1"], "species": 9606, "limit": 20, "required_score": 700, "network_type": "physical"}
     """
@@ -145,22 +148,23 @@ async def get_all_interaction_partners_of_the_protein_set(
 
 @mcp.tool()
 async def get_similarity_scores_of_the_protein_set(identifiers: list[str], species: int):
-    """STRING 内部使用 Smith-Waterman 比特分数作为蛋白质同源性的代理。
-    使用此 API，你可以检索所选物种中蛋白质之间的这些分数。
-    它们是对称的，意味着 A->B 等于 B->A。
-    我们不存储或报告同源性的比特分数截止值为 50。
+    """
+    STRING internally uses the Smith-Waterman bit scores as a proxy for protein homology.
+    Using this API you can retrieve these scores between the proteins in a selected species.
+    They are symmetric,meaning A->B is equal to B->A.
+    The bit score cut-off below which we do not store or report homology is 50.
     
     Args:
-        identifiers: 多个项目列表的必需参数
-        species: NCBI/STRING 分类单元（例如人类为 9606，或 STRG0AXXXXX）
+        identifiers:required parameter for a list of multiple items
+        species:NCBI/STRING taxon (e.g. 9606 for human, or STRG0AXXXXX)
         
     Returns:
-        包含以下字段的字典：
-        ncbiTaxonId_A:  NCBI 分类单元标识符（蛋白质 A）
-        stringId_A:     STRING 标识符（蛋白质 A）
-        ncbiTaxonId_B:  NCBI 分类单元标识符（蛋白质 B）
-        stringId_B:     STRING 标识符（蛋白质 B）
-        bitscore: Smith-Waterman 比对比特分数
+        A dictionary containing the following fields:
+        ncbiTaxonId_A:  NCBI taxon identifier (protein A)
+        stringId_A:     STRING identifier (protein A)
+        ncbiTaxonId_B:  NCBI taxon identifier (protein B)
+        stringId_B:     STRING identifier (protein B)
+        bitscore: Smith-Waterman alignment bit score
     
     Query example: {"identifiers": ["Syp", "Dlg4", "Grin2b"], "species": 10090}
     """
@@ -180,20 +184,21 @@ async def get_similarity_scores_of_the_protein_set(identifiers: list[str], speci
 
 @mcp.tool()
 async def get_best_similarity_hits_between_species(identifiers: list[str], species: int, species_b: list[int]):
-    """检索从你的输入蛋白质到每个 STRING 物种中最佳（最）相似蛋白质的相似性。
+    """
+    Retrieve the similarity from your input protein(s) to the best (most) similar protein from each STRING species.
     
     Args:
-        identifiers: 多个项目列表的必需参数
-        species: 指定输入标识符的物种（例如人类为 9606，或 STRG0AXXXXX）
-        species_b: 要比较的目标物种的 NCBI 分类单元标识符列表，用 "%0d" 分隔（例如人类、果蝇和酵母为 "9606%0d7227%0d4932"）
+        identifiers:required parameter for a list of multiple items
+        species:Specify the species of the input identifier (e.g. 9606 for human, or STRG0AXXXXX)
+        species_b: a list of NCBI taxon identifiers of the target species to be compared ,seperated by "%0d" (e.g. human, fly and yeast would be "9606%0d7227%0d4932")
         
     Returns:
-        包含以下字段的字典：
-        ncbiTaxonId_A:  NCBI 分类单元标识符（蛋白质 A）
-        stringId_A:     STRING 标识符（蛋白质 A）要比较的目标物种的分类学 ID
-        ncbiTaxonId_B:  NCBI 分类单元标识符（蛋白质 B）
-        stringId_B:     STRING 标识符（蛋白质 B）
-        bitscore:       Smith-Waterman 比对比特分数
+        A dictionary containing the following fields:
+        ncbiTaxonId_A:  NCBI taxon identifier (protein A)
+        stringId_A:     STRING identifier (protein A)Taxonomy ID of the target species to be compared
+        ncbiTaxonId_B:  NCBI taxon identifier (protein B)
+        stringId_B:     STRING identifier (protein B)
+        bitscore:       Smith-Waterman alignment bit score
     
     Query example: {"identifiers": ["TP53", "BRCA1"], "species": 9606, "species_b": [10090, 10116]}
     """
@@ -213,25 +218,26 @@ async def get_best_similarity_hits_between_species(identifiers: list[str], speci
 
 @mcp.tool()
 async def get_functional_enrichment(identifiers: list[str], species: int, background_string_identifiers: str):
-    """STRING 将多个数据库映射到其蛋白质上，包括：Gene Ontology、KEGG 通路、UniProt 关键词、PubMed 出版物、Pfam 结构域、InterPro 结构域和 SMART 结构域。
-    STRING 富集 API 方法允许你检索任何输入蛋白质集的功能富集。
-    它将告诉你哪些输入蛋白质具有富集的术语以及该术语的描述。
-    API 提供原始 p 值以及错误发现率（B-H 校正的 p 值）。
+    """
+    STRING maps several databases onto its proteins, this includes: Gene Ontology, KEGG pathways, UniProt Keywords, PubMed publications, Pfam domains, InterPro domains, and SMART domains.
+    The STRING enrichment API method allows you to retrieve functional enrichment for any set of input proteins.
+    It will tell you which of your input proteins have an enriched term and the term's description.
+    The API provides the raw p-values, as well as, False Discovery Rate (B-H corrected p-values).
     Args:
-        identifiers: 多个项目列表的必需参数
-        background_string_identifiers: 使用此参数，你可以指定实验的背景蛋白质组。只识别 STRING 标识符（每个必须用 "%0d" 分隔），例如 '7227.FBpp0077451%0d7227.FBpp0074373'。你可以使用映射标识符方法映射 STRING 标识符。
-        species: NCBI/STRING 分类单元（例如人类为 9606，或 STRG0AXXXXX）
+        identifiers:required parameter for a list of multiple items
+        background_string_identifiers:	using this parameter you can specify the background proteome of your experiment. Only STRING identifiers will be recognised (each must be seperated by "%0d") e.g. '7227.FBpp0077451%0d7227.FBpp0074373'. You can map STRING identifiers using mapping identifiers method.
+        species:NCBI/STRING taxon (e.g. 9606 for human, or STRG0AXXXXX)
     Returns:
-        category: 术语类别（例如 GO 过程、KEGG 通路）
-        term: 富集术语（GO 术语、结构域或通路）
-        number_of_genes: 输入列表中分配了该术语的基因数量
-        number_of_genes_in_background: 背景蛋白质组中分配了该术语的基因总数
-        ncbiTaxonId: NCBI 分类单元标识符
-        inputGenes: 来自你输入的基因名称
-        preferredNames: 常见蛋白质名称（与输入基因顺序相同）
-        p_value: 原始 p 值
-        fdr: 错误发现率
-        description: 富集术语的描述
+        category:term category (e.g. GO Process, KEGG pathways)
+        term:enriched term (GO term, domain or pathway)
+        number_of_genes:number of genes in your input list with the term assigned
+        number_of_genes_in_background:total number of genes in the background proteome with the term assigned
+        ncbiTaxonId:NCBI taxon identifier
+        inputGenes:	gene names from your input
+        preferredNames:	common protein names (in the same order as your input Genes)
+        p_value:raw p-value
+        fdr:False Discovery Rate
+        description:description of the enriched term
     """
     try:
         result = string_api.get_functional_enrichment(
@@ -250,24 +256,25 @@ async def get_functional_enrichment(identifiers: list[str], species: int, backgr
 
 @mcp.tool()
 async def get_functional_annotation(identifiers: list[str], species: int, allow_pubmed: int, only_pubmed: int):
-    """STRING 将多个数据库映射到其蛋白质上，包括：Gene Ontology、KEGG 通路、UniProt 关键词、PubMed 出版物、Pfam 结构域、InterPro 结构域和 SMART 结构域。
+    """
+    STRING maps several databases onto its proteins, this includes: Gene Ontology, KEGG pathways, UniProt Keywords, PubMed publications, Pfam domains, InterPro domains, and SMART domains.
     
     Args:
-        identifiers: 多个项目列表的必需参数
-        species: NCBI/STRING 分类单元（例如人类为 9606，或 STRG0AXXXXX，参见：STRING 生物体）
-        allow_pubmed: 1 表示除其他类别外还打印 PubMed 注释，默认为 0
-        only_pubmed: 1 表示仅打印 PubMed 注释，默认为 0
+        identifiers:required parameter for a list of multiple items
+        species:NCBI/STRING taxon (e.g. 9606 for human, or STRG0AXXXXX see: STRING organisms).
+        allow_pubmed: 1 to print also the PubMed annotations in addition to other categories, default is 0
+        only_pubmed: 1 to print only PubMed annotations, default is 0
     
     Returns:
-        包含以下字段的字典：
-        category: 术语类别（例如 GO 过程、KEGG 通路）
-        term: 富集术语（GO 术语、结构域或通路）
-        number_of_genes: 输入列表中分配了该术语的基因数量
-        ratio_in_set: 输入列表中分配了该术语的蛋白质比例
-        ncbiTaxonId: NCBI 分类单元标识符
-        inputGenes: 来自你输入的基因名称
-        preferredNames: 常见蛋白质名称（与输入基因顺序相同）
-        description: 富集术语的描述
+        A dictionary containing the following fields:
+        category:term category (e.g. GO Process, KEGG pathways)
+        term:enriched term (GO term, domain or pathway)
+        number_of_genes:number of genes in your input list with the term assigned
+        ratio_in_set:ratio of the proteins in your input list with the term assigned
+        ncbiTaxonId:NCBI taxon identifier
+        inputGenes:gene names from your input
+        preferredNames:common protein names (in the same order as your input Genes)
+        description:description of the enriched term
     
     Query example: {"identifiers": ["TP53", "BRCA1"], "species": 9606, "allow_pubmed": 1, "only_pubmed": 0}
     """
@@ -290,20 +297,21 @@ async def get_functional_annotation(identifiers: list[str], species: int, allow_
 
 @mcp.tool()
 async def get_ppi_enrichment(identifiers: list[str], species: int):
-    """获取由其 STRING 标识符表示的基因列表的蛋白质-蛋白质相互作用富集。
+    """
+    Get protein-protein interaction enrichment for list of genes denoted by their STRING identifiers
     
     Args:
-        identifiers: 基因的 STRING 标识符列表
-        species: NCBI/STRING 分类单元编号（例如人类为 9606，或小鼠为 STRG0A10090）
+        identifiers: A list of STRING identifiers of the genes
+        species: A number of NCBI/STRING taxon (e.g. 9606 for human, or STRG0A10090 for house mouse)
     
     Returns:
-        包含以下字段的字典：
-        number_of_nodes: 网络中的蛋白质数量
-        number_of_edges: 网络中的边数量
-        average_node_degree: 网络中节点的平均度数
-        local_clustering_coefficient: 平均局部聚类系数
-        expected_number_of_edges: 基于节点度数的预期边数
-        p_value: 你的网络具有比预期更多相互作用的显著性
+        A dictionary containing the following fields:
+        number_of_nodes: number of proteins in your network
+        number_of_edges: number of edges in your network
+        average_node_degree: mean degree of the node in your network
+        local_clustering_coefficient: average local clustering coefficient
+        expected_number_of_edges: expected number of edges based on the nodes degrees
+        p_value: significance of your network having more interactions than expected
     
     Query example: {"identifiers": ["Pax6", "Sox2", "Nanog"], "species": 10090}
     """
@@ -317,8 +325,8 @@ async def get_ppi_enrichment(identifiers: list[str], species: int):
 
 @mcp.prompt()
 def system_prompt() -> str:
-    """客户端的系统提示。"""
-    prompt = """你可以访问用于搜索 STRING 的工具：功能性蛋白质关联网络。
-    使用 API 工具提取相关信息。
-    如果用户没有提供缺失的参数（如 STRING 标识符），请用合理的值填充。"""
+    """System prompt for client."""
+    prompt = """You have access to tools for searching STRING: functional proteins association networks.
+    Use the API tools to extract the relevant information.
+    Fill in missing arguments with sensible values if the user hasn't provided them such as the STRING identifiers. """
     return prompt

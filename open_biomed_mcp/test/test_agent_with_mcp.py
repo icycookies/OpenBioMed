@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-测试接入MCP工具后的Agent是否具备调用对应工具的能力
+Test whether the Agent with MCP tools integrated has the ability to call the corresponding tools
 """
 
 import sys
@@ -11,7 +11,7 @@ sys.path.insert(0, '/home/xiaoxiao/OpenBioMed')
 
 
 
-# 重新加载模块以使用最新的工具定义
+# Reload modules to use the latest tool definitions
 import importlib
 import open_biomed.tools.mcp_tools
 import open_biomed.tools.tool_registry
@@ -24,77 +24,77 @@ importlib.reload(open_biomed.core.agent)
 from open_biomed.core.agent import PlannerExecutor, SUPPORTED_AGENTS
 from open_biomed.utils.config import Config
 
-# 初始化 Agent
-print("\n初始化 Agent...")
+# Initialize Agent
+print("\nInitializing Agent...")
 cfg = Config(config_file="configs/agent/planner_executor.yaml")
 agent = SUPPORTED_AGENTS[cfg.agent](cfg)
 
-print(f"✓ Agent 已加载 {len(agent.tools.available_tools())} 个工具")
+print(f"✓ Agent loaded {len(agent.tools.available_tools())} tools")
 
-# 检查 System Prompt 中的工具信息
+# Check tool information in System Prompt
 prompt = agent.prompt
 if "name: string (required)" in prompt:
-    print("✓ System Prompt 包含参数信息")
+    print("✓ System Prompt contains parameter information")
 else:
-    print("⚠ System Prompt 可能没有参数信息")
+    print("⚠ System Prompt may not contain parameter information")
 
-# 简单的测试任务
+# Simple test task
 print("\n" + "=" * 80)
-print("运行测试任务")
+print("Running test task")
 print("=" * 80)
 
 # user_prompt = """
-# 我现在需要你帮我对人类 BRCA1 基因进行系统分析，并完成以下任务：
-# 1、确认 BRCA1 的标准基因信息，包括 Entrez Gene ID、官方符号、全名和基因描述。
-# 2、给出 BRCA1 在人类基因组中的染色体位置与基因组区间。
-# 3、总结 BRCA1 的主要生物学功能，以及它与 DNA 修复、肿瘤抑制相关的功能注释。
-# 4、查询 BRCA1 的主要基因产物信息，说明其对应的转录本或蛋白产物概况。
-# 5、查询 BRCA1 的 ortholog 信息，至少给出小鼠对应同源基因及其基本信息。
-# 6、提取与该基因相关的 NCBI 外部链接资源或下载信息，例如 gene links、dataset report、download summary。
+# I need you to systematically analyze the human BRCA1 gene and complete the following tasks:
+# 1. Confirm the standard gene information for BRCA1, including Entrez Gene ID, official symbol, full name, and gene description.
+# 2. Provide the chromosomal location and genomic interval of BRCA1 in the human genome.
+# 3. Summarize the main biological functions of BRCA1 and its functional annotations related to DNA repair and tumor suppression.
+# 4. Query the main gene product information for BRCA1, describing its corresponding transcripts or protein product overview.
+# 5. Query the ortholog information for BRCA1, providing at least the corresponding mouse homolog gene and its basic information.
+# 6. Extract NCBI external link resources or download information related to this gene, such as gene links, dataset report, and download summary.
 # """
 
 user_prompt = """
-对 BRAF 靶点相关的小分子抑制剂进行分析，并找出最有代表性的候选药物。要求完成以下任务：
-1、找到 BRAF 对应的 target ChEMBL ID。
-2、检索 BRAF 相关的小分子活性数据，筛选 IC50 或 Ki 显著较低的化合物。
-3、查询这些高活性化合物的 molecule 信息。
-4、对每个化合物进一步查询 mechanism，判断其是否直接作用于 BRAF，以及作用方式是否为 inhibitor。
-5、查询这些分子的 drug indication / max phase / drug development status（如果工具支持）。
-6、选出 5 个最具代表性的候选分子，并比较它们的：
-6.1、活性强弱
-6.2、机制注释完整性
-6.3、临床开发阶段
-6.4、基本理化性质
-7、输出一个排序报告，并说明推荐依据。
+Analyze small molecule inhibitors related to the BRAF target and identify the most representative candidate drugs. Complete the following tasks:
+1. Find the target ChEMBL ID corresponding to BRAF.
+2. Retrieve small molecule activity data related to BRAF, filtering for compounds with significantly low IC50 or Ki values.
+3. Query the molecule information for these highly active compounds.
+4. For each compound, further query the mechanism to determine whether it directly acts on BRAF and whether the mode of action is inhibition.
+5. Query the drug indication / max phase / drug development status for these molecules (if supported by the tools).
+6. Select the 5 most representative candidate molecules and compare them on:
+6.1. Activity potency
+6.2. Completeness of mechanism annotation
+6.3. Clinical development stage
+6.4. Basic physicochemical properties
+7. Output a ranked report and explain the rationale for the recommendations.
 """
 
 
-print(f"\n任务: {user_prompt.strip()}")
-print("\n开始执行...")
+print(f"\nTask: {user_prompt.strip()}")
+print("\nStarting execution...")
 
 try:
     thread_id, logs, captured_results = agent.run(user_prompt)
     
     print("\n" + "=" * 80)
-    print("任务完成")
+    print("Task completed")
     print("=" * 80)
     print(f"Thread ID: {thread_id}")
-    print(f"消息数: {len(logs)}")
+    print(f"Message count: {len(logs)}")
     
-    # 检查最后几条消息
-    print("\n最后的消息:")
+    # Check the last few messages
+    print("\nLast messages:")
     for msg in logs[-3:]:
         print(f"\n{msg.type}: {msg.content[:200]}...")
     
-    # 导出报告
+    # Export report
     report_path = PlannerExecutor.export_report(logs[-1], thread_id)
     if report_path:
-        print(f"\n✓ 报告已保存: {report_path}")
+        print(f"\n✓ Report saved: {report_path}")
     else:
-        print("\n⚠ 未生成报告")
+        print("\n⚠ No report generated")
         
 except Exception as e:
-    print(f"\n✗ 执行失败: {e}")
+    print(f"\n✗ Execution failed: {e}")
     import traceback
     traceback.print_exc()
 

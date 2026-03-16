@@ -1,11 +1,12 @@
 description = [
     {
-        "description": "根据给定的DOI获取论文的补充信息并保存到指定目录。",
+        "description": "Fetches supplementary information for a paper given its DOI "
+        "and saves it to a specified directory.",
         "name": "fetch_supplementary_info_from_doi",
         "optional_parameters": [
             {
                 "default": "supplementary_info",
-                "description": "保存补充文件的目录",
+                "description": "Directory to save supplementary files",
                 "name": "output_dir",
                 "type": "str",
             }
@@ -13,19 +14,19 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "论文的DOI",
+                "description": "The paper DOI",
                 "name": "doi",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "根据提供的搜索查询在arXiv中查询论文。",
+        "description": "Query arXiv for papers based on the provided search query.",
         "name": "query_arxiv",
         "optional_parameters": [
             {
                 "default": 10,
-                "description": "要检索的最大论文数量。",
+                "description": "The maximum number of papers to retrieve.",
                 "name": "max_papers",
                 "type": "int",
             }
@@ -33,38 +34,39 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "搜索查询字符串。",
+                "description": "The search query string.",
                 "name": "query",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "根据提供的搜索查询在Google Scholar中查询论文并返回第一个搜索结果。",
+        "description": "Query Google Scholar for papers based on the provided search "
+        "query and return the first search result.",
         "name": "query_scholar",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "搜索查询字符串。",
+                "description": "The search query string.",
                 "name": "query",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "根据提供的搜索查询在PubMed中查询论文。",
+        "description": "Query PubMed for papers based on the provided search query.",
         "name": "query_pubmed",
         "optional_parameters": [
             {
                 "default": 10,
-                "description": "要检索的最大论文数量。",
+                "description": "The maximum number of papers to retrieve.",
                 "name": "max_papers",
                 "type": "int",
             },
             {
                 "default": 3,
-                "description": "使用修改后的查询进行重试的最大尝试次数。",
+                "description": "Maximum number of retry attempts with modified queries.",
                 "name": "max_retries",
                 "type": "int",
             },
@@ -72,25 +74,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "搜索查询字符串。",
+                "description": "The search query string.",
                 "name": "query",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "使用Google搜索并返回格式化的结果。",
+        "description": "Search using Google search and return formatted results.",
         "name": "search_google",
         "optional_parameters": [
             {
                 "default": 3,
-                "description": "要返回的结果数量",
+                "description": "Number of results to return",
                 "name": "num_results",
                 "type": "int",
             },
             {
                 "default": "en",
-                "description": "搜索结果的语言代码",
+                "description": "Language code for search results",
                 "name": "language",
                 "type": "str",
             },
@@ -98,51 +100,51 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "搜索查询（例如：'protocol text or search question'）",
+                "description": 'The search query (e.g., "protocol text or search question")',
                 "name": "query",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "使用requests和BeautifulSoup提取网页的文本内容。",
+        "description": "Extract the text content of a webpage using requests and BeautifulSoup.",
         "name": "extract_url_content",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "要提取内容的网页URL",
+                "description": "Webpage URL to extract content from",
                 "name": "url",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "从PDF文件中提取文本内容。",
+        "description": "Extract text content from a PDF file.",
         "name": "extract_pdf_content",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "PDF文件的URL",
+                "description": "URL of the PDF file",
                 "name": "url",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "启动高级网络搜索，通过启动专门的代理对给定查询进行多轮网络搜索，收集相关信息和引用。",
+        "description": "Initiate an advanced web search by launching a specialized agent to collect relevant information and citations through multiple rounds of web searches for a given query.",
         "name": "advanced_web_search_claude",
         "optional_parameters": [
             {
                 "default": 1,
-                "description": "最大搜索次数",
+                "description": "Maximum number of searches",
                 "name": "max_searches",
                 "type": "int",
             },
             {
                 "default": 3,
-                "description": "使用修改后的查询进行重试的最大尝试次数。",
+                "description": "Maximum number of retry attempts with modified queries.",
                 "name": "max_retries",
                 "type": "int",
             },
@@ -150,7 +152,7 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "搜索查询字符串。",
+                "description": "The search query string.",
                 "name": "query",
                 "type": "str",
             }

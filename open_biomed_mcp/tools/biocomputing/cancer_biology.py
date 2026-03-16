@@ -1,23 +1,24 @@
 def analyze_ddr_network_in_cancer(expression_data_path, mutation_data_path, output_dir="./results"):
-    """分析癌症样本中DNA损伤应答（DDR）网络的改变和依赖关系。
+    """Analyze DNA Damage Response (DDR) network alterations and dependencies in cancer samples.
 
-    该函数从基因组数据重建DDR网络，识别网络中的破坏，
-    并分析癌症中DDR通路组分之间的依赖关系。
+    This function reconstructs the DDR network from genomic data, identifies disruptions
+    in the network, and analyzes dependencies between DDR pathway components in cancer.
 
-    参数
+    Parameters
     ----------
     expression_data_path : str
-        基因表达数据文件路径（CSV格式，基因为行，样本为列）
+        Path to gene expression data file (CSV format with genes as rows, samples as columns)
     mutation_data_path : str
-        突变数据文件路径（CSV格式，基因为行，样本为列，
-        值表示突变状态）
-    output_dir : str, 可选
-        保存输出文件的目录（默认："./results"）
+        Path to mutation data file (CSV format with genes as rows, samples as columns,
+        values indicating mutation status)
+    output_dir : str, optional
+        Directory to save output files (default: "./results")
 
-    返回值
+    Returns
     -------
     str
-        总结DDR网络分析、破坏发现和潜在治疗脆弱性的研究日志
+        Research log summarizing the DDR network analysis, findings about disruptions,
+        and potential therapeutic vulnerabilities
 
     """
     import os
@@ -265,18 +266,19 @@ def analyze_ddr_network_in_cancer(expression_data_path, mutation_data_path, outp
 
 
 def analyze_cell_senescence_and_apoptosis(fcs_file_path):
-    """分析流式细胞术数据以量化衰老和凋亡细胞群体。
+    """Analyze flow cytometry data to quantify senescent and apoptotic cell populations.
 
-    参数
+    Parameters
     ----------
     fcs_file_path : str
-        包含流式细胞术数据的FCS文件路径，包含衰老相关β-半乳糖苷酶（SA-β-Gal）
-        和Annexin V/7-AAD染色的测量数据
+        Path to the FCS file containing flow cytometry data with measurements for
+        senescence-associated β-galactosidase (SA-β-Gal) and Annexin V/7-AAD staining
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志，包括衰老和凋亡细胞群体的百分比
+        A research log summarizing the analysis steps and results, including percentages
+        of senescent and apoptotic cell populations
 
     """
     import os
@@ -420,28 +422,28 @@ def analyze_cell_senescence_and_apoptosis(fcs_file_path):
 def detect_and_annotate_somatic_mutations(
     tumor_bam, normal_bam, reference_genome, output_prefix, snpeff_database="GRCh38.105"
 ):
-    """检测并注释肿瘤样本相对于配对正常样本的体细胞突变。
+    """Detects and annotates somatic mutations in tumor samples compared to matched normal samples.
 
-    该函数使用GATK Mutect2进行变异检出，使用GATK FilterMutectCalls进行过滤，
-    并使用SnpEff对体细胞突变进行功能注释。
+    This function uses GATK Mutect2 for variant calling, GATK FilterMutectCalls for filtering,
+    and SnpEff for functional annotation of somatic mutations.
 
-    参数
+    Parameters
     ----------
     tumor_bam : str
-        肿瘤样本BAM文件路径
+        Path to the tumor sample BAM file
     normal_bam : str
-        配对正常样本BAM文件路径
+        Path to the matched normal sample BAM file
     reference_genome : str
-        参考基因组FASTA文件路径
+        Path to the reference genome FASTA file
     output_prefix : str
-        输出文件前缀
-    snpeff_database : str, 可选
-        用于注释的SnpEff数据库（默认："GRCh38.105"）
+        Prefix for output files
+    snpeff_database : str, optional
+        SnpEff database to use for annotation (default: "GRCh38.105")
 
-    返回值
+    Returns
     -------
     str
-        总结执行步骤和获得结果的研究日志
+        A research log summarizing the steps performed and results obtained
 
     """
     import datetime
@@ -573,28 +575,29 @@ def detect_and_characterize_structural_variations(
     cosmic_db_path=None,
     clinvar_db_path=None,
 ):
-    """检测并表征基因组测序数据中的结构变异（SVs）。
+    """Detects and characterizes structural variations (SVs) in genomic sequencing data.
 
-    该函数使用LUMPY进行SV检测，然后使用COSMIC和/或ClinVar数据库进行注释，
-    以识别和表征各种类型的结构变异，包括缺失、倒位、易位和重复。
+    This function uses LUMPY for SV detection followed by annotation with COSMIC and/or ClinVar
+    databases to identify and characterize various types of structural variations including
+    deletions, inversions, translocations, and duplications.
 
-    参数
+    Parameters
     ----------
     bam_file_path : str
-        BAM格式的比对测序数据路径
+        Path to the aligned sequencing data in BAM format
     reference_genome_path : str
-        FASTA格式的参考基因组路径
+        Path to the reference genome in FASTA format
     output_dir : str
-        保存结果的目录
-    cosmic_db_path : str, 可选
-        用于癌症注释的COSMIC数据库路径
-    clinvar_db_path : str, 可选
-        用于临床注释的ClinVar数据库路径
+        Directory where results will be saved
+    cosmic_db_path : str, optional
+        Path to the COSMIC database for cancer annotation
+    clinvar_db_path : str, optional
+        Path to the ClinVar database for clinical annotation
 
-    返回值
+    Returns
     -------
     str
-        总结执行步骤和获得结果的研究日志
+        A research log summarizing the steps performed and results obtained
 
     """
     import datetime
@@ -822,26 +825,27 @@ def perform_gene_expression_nmf_analysis(
     output_dir="nmf_results",
     random_state=42,
 ):
-    """对基因表达数据执行非负矩阵分解（NMF）以提取元基因及其相关样本权重，用于肿瘤亚型识别。
+    """Performs Non-negative Matrix Factorization (NMF) on gene expression data to extract
+    metagenes and their associated sample weights for tumor subtype identification.
 
-    参数
+    Parameters
     ----------
     expression_data_path : str
-        包含基因表达数据的CSV或TSV文件路径，基因为行，样本为列。
-        值应为非负数（例如，标准化计数或表达值）。
-    n_components : int, 默认=10
-        要提取的元基因（组分）数量。
-    normalize : bool, 默认=True
-        在应用NMF之前是否标准化表达数据。
-    output_dir : str, 默认="nmf_results"
-        保存输出文件的目录。
-    random_state : int, 默认=42
-        用于可重复性的随机种子。
+        Path to a CSV or TSV file containing gene expression data with genes as rows and samples as columns.
+        Values should be non-negative (e.g., normalized counts or expression values).
+    n_components : int, default=10
+        Number of metagenes (components) to extract.
+    normalize : bool, default=True
+        Whether to normalize the expression data before applying NMF.
+    output_dir : str, default="nmf_results"
+        Directory to save the output files.
+    random_state : int, default=42
+        Random seed for reproducibility.
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志。
+        Research log summarizing the analysis steps and results.
 
     """
     import os
@@ -958,39 +962,39 @@ def analyze_copy_number_purity_ploidy_and_focal_events(
     log2_amp_threshold=1.0,
     log2_del_threshold=-1.0,
 ):
-    """基于CNVkit的拷贝数工作流：CNV分段、纯度/倍性和HRD近似、局灶事件。
+    """CNVkit-based copy number workflow: CNV segmentation, purity/ploidy & HRD approximation, focal events.
 
-    该函数编排基于CNVkit的肿瘤样本拷贝数分析工作流。
-    它执行CNV分段，推导近似纯度和倍性指标，计算简化的HRD风格摘要，
-    并检测关键癌基因/抑癌基因中的局灶扩增/缺失。
+    This function orchestrates a CNVkit-based copy number analysis workflow for tumor samples.
+    It performs CNV segmentation, derives approximate purity & ploidy metrics, calculates a simplified
+    HRD-style summary, and detects focal amplifications/deletions in key oncogenes / tumor suppressors.
 
-    参数
+    Parameters
     ----------
     tumor_bam : str
-        肿瘤BAM路径（已建立索引）
+        Path to tumor BAM (indexed)
     reference_genome : str
-        参考FASTA路径（需存在索引文件）
-    normal_bam : str, 可选
-        配对正常BAM（推荐用于等位基因特异性和纯度推断）
-    output_dir : str, 默认"cn_analysis_results"
-        所有输出的目录
-    targets_bed : str, 可选
-        目标区域的BED文件（例如外显子组/panel），用于CNVkit/gCNV
-    antitargets_bed : str, 可选
-        CNVkit的反目标区域BED文件（如果是panel/外显子组）
-    gene_bed : str, 可选
-        包含基因坐标的BED文件（chrom, start, end, gene）。用于局灶事件注释
-    focal_genes : list[str], 可选
-        要突出显示局灶扩增/缺失的基因列表；默认为["MYC","ERBB2","CDKN2A"]
-    log2_amp_threshold : float, 默认1.0
-        调用局灶扩增的Log2比率阈值（相对于基线约>2倍拷贝）
-    log2_del_threshold : float, 默认-1.0
-        调用局灶深度缺失的Log2比率阈值（约纯合缺失）
+        Path to reference FASTA (with index files present)
+    normal_bam : str, optional
+        Matched normal BAM (recommended for allele-specific & purity inference)
+    output_dir : str, default "cn_analysis_results"
+        Directory for all outputs
+    targets_bed : str, optional
+        BED of target regions (e.g. exome / panel) for CNVkit / gCNV
+    antitargets_bed : str, optional
+        BED of antitarget regions for CNVkit (if panel / exome)
+    gene_bed : str, optional
+        BED file with gene coordinates (chrom, start, end, gene). Used for focal event annotation
+    focal_genes : list[str], optional
+        List of genes to highlight for focal amplification/deletion; defaults to ["MYC","ERBB2","CDKN2A"]
+    log2_amp_threshold : float, default 1.0
+        Log2 ratio threshold to call focal amplification (~ >2x copy relative to baseline)
+    log2_del_threshold : float, default -1.0
+        Log2 ratio threshold to call focal deep deletion (~ homozygous loss)
 
-    返回值
+    Returns
     -------
     str
-        总结步骤、工具执行和发现的研究日志。
+        Research log summarizing steps, tool executions, and findings.
     """
     import datetime
     import math

@@ -1,21 +1,21 @@
 def reconstruct_3d_face_from_mri(mri_file_path, output_dir="./output", subject_id="subject", threshold_value=300):
-    """从头颈部 MRI 扫描生成面部解剖结构的 3D 模型。
+    """Generate a 3D model of facial anatomy from MRI scans of the head and neck.
 
-    参数
+    Parameters
     ----------
     mri_file_path : str
-        MRI 扫描文件的路径（NIfTI 格式：.nii 或 .nii.gz）
+        Path to the MRI scan file (NIfTI format: .nii or .nii.gz)
     output_dir : str
-        输出文件保存的目录
+        Directory where output files will be saved
     subject_id : str
-        受试者标识符，用于输出文件名
+        Identifier for the subject, used in output filenames
     threshold_value : int
-        面部组织初始分割的阈值
+        Threshold value for initial segmentation of facial tissues
 
-    返回
+    Returns
     -------
     str
-        详细说明重建过程和输出文件位置的研究日志
+        Research log detailing the reconstruction process and output file locations
 
     """
     import os
@@ -148,21 +148,22 @@ def reconstruct_3d_face_from_mri(mri_file_path, output_dir="./output", subject_i
 
 
 def analyze_abr_waveform_p1_metrics(time_ms, amplitude_uv):
-    """从听觉脑干反应（ABR）波形数据中提取 P1 振幅和潜伏期。
+    """Extracts P1 amplitude and latency from Auditory Brainstem Response (ABR) waveform data.
 
-    P1（波 I）通常是 ABR 波形中的第一个正峰，是听觉功能评估的关键标志。
+    P1 (Wave I) is typically the first positive peak in the ABR waveform and is a critical
+    marker for auditory function assessment.
 
-    参数
+    Parameters
     ----------
     time_ms : array-like
-        ABR 记录的时间点（毫秒）
+        Time points of the ABR recording in milliseconds
     amplitude_uv : array-like
-        ABR 记录的振幅值（微伏）
+        Amplitude values of the ABR recording in microvolts
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志，包括 P1 振幅和潜伏期
+        Research log summarizing the analysis steps and results, including P1 amplitude and latency
 
     """
     import numpy as np
@@ -214,25 +215,25 @@ def analyze_abr_waveform_p1_metrics(time_ms, amplitude_uv):
 
 
 def analyze_ciliary_beat_frequency(video_path, roi_count=5, min_freq=0, max_freq=30, output_dir="./"):
-    """使用 FFT 分析从高速视频显微镜数据中分析纤毛摆动频率。
+    """Analyze ciliary beat frequency from high-speed video microscopy data using FFT analysis.
 
-    参数
+    Parameters
     ----------
     video_path : str
-        纤毛摆动的高速视频显微镜文件路径
-    roi_count : int, 可选
-        要分析的感兴趣区域数量（默认：5）
-    min_freq : float, 可选
-        要考虑的最小频率（Hz）（默认：0）
-    max_freq : float, 可选
-        要考虑的最大频率（Hz）（默认：30）
-    output_dir : str, 可选
-        保存输出文件的目录（默认：当前目录）
+        Path to the high-speed video microscopy file of ciliary beating
+    roi_count : int, optional
+        Number of regions of interest to analyze (default: 5)
+    min_freq : float, optional
+        Minimum frequency to consider in Hz (default: 0)
+    max_freq : float, optional
+        Maximum frequency to consider in Hz (default: 30)
+    output_dir : str, optional
+        Directory to save output files (default: current directory)
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -362,23 +363,23 @@ def analyze_ciliary_beat_frequency(video_path, roi_count=5, min_freq=0, max_freq
 
 
 def analyze_protein_colocalization(channel1_path, channel2_path, output_dir="./output", threshold_method="otsu"):
-    """分析显微镜图像中两种荧光标记蛋白之间的共定位。
+    """Analyze colocalization between two fluorescently labeled proteins in microscopy images.
 
-    参数
+    Parameters
     ----------
     channel1_path : str
-        第一通道图像文件的路径（荧光蛋白 1）
+        Path to the first channel image file (fluorescent protein 1)
     channel2_path : str
-        第二通道图像文件的路径（荧光蛋白 2）
+        Path to the second channel image file (fluorescent protein 2)
     output_dir : str
-        保存输出文件的目录（默认："./output"）
+        Directory to save output files (default: "./output")
     threshold_method : str
-        图像阈值处理方法（'otsu'、'li' 或 'yen'）（默认："otsu"）
+        Method for thresholding images ('otsu', 'li', or 'yen') (default: "otsu")
 
-    返回
+    Returns
     -------
     str
-        总结共定位分析结果和保存文件的研究日志
+        Research log summarizing the colocalization analysis results and saved files
 
     """
     import os
@@ -513,21 +514,21 @@ Interpretation:
 
 
 def perform_cosinor_analysis(time_data, physiological_data, period=24.0):
-    """对生理时间序列数据执行余弦分析以表征昼夜节律。
+    """Performs cosinor analysis on physiological time series data to characterize circadian rhythms.
 
-    参数
+    Parameters
     ----------
     time_data : array-like
-        测量的时间点（小时）
+        Time points of the measurements in hours
     physiological_data : array-like
-        对应于每个时间点的生理测量值
-    period : float, 默认=24.0
-        节律的周期（小时），昼夜节律默认为 24 小时
+        Physiological measurements corresponding to each time point
+    period : float, default=24.0
+        Period of the rhythm in hours, default is 24 hours for circadian rhythms
 
-    返回
+    Returns
     -------
     str
-        总结余弦分析过程和结果的研究日志
+        A research log summarizing the cosinor analysis process and results
 
     """
     from datetime import datetime
@@ -610,28 +611,28 @@ def perform_cosinor_analysis(time_data, physiological_data, period=24.0):
 
 
 def calculate_brain_adc_map(dwi_file_path, b_values, output_path="adc_map.nii.gz", mask_file_path=None):
-    """从扩散加权 MRI 数据计算表观扩散系数（ADC）图。
+    """Calculate Apparent Diffusion Coefficient (ADC) map from diffusion-weighted MRI data.
 
-    该函数将 DW-MRI 数据拟合到单指数扩散模型：
-    S = S0 * exp(-b * ADC)，其中 S 是信号强度，S0 是无扩散加权的信号，
-    b 是 b 值，ADC 是表观扩散系数。
+    This function fits the DW-MRI data to the monoexponential diffusion model:
+    S = S0 * exp(-b * ADC), where S is the signal intensity, S0 is the signal without
+    diffusion weighting, b is the b-value, and ADC is the apparent diffusion coefficient.
 
-    参数
+    Parameters
     ----------
     dwi_file_path : str
-        包含扩散加权 MRI 数据的 4D NIfTI 文件路径，
-        其中第 4 维对应不同的 b 值。
+        Path to the 4D NIfTI file containing diffusion-weighted MRI data,
+        where the 4th dimension corresponds to different b-values.
     b_values : list or numpy.ndarray
-        对应于 4D DWI 数据中每个体积的 b 值列表。
-    output_path : str, 可选
-        输出 ADC 图保存的路径（默认："adc_map.nii.gz"）。
-    mask_file_path : str, 可选
-        二值掩码文件的路径，用于将 ADC 计算限制在脑区域（默认：None）。
+        List of b-values corresponding to each volume in the 4D DWI data.
+    output_path : str, optional
+        Path where the output ADC map will be saved (default: "adc_map.nii.gz").
+    mask_file_path : str, optional
+        Path to a binary mask file to limit ADC calculation to brain regions (default: None).
 
-    返回
+    Returns
     -------
     str
-        总结 ADC 映射过程和结果的研究日志。
+        Research log summarizing the ADC mapping process and results.
 
     """
     import os
@@ -742,27 +743,27 @@ def analyze_endolysosomal_calcium_dynamics(
     treatment_name="",
     output_file="calcium_analysis_results.txt",
 ):
-    """使用 ELGA/ELGA1 探针数据分析内溶酶体室中的钙动力学。
+    """Analyze calcium dynamics in endo-lysosomal compartments using ELGA/ELGA1 probe data.
 
-    参数
+    Parameters
     ----------
     time_points : numpy.ndarray or list
-        测量的时间点（秒）
+        Time points of the measurements in seconds
     luminescence_values : numpy.ndarray or list
-        来自 ELGA/ELGA1 探针的发光强度值，对应于 Ca2+ 水平
-    treatment_time : float, 可选
-        施加处理/刺激的时间点（秒）
-    cell_type : str, 可选
-        实验中使用的细胞类型
-    treatment_name : str, 可选
-        施加的处理或刺激的名称
-    output_file : str, 可选
-        保存详细分析结果的文件名
+        Luminescence intensity values from ELGA/ELGA1 probes corresponding to Ca2+ levels
+    treatment_time : float, optional
+        Time point (in seconds) when treatment/stimulus was applied
+    cell_type : str, optional
+        Type of cells used in the experiment
+    treatment_name : str, optional
+        Name of the treatment or stimulus applied
+    output_file : str, optional
+        Name of the file to save detailed analysis results
 
-    返回
+    Returns
     -------
     str
-        总结钙动力学分析和关键发现的研究日志
+        A research log summarizing the calcium dynamics analysis and key findings
 
     """
     import numpy as np
@@ -886,23 +887,23 @@ Detailed numerical results saved to: {output_file}
 
 
 def analyze_fatty_acid_composition_by_gc(gc_data_file, tissue_type, sample_id, output_directory="./results"):
-    """使用气相色谱数据分析组织样本中的脂肪酸组成。
+    """Analyzes fatty acid composition in tissue samples using gas chromatography data.
 
-    参数
+    Parameters
     ----------
     gc_data_file : str
-        包含气相色谱数据的 CSV 文件路径，列包括 'retention_time' 和 'peak_area'。
+        Path to the CSV file containing gas chromatography data with columns 'retention_time' and 'peak_area'.
     tissue_type : str
-        组织样本类型（例如，肝脏、肾脏、心脏、肌肉、脂肪）。
+        Type of tissue sample (e.g., liver, kidney, heart, muscle, adipose).
     sample_id : str
-        正在分析的样本的标识符。
-    output_directory : str, 可选
-        结果文件保存的目录（默认："./results"）。
+        Identifier for the sample being analyzed.
+    output_directory : str, optional
+        Directory where result files will be saved (default: "./results").
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志。
+        Research log summarizing the analysis steps and results.
 
     """
     import os
@@ -1012,21 +1013,21 @@ def analyze_fatty_acid_composition_by_gc(gc_data_file, tissue_type, sample_id, o
 
 
 def analyze_hemodynamic_data(pressure_data, sampling_rate, output_file="hemodynamic_results.csv"):
-    """分析原始血压数据以计算关键血流动力学参数。
+    """Analyzes raw blood pressure data to calculate key hemodynamic parameters.
 
-    参数
+    Parameters
     ----------
     pressure_data : numpy.ndarray
-        原始血压测量值（mmHg）
+        Raw blood pressure measurements in mmHg
     sampling_rate : float
-        数据采集率（Hz）（每秒样本数）
-    output_file : str, 可选
-        保存计算参数的文件名，默认为 "hemodynamic_results.csv"
+        Data acquisition rate in Hz (samples per second)
+    output_file : str, optional
+        Filename to save the calculated parameters, default is "hemodynamic_results.csv"
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import numpy as np
@@ -1096,30 +1097,31 @@ def analyze_hemodynamic_data(pressure_data, sampling_rate, output_file="hemodyna
 
 
 def simulate_thyroid_hormone_pharmacokinetics(parameters, initial_conditions, time_span=(0, 24), time_points=100):
-    """使用基于 ODE 的药代动力学模型模拟甲状腺激素在不同组织室之间的转运和结合。
+    """Simulates the transport and binding of thyroid hormones across different tissue compartments
+    using an ODE-based pharmacokinetic model.
 
-    参数
+    Parameters
     ----------
     parameters : dict
-        包含模型参数的字典：
-        - transport_rates : 室间激素转运速率常数的字典
-        - binding_constants : 激素-蛋白结合的结合/解离常数字典
-        - metabolism_rates : 不同组织中激素代谢速率常数的字典
-        - volumes : 室体积的字典
+        Dictionary containing model parameters:
+        - transport_rates : dict of rate constants for hormone transport between compartments
+        - binding_constants : dict of association/dissociation constants for hormone-protein binding
+        - metabolism_rates : dict of rate constants for hormone metabolism in different tissues
+        - volumes : dict of compartment volumes
 
     initial_conditions : dict
-        每个室中所有分子种类的初始浓度字典
+        Dictionary of initial concentrations for all molecular species in each compartment
 
-    time_span : tuple, 可选
-        模拟的开始和结束时间（小时）（默认：(0, 24)）
+    time_span : tuple, optional
+        Start and end time for simulation in hours (default: (0, 24))
 
-    time_points : int, 可选
-        输出的时间点数量（默认：100）
+    time_points : int, optional
+        Number of time points to output (default: 100)
 
-    返回
+    Returns
     -------
     str
-        总结模拟和结果的研究日志
+        Research log summarizing the simulation and results
 
     """
     import numpy as np
@@ -1253,27 +1255,6 @@ def quantify_amyloid_beta_plaques(
     min_plaque_size=50,
     manual_threshold=127,
 ):
-    """量化显微镜图像中的淀粉样β斑块。
-
-    参数
-    ----------
-    image_path : str
-        输入图像文件的路径
-    output_dir : str, 可选
-        保存输出文件的目录（默认："./results"）
-    threshold_method : str, 可选
-        阈值处理方法（'otsu'、'adaptive' 或 'manual'）（默认："otsu"）
-    min_plaque_size : int, 可选
-        要检测的最小斑块大小（像素²）（默认：50）
-    manual_threshold : int, 可选
-        手动阈值方法的阈值（默认：127）
-
-    返回
-    -------
-    str
-        总结分析步骤和结果的研究日志
-
-    """
     import os
     from datetime import datetime
 

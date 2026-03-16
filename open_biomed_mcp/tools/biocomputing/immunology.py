@@ -6,27 +6,27 @@ def analyze_atac_seq_differential_accessibility(
     q_value=0.05,
     name_prefix="atac",
 ):
-    """使用MACS2执行ATAC-seq峰调用和差异可及性分析。
+    """Perform ATAC-seq peak calling and differential accessibility analysis using MACS2.
 
-    参数
+    Parameters
     ----------
     treatment_bam : str
-        包含对齐ATAC-seq读段的处理条件BAM文件路径
+        Path to the treatment condition BAM file with aligned ATAC-seq reads
     control_bam : str
-        包含对齐ATAC-seq读段的对照条件BAM文件路径
+        Path to the control condition BAM file with aligned ATAC-seq reads
     output_dir : str
-        保存输出文件的目录（默认："./atac_results"）
+        Directory to save output files (default: "./atac_results")
     genome_size : str
-        MACS2的基因组大小参数（默认："hs"表示人类）
+        Genome size parameter for MACS2 (default: "hs" for human)
     q_value : float
-        峰检测的q值截断值（默认：0.05）
+        q-value cutoff for peak detection (default: 0.05)
     name_prefix : str
-        输出文件名的前缀（默认："atac"）
+        Prefix for output file names (default: "atac")
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import datetime
@@ -183,23 +183,23 @@ def analyze_atac_seq_differential_accessibility(
 
 
 def analyze_bacterial_growth_curve(time_points, od_values, strain_name, output_dir="."):
-    """分析细菌生长曲线数据以确定生长参数。
+    """Analyzes bacterial growth curve data to determine growth parameters.
 
-    参数
+    Parameters
     ----------
     time_points : list or numpy.ndarray
-        以小时为单位的测量时间点
+        Time points of measurements in hours
     od_values : list or numpy.ndarray
-        对应于每个时间点的光密度测量值
+        Optical density measurements corresponding to each time point
     strain_name : str
-        正在分析的细菌菌株名称
+        Name of the bacterial strain being analyzed
     output_dir : str, optional
-        保存输出文件的目录（默认：当前目录）
+        Directory where output files will be saved (default: current directory)
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        A research log summarizing the analysis steps and results
 
     """
     import os
@@ -315,25 +315,25 @@ def isolate_purify_immune_cells(
     macs_antibody=None,
     digestion_time_min=45,
 ):
-    """模拟从组织样本中分离和纯化免疫细胞。
+    """Simulates the isolation and purification of immune cells from tissue samples.
 
-    参数
+    Parameters
     ----------
     tissue_type : str
-        组织样本类型（例如，'adipose'、'kidney'、'liver'、'lung'、'spleen'）
+        The type of tissue sample (e.g., 'adipose', 'kidney', 'liver', 'lung', 'spleen')
     target_cell_type : str
-        要分离的免疫细胞群（例如，'macrophages'、'leukocytes'、'T cells'）
+        The immune cell population to isolate (e.g., 'macrophages', 'leukocytes', 'T cells')
     enzyme_type : str, optional
-        用于组织消化的酶（默认：'collagenase'）
+        The enzyme used for tissue digestion (default: 'collagenase')
     macs_antibody : str, optional
-        用于磁激活细胞分选的特异性抗体（默认：None，将根据目标细胞类型设置）
+        Specific antibody for magnetic-assisted cell sorting (default: None, will be set based on target cell type)
     digestion_time_min : int, optional
-        消化时间（分钟）（默认：45）
+        Digestion time in minutes (default: 45)
 
-    返回
+    Returns
     -------
     str
-        描述细胞分离和纯化过程的研究日志
+        A research log describing the cell isolation and purification process
 
     """
     from datetime import datetime
@@ -447,36 +447,36 @@ def isolate_purify_immune_cells(
 
 def estimate_cell_cycle_phase_durations(flow_cytometry_data, initial_estimates):
     """
-    使用双核苷脉冲标记数据和数学建模估计细胞周期阶段持续时间。
+    Estimate cell cycle phase durations using dual-nucleoside pulse labeling data and mathematical modeling.
 
-    参数
+    Parameters
     ----------
     flow_cytometry_data : dict
-        包含EdU和BrdU标记流式细胞术实验数据的字典。
-        预期格式::
+        Dictionary containing experimental data from flow cytometry with EdU and BrdU labeling.
+        Expected format::
 
             {
-                'time_points': 时间点列表（小时），
-                'edu_positive': 每个时间点EdU+细胞百分比列表，
-                'brdu_positive': 每个时间点BrdU+细胞百分比列表，
-                'double_positive': 每个时间点EdU+BrdU+细胞百分比列表
+                'time_points': list of time points (hours),
+                'edu_positive': list of percentages of EdU+ cells at each time point,
+                'brdu_positive': list of percentages of BrdU+ cells at each time point,
+                'double_positive': list of percentages of EdU+BrdU+ cells at each time point
             }
 
     initial_estimates : dict
-        细胞周期阶段持续时间和死亡率的初始估计值。
-        预期格式::
+        Initial estimates for cell cycle phase durations and death rates.
+        Expected format::
 
             {
-                'g1_duration': float（小时），
-                's_duration': float（小时），
-                'g2m_duration': float（小时），
-                'death_rate': float（每小时的比例）
+                'g1_duration': float (hours),
+                's_duration': float (hours),
+                'g2m_duration': float (hours),
+                'death_rate': float (fraction per hour)
             }
 
-    返回
+    Returns
     -------
     str
-        总结细胞周期阶段持续时间估计过程和结果的研究日志。
+        Research log summarizing the cell cycle phase duration estimation process and results.
     """
 
     import time
@@ -637,17 +637,17 @@ def track_immune_cells_under_flow(
     time_interval_sec=1.0,
     flow_direction="right",
 ):
-    """追踪流动条件下的免疫细胞并分类其行为。
+    """Track immune cells under flow conditions and classify their behaviors.
 
-    参数
-        image_sequence_path (str): 图像序列目录或视频文件的路径。
-        output_dir (str): 保存输出文件的目录。
-        pixel_size_um (float): 像素大小（微米）。
-        time_interval_sec (float): 帧之间的时间间隔（秒）。
-        flow_direction (str): 流动方向（'right'、'left'、'up'、'down'）。
+    Args:
+        image_sequence_path (str): Path to image sequence directory or video file.
+        output_dir (str): Directory to save output files.
+        pixel_size_um (float): Pixel size in micrometers.
+        time_interval_sec (float): Time interval between frames in seconds.
+        flow_direction (str): Direction of flow ('right', 'left', 'up', 'down').
 
-    返回
-        str: 分析过程的日志。
+    Returns:
+        str: Log of the analysis process.
 
     """
     import os
@@ -967,27 +967,27 @@ def track_immune_cells_under_flow(
 
 
 def analyze_cfse_cell_proliferation(fcs_file_path, cfse_channel="FL1-A", lymphocyte_gate=None):
-    """分析CFSE标记的细胞样本以量化细胞分裂和增殖。
+    """Analyze CFSE-labeled cell samples to quantify cell division and proliferation.
 
-    此函数处理来自CFSE标记细胞的流式细胞术数据，以计算
-    细胞分裂指数和增殖细胞百分比。它执行门控，
-    基于CFSE强度识别细胞群，并量化增殖指标。
+    This function processes flow cytometry data from CFSE-labeled cells to calculate
+    the cell division index and percentage of proliferating cells. It performs gating,
+    identifies cell populations based on CFSE intensity, and quantifies proliferation metrics.
 
-    参数
+    Parameters
     ----------
     fcs_file_path : str
-        包含来自CFSE标记细胞的流式细胞术数据的FCS文件路径
+        Path to the FCS file containing flow cytometry data from CFSE-labeled cells
     cfse_channel : str, optional
-        包含CFSE荧光数据的通道名称（默认：'FL1-A'）
+        Name of the channel containing CFSE fluorescence data (default: 'FL1-A')
     lymphocyte_gate : tuple or None, optional
-        用于淋巴细胞门控的元组（min_fsc, max_fsc, min_ssc, max_ssc）
-        如果为None，将尝试自动门控（默认：None）
+        Tuple of (min_fsc, max_fsc, min_ssc, max_ssc) for lymphocyte gating
+        If None, automatic gating will be attempted (default: None)
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志，包括细胞分裂
-        指数和增殖细胞百分比
+        Research log summarizing the analysis steps and results, including cell division
+        index and percentage of proliferating cells
 
     """
     import os
@@ -1176,22 +1176,22 @@ def analyze_cfse_cell_proliferation(fcs_file_path, cfse_channel="FL1-A", lymphoc
 
 
 def analyze_cytokine_production_in_cd4_tcells(fcs_files_dict, output_dir="./results"):
-    """分析抗原刺激后CD4+ T细胞中的细胞因子产生（IFN-γ、IL-17）。
+    """Analyze cytokine production (IFN-γ, IL-17) in CD4+ T cells after antigen stimulation.
 
-    参数
+    Parameters
     ----------
     fcs_files_dict : dict
-        将刺激条件映射到FCS文件路径的字典。
-        预期键：'unstimulated'、'Mtb300'、'CMV'、'SEB'
-        示例：{'unstimulated': 'path/to/unstim.fcs', 'Mtb300': 'path/to/mtb.fcs'}
+        Dictionary mapping stimulation conditions to FCS file paths.
+        Expected keys: 'unstimulated', 'Mtb300', 'CMV', 'SEB'
+        Example: {'unstimulated': 'path/to/unstim.fcs', 'Mtb300': 'path/to/mtb.fcs'}
 
     output_dir : str, optional
-        保存结果文件的目录（默认：'./results'）
+        Directory to save the results file (default: './results')
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -1329,26 +1329,26 @@ def analyze_cytokine_production_in_cd4_tcells(fcs_files_dict, output_dir="./resu
 
 
 def analyze_ebv_antibody_titers(raw_od_data, standard_curve_data, sample_metadata, output_dir="./"):
-    """分析ELISA数据以量化血浆/血清样本中的EBV抗体滴度。
+    """Analyze ELISA data to quantify EBV antibody titers in plasma/serum samples.
 
-    参数
+    Parameters
     ----------
     raw_od_data : dict
-        包含每个样本的光密度（OD）读数的字典。
-        格式：{sample_id: {'VCA_IgG': float, 'VCA_IgM': float, 'EA_IgG': float, 'EA_IgM': float, 'EBNA1_IgG': float, 'EBNA1_IgM': float}}
+        Dictionary containing optical density (OD) readings for each sample.
+        Format: {sample_id: {'VCA_IgG': float, 'VCA_IgM': float, 'EA_IgG': float, 'EA_IgM': float, 'EBNA1_IgG': float, 'EBNA1_IgM': float}}
     standard_curve_data : dict
-        包含每种抗体类型的标准曲线数据的字典。
-        格式：{antibody_type: [(concentration, OD), ...]}
+        Dictionary containing standard curve data for each antibody type.
+        Format: {antibody_type: [(concentration, OD), ...]}
     sample_metadata : dict
-        包含每个样本的元数据的字典。
-        格式：{sample_id: {'group': str, 'collection_date': str}}
+        Dictionary containing metadata for each sample.
+        Format: {sample_id: {'group': str, 'collection_date': str}}
     output_dir : str, optional
-        保存输出文件的目录。默认为当前目录。
+        Directory to save output files. Default is current directory.
 
-    返回
+    Returns
     -------
     str
-        总结分析过程和结果的研究日志。
+        Research log summarizing the analysis process and results.
 
     """
     import os
@@ -1488,22 +1488,22 @@ def analyze_ebv_antibody_titers(raw_od_data, standard_curve_data, sample_metadat
 
 
 def analyze_cns_lesion_histology(image_path, output_dir="./output", stain_type="H&E"):
-    """分析CNS病变的组织学图像以量化免疫细胞浸润、
-    脱髓鞘和组织损伤。
+    """Analyzes histological images of CNS lesions to quantify immune cell infiltration,
+    demyelination, and tissue damage.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        脑或脊髓组织切片显微镜图像文件的路径
+        Path to the microscopy image file of brain or spinal cord tissue section
     output_dir : str, optional
-        保存输出文件的目录（默认："./output"）
+        Directory to save output files (default: "./output")
     stain_type : str, optional
-        使用的组织学染色类型（默认："H&E"，其他选项："LFB"、"IHC"）
+        Type of histological stain used (default: "H&E", other options: "LFB", "IHC")
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤、发现和保存的文件路径的研究日志
+        Research log summarizing the analysis steps, findings, and saved file paths
 
     """
     import os
@@ -1846,21 +1846,21 @@ def analyze_cns_lesion_histology(image_path, output_dir="./output", stain_type="
 
 
 def analyze_immunohistochemistry_image(image_path, protein_name="Unknown", output_dir="./ihc_results/"):
-    """分析免疫组织化学图像以量化蛋白质表达和空间分布。
+    """Analyzes immunohistochemistry images to quantify protein expression and spatial distribution.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        用抗体染色的组织切片显微镜图像的路径
+        Path to the microscopy image of tissue section stained with antibodies
     protein_name : str, optional
-        正在分析的蛋白质名称（默认："Unknown"）
+        Name of the protein being analyzed (default: "Unknown")
     output_dir : str, optional
-        保存输出文件的目录（默认："./ihc_results/"）
+        Directory to save output files (default: "./ihc_results/")
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤、结果和保存的文件位置的研究日志
+        Research log summarizing the analysis steps, results, and saved file locations
 
     """
     import os

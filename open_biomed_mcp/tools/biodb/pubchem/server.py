@@ -12,11 +12,12 @@ pubchem_api = PubChemAPI()
 
 @mcp.tool()
 async def search_pubchem_by_name(name: str):
-    """通过化学名称在 PubChem 中搜索化合物。请注意，将化学名称匹配到结构充其量是一门不精确的科学，一个名称可能经常指代多个记录。
+    """
+    Search PubChem for compounds matching a chemical name.Be aware though that matching chemical names to structure is an inexact science at best, and a name may often refer to more than one record. 
     
     Args:
-        name: 名称（字符串）
-        kwargs: 关键字参数（字符串）
+        name: Name (string)
+        kwargs: kwargs (string)
     
     Query example: {"name": "aspirin", "kwargs": "{}"}
     
@@ -32,13 +33,14 @@ async def search_pubchem_by_name(name: str):
 
 @mcp.tool()
 async def search_pubchem_by_smiles(smiles: str):
-    """通过 SMILES 字符串在 PubChem 中搜索化合物。
+    """
+    Search PubChem for compounds matching a SMILES string.
     
     Args:
-        smiles: 要搜索的 SMILES 表示法
+        smiles: The SMILES notation to search for
     
     Returns:
-        包含与 SMILES 匹配的化合物搜索结果的字典
+        Dictionary containing search results with compounds that match the SMILES
     
     Query example: {"smiles": "C[C@H](N)C(=O)O"}
     """
@@ -52,13 +54,14 @@ async def search_pubchem_by_smiles(smiles: str):
 
 @mcp.tool()
 async def get_pubchem_compound_by_cid(cid: str):
-    """通过 PubChem CID 获取详细的化合物信息。
+    """
+    Get detailed compound information by PubChem CID.
     
     Args:
-        cid: PubChem 化合物 ID（整数或字符串）
+        cid: PubChem Compound ID (integer or string)
     
     Returns:
-        包含化合物详细信息的字典（完整的化学性质、结构信息、相关生物活性等）
+        Dictionary containing detailed information about the compound (Complete chemical properties, structural information, relevant biological activities,etc)
     
     Query example: {"cid": 2244}
     """
@@ -72,14 +75,15 @@ async def get_pubchem_compound_by_cid(cid: str):
 
 @mcp.tool()
 async def search_pubchem_advanced(query: str):
-    """使用复杂查询在 PubChem 上执行高级搜索。
+    """
+    Perform an advanced search on PubChem using a complex query.
     
     Args:
-        query: 遵循 PubChem 语法的高级搜索查询字符串
-        **kwargs: API 请求的附加参数
+        query: The advanced search query string following PubChem syntax
+        **kwargs: Additional parameters for the API request
             
     Returns:
-        包含与高级查询匹配的搜索结果的字典
+        Dictionary containing search results matching the advanced query
     """
     try:
         result = pubchem_api.search_pubchem_advanced(query)
@@ -89,13 +93,14 @@ async def search_pubchem_advanced(query: str):
 
 @mcp.tool()
 async def get_substance_by_sid(sid: str):
-    """通过 PubChem SID 获取物质信息。
+    """
+    Get substance information by PubChem SID.
     
     Args:
-        sid: PubChem 物质 ID
+        sid: PubChem Substance ID
     
     Returns:
-        包含物质信息的字典。此示例返回 Substance(sid)
+        Dictionary containing information about the substance.This example returns Substance(sid)
     
     Query example: {"sid": 347827035}
     """
@@ -109,13 +114,14 @@ async def get_substance_by_sid(sid: str):
 
 @mcp.tool()
 async def get_compound_by_cid(cid: str):
-    """通过 PubChem CID 获取化合物信息。
+    """
+    Get compound information by PubChem CID.
     
     Args:
-        cid: PubChem 化合物 ID
+        cid: PubChem Compound ID
 
     Returns:
-        包含化合物信息的字典
+        Dictionary containing information about the compound
     """
     try:
         result = pubchem_api.get_compound_by_cid(cid)
@@ -125,13 +131,14 @@ async def get_compound_by_cid(cid: str):
 
 @mcp.tool()
 async def get_compound_by_name(name: str):
-    """通过化学名称获取化合物信息。请注意，将化学名称匹配到结构充其量是一门不精确的科学，一个名称可能经常指代多个记录。
+    """
+    Get compound information by chemical name. Be aware though that matching chemical names to structure is an inexact science at best, and a name may often refer to more than one record.
     
     Args:
-        name: 化学名称
+        name: Chemical name
     
     Returns:
-        包含化合物信息的字典（CID、结构、性质等）
+        Dictionary containing information about the compound(CID, structure, properties, etc.)
     
     Query example: {"name": "aspirin"}
     """
@@ -145,13 +152,14 @@ async def get_compound_by_name(name: str):
 
 @mcp.tool()
 async def get_substance_by_name(name: str):
-    """通过名称获取物质信息。
+    """
+    Get substance information by name.
     
     Args:
-        name: 物质名称（字符串）
+        name: Substance name(string)
         
     Returns:
-        包含物质信息的字典
+        Dictionary containing information about the substance
     
     Query example: {"name": "aspirin"}
     """
@@ -165,24 +173,25 @@ async def get_substance_by_name(name: str):
 
 @mcp.tool()
 async def get_compound_property_by_name(name: str, property_name: str):
-    """通过化合物名称从 PubChem 检索特定的化学性质。
-    响应返回包含匹配化合物所请求性质的表格。
+    """
+    Retrieve a specific chemical property for a compound by its name from PubChem.
+    The response returns a table containing the requested property for the matching compound.
     
     Args:
-        name: 化合物的化学名称（字符串）
-        property_name: 要检索的性质名称，例如：
+        name: Chemical name of the compound (string)
+        property_name: Name of the property to retrieve, e.g.,
             - MolecularWeight
             - MolecularFormula
             - XLogP
             - TPSA
-            - 等
+            - etc.
     
     Returns:
-        包含以下内容的字典：
+        A dictionary containing:
         - PropertyTable:
-            • Properties: 性质条目列表，每个包含：
-                - CID:               PubChem 化合物 ID
-                - <property_name>:   化合物所请求的性质值
+            • Properties: List of property entries, each with:
+                - CID:               PubChem Compound ID
+                - <property_name>:   The requested property value for the compound
     
     Query example:
         {"name": "caffeine", "property_name": "MolecularFormula"}
@@ -197,18 +206,20 @@ async def get_compound_property_by_name(name: str, property_name: str):
 
 @mcp.tool()
 async def get_compound_synonyms_by_name(name: str):
-    """通过化学名称从 PubChem 检索给定化合物的所有已知同义词。
-    响应返回同义词列表，包括注册号、替代名称、商品名、数据库标识符和系统名称。
+    """
+    Retrieve all known synonyms for a given compound by its chemical name from PubChem.
+    The response returns a list of synonyms, including registry numbers, alternate names,
+    trade names, database identifiers, and systematic names.
     
     Args:
-        name: 化合物的化学名称（字符串）
+        name: Chemical name of the compound (string)
     
     Returns:
-        包含以下内容的字典：
+        A dictionary containing:
         - InformationList:
-            • Information: 条目列表，每个包含：
-                - CID:     PubChem 化合物 ID
-                - Synonym: 化合物的同义词字符串列表
+            • Information: List of entries, each with:
+                - CID:     PubChem Compound ID
+                - Synonym: List of synonym strings for the compound
     
     Query example:
         {"name": "caffeine"}
@@ -223,25 +234,26 @@ async def get_compound_synonyms_by_name(name: str):
 
 @mcp.tool()
 async def get_description_by_sid(sid: str):
-    """通过 SID 获取 PubChem 物质的详细描述信息。
-    响应包括完整的 Record 结构，包含以下部分：
-    2D 结构、身份、来源、外部 ID、同义词、存储/修改日期、
-    状态以及从该物质标准化的相关化合物。
+    """
+    Get detailed description information for a PubChem substance given its SID.
+    The response includes the full Record structure, containing sections such as
+    2D Structure, Identity, Source, External ID, Synonyms, Deposit/Modify Dates,
+    Status, and related compounds standardized from this substance.
     
     Args:
-        sid: PubChem 物质 ID（整数或字符串）
+        sid: PubChem Substance ID (integer or string)
     
     Returns:
-        包含物质完整 Record 的字典，包含以下字段：
-        - RecordType:      记录类型（"SID"）
-        - RecordNumber:    数字 SID
-        - RecordTitle:     物质标题/名称
-        - Section:         部分列表，每个包含：
-            • TOCHeading:       部分标题（例如 "2D Structure"、"Identity"）
-            • Description:      描述该部分的文本
-            • Information:      信息条目列表（值、参考、URL）
-        - Reference:       参考列表，每个包含：
-            • SourceName、SourceID、Description、URL
+        A dictionary containing the full Record for the substance, with fields:
+        - RecordType:      Type of record ("SID")
+        - RecordNumber:    Numeric SID
+        - RecordTitle:     Substance title/name
+        - Section:         List of sections, each with:
+            • TOCHeading:       Section heading (e.g., "2D Structure", "Identity")
+            • Description:      Text describing the section
+            • Information:      List of info entries (values, references, URLs)
+        - Reference:       List of references, each with:
+            • SourceName, SourceID, Description, URL
     
     Query example:
         {"sid": "12345"}
@@ -256,27 +268,28 @@ async def get_description_by_sid(sid: str):
 
 @mcp.tool()
 async def get_description_by_cid(cid: str):
-    """通过 CID 检索 PubChem 化合物的详细描述信息。
-    响应返回完整的 Record 结构，包括以下部分：
-    • 结构（2D/3D 描绘）
-    • 身份（来源、外部 ID、同义词、版本控制）
-    • 存储/修改/可用日期
-    • 记录状态
-    • 相关记录（相关化合物、晶体数据、文章等）
+    """
+    Retrieve detailed description information for a PubChem compound given its CID.
+    The response returns the full Record structure, including sections such as:
+    • Structures (2D/3D depictions)
+    • Identity (sources, external IDs, synonyms, versioning)
+    • Deposit/Modify/Available dates
+    • Status of the record
+    • Related Records (related compounds, crystal data, articles, etc.)
     
     Args:
-        cid: PubChem 化合物 ID（整数或字符串）
+        cid: PubChem Compound ID (integer or string)
     
     Returns:
-        包含化合物完整 Record 的字典，包含以下字段：
-        - RecordType:      记录类型（"CID"）
-        - RecordNumber:    数字 CID
-        - RecordTitle:     化合物名称/标题
-        - Section:         部分列表，每个包含：
-            • TOCHeading:       部分标题（例如 "Structures"、"3D Conformer"）
-            • Description:      描述该部分的文本
-            • Information:      详细条目列表（值、参考、URL、表格）
-        - Reference:       参考条目列表（来源名称、描述、URL）
+        A dictionary containing the full Record for the compound, with fields:
+        - RecordType:      Type of record ("CID")
+        - RecordNumber:    Numeric CID
+        - RecordTitle:     Compound name/title
+        - Section:         List of sections, each with:
+            • TOCHeading:       Section heading (e.g., "Structures", "3D Conformer")
+            • Description:      Text describing the section
+            • Information:      List of detailed entries (values, references, URLs, tables)
+        - Reference:       List of reference entries (source name, description, URL)
     
     Query example:
         {"cid": "2244"}
@@ -291,13 +304,14 @@ async def get_description_by_cid(cid: str):
 
 @mcp.tool() 
 async def get_general_info_by_compound_name(name: str):
-    """通过名称获取化合物的详细描述，包括总体信息、药物和药物信息、药理学和生物化学信息。
+    """
+    Get detailed description of a compound by name, including overall information, drug and medication information, pharmacology and biochemistry information.
     
     Args:
-        name: PubChem 化合物名称
+        name: PubChem Compound Name
 
     Returns:
-        包含化合物描述的字典
+        Dictionary containing description of the compound
     """
     try:
         result = pubchem_api.get_description_by_name(name)
@@ -307,32 +321,33 @@ async def get_general_info_by_compound_name(name: str):
 
 @mcp.tool()
 async def get_description_by_aid(aid: str):
-    """通过 AID 检索 PubChem 生物测定的详细描述信息。
-    响应返回完整的 Record 结构，包括以下部分：
-    • 记录描述（存储者提供的摘要）
-    • 描述（生物测定概述和测定背景）
-    • 协议（实验协议详情）
-    • 注释（存储者注释和参考）
-    • 结果定义（数据表列定义）
-    • 数据表（生物活性结果和标志）
-    • 靶点（蛋白质/基因靶点）
-    • 相关靶点、Entrez 交叉链接
-    • 身份（测定元数据：名称、来源、类型、日期）
-    • 生物测定注释（格式、检测方法等）
+    """
+    Retrieve detailed description information for a PubChem bioassay given its AID.
+    The response returns the full Record structure, including sections such as:
+    • Record Description (summary provided by depositor)
+    • Description (bioassay overview and assay context)
+    • Protocol (experimental protocol details)
+    • Comment (depositor comments and references)
+    • Result Definitions (data table column definitions)
+    • Data Table (bioactivity results and flags)
+    • Target (protein/gene targets)
+    • Related Targets, Entrez Crosslinks
+    • Identity (assay metadata: name, source, type, dates)
+    • BioAssay Annotations (format, detection method, etc.)
     
     Args:
-        aid: PubChem 测定 ID（整数或字符串）
+        aid: PubChem Assay ID (integer or string)
     
     Returns:
-        包含测定完整 Record 的字典，包含以下字段：
-        - RecordType:      记录类型（"AID"）
-        - RecordNumber:    数字 AID
-        - RecordTitle:     测定标题/名称
-        - Section:         部分列表，每个包含：
-            • TOCHeading:       部分标题（例如 "Protocol"、"Target"）
-            • Description:      描述该部分的文本
-            • Information:      详细条目列表（值、参考编号、URL）
-        - Reference:       参考条目列表（来源名称、描述、URL）
+        A dictionary containing the full Record for the assay, with fields:
+        - RecordType:      Type of record ("AID")
+        - RecordNumber:    Numeric AID
+        - RecordTitle:     Assay title/name
+        - Section:         List of sections, each with:
+            • TOCHeading:       Section heading (e.g., "Protocol", "Target")
+            • Description:      Text describing the section
+            • Information:      List of detailed entries (values, reference numbers, URLs)
+        - Reference:       List of reference entries (source name, description, URL)
     
     Query example:
         {"aid": "450"}
@@ -347,31 +362,32 @@ async def get_description_by_aid(aid: str):
 
 @mcp.tool()
 async def get_assay_summary_by_cid(cid: str):
-    """检索给定 PubChem 化合物 CID 的生物测定活性摘要。
-    响应包括化合物已测试的测定表，
-    包含活性结果、靶点信息、测定元数据和参考的详情。
+    """
+    Retrieve a summary of bioassay activities for a given PubChem compound CID.
+    The response includes a table of assays where the compound has been tested,
+    with details on activity outcome, target information, assay metadata, and references.
     
     Args:
-        cid: PubChem 化合物 ID（整数或字符串）
+        cid: PubChem Compound ID (integer or string)
     
     Returns:
-        包含测定摘要表的字典，包含以下字段：
+        A dictionary containing an assay summary table with fields:
         - Table:
             • Columns:
-                - AID:             PubChem 测定 ID
-                - Panel Member ID: 测定面板标识符（如适用）
-                - SID:             PubChem 物质 ID
-                - CID:             PubChem 化合物 ID
-                - Activity Outcome: 例如 "Active"、"Inactive"
-                - Target GI:       靶点的 GenInfo 标识符
-                - Target GeneID:   靶点的 NCBI 基因 ID
-                - Activity Value [uM]: 数值活性测量（µM）
-                - Activity Name:   活性指标名称（例如 "Kd"）
-                - Assay Name:      测定描述
-                - Assay Type:      测定类别（例如 "Other"、"Primary Screening"）
-                - PubMed ID:       PubMed 文献参考
-                - RNAi:            RNA 干扰注释（如有）
-            • Row: 测定结果条目列表
+                - AID:             PubChem Assay ID
+                - Panel Member ID: Identifier for assay panel (if applicable)
+                - SID:             PubChem Substance ID
+                - CID:             PubChem Compound ID
+                - Activity Outcome: e.g., "Active", "Inactive"
+                - Target GI:       GenInfo Identifier for the target
+                - Target GeneID:   NCBI Gene ID of the target
+                - Activity Value [uM]: Numeric activity measurement (µM)
+                - Activity Name:   Name of the activity metric (e.g., "Kd")
+                - Assay Name:      Description of the assay
+                - Assay Type:      Category of assay (e.g., "Other", "Primary Screening")
+                - PubMed ID:       PubMed literature reference
+                - RNAi:            RNA interference annotation (if any)
+            • Row: List of assay result entries
     
     Query example:
         {"cid": "2144"}
@@ -386,31 +402,32 @@ async def get_assay_summary_by_cid(cid: str):
 
 @mcp.tool()
 async def get_assay_summary_by_sid(sid: str):
-    """检索给定 PubChem 物质 SID 的生物测定活性摘要。
-    响应包括物质已测试的测定列表表，
-    包含结果、靶点信息、测定元数据和参考的详情。
+    """
+    Retrieve a summary of bioassay activities for a given PubChem substance SID.
+    The response includes a table listing assays in which the substance was tested,
+    with details on outcomes, target information, assay metadata, and references.
     
     Args:
-        sid: PubChem 物质 ID（整数或字符串）
+        sid: PubChem Substance ID (integer or string)
     
     Returns:
-        包含测定摘要表的字典，包含以下字段：
+        A dictionary containing an assay summary table with fields:
         - Table:
             • Columns:
-                - AID:              PubChem 测定 ID
-                - Panel Member ID:  测定面板标识符（如适用）
-                - SID:              PubChem 物质 ID
-                - CID:              PubChem 化合物 ID
-                - Activity Outcome: 例如 "Active"、"Inconclusive"、"Unspecified"
-                - Target GI:        靶点的 GenInfo 标识符
-                - Target GeneID:    靶点的 NCBI 基因 ID
-                - Activity Value [uM]: 数值活性测量（µM），如可用
-                - Activity Name:    活性指标名称（例如 "Kd"）
-                - Assay Name:       测定描述/标题
-                - Assay Type:       测定类别（例如 "Other"、"Primary Screening"）
-                - PubMed ID:        PubMed 文献参考（如有）
-                - RNAi:             RNA 干扰注释（如有）
-            • Row: 测定结果条目列表，每个为包含 "Cell" 列表的字典
+                - AID:              PubChem Assay ID
+                - Panel Member ID:  Identifier for assay panel (if applicable)
+                - SID:              PubChem Substance ID
+                - CID:              PubChem Compound ID
+                - Activity Outcome: e.g., "Active", "Inconclusive", "Unspecified"
+                - Target GI:        GenInfo Identifier for the target
+                - Target GeneID:    NCBI Gene ID of the target
+                - Activity Value [uM]: Numeric activity measurement (µM), if available
+                - Activity Name:    Name of the activity metric (e.g., "Kd")
+                - Assay Name:       Description/title of the assay
+                - Assay Type:       Category of assay (e.g., "Other", "Primary Screening")
+                - PubMed ID:        PubMed literature reference, if any
+                - RNAi:             RNA interference annotation (if any)
+            • Row: List of assay result entries, each as a dict with a "Cell" list
     
     Query example:
         {"sid": "8149208"}
@@ -425,13 +442,14 @@ async def get_assay_summary_by_sid(sid: str):
 
 @mcp.tool()
 async def get_gene_summary_by_geneid(gene_id: str):
-    """通过基因 ID 获取基因的摘要信息。
+    """
+    Get summary information for a gene by Gene ID.
     
     Args:
-        gene_id: 基因 ID
+        gene_id: Gene ID
 
     Returns:
-        包含基因摘要信息的字典
+        Dictionary containing summary information for the gene
     """
     try:
         result = pubchem_api.get_gene_summary_by_geneid(gene_id)
@@ -441,21 +459,22 @@ async def get_gene_summary_by_geneid(gene_id: str):
 
 @mcp.tool()
 async def get_protein_summary_by_accession(accession: str):
-    """通过 UniProt 或其他登录号从 PubChem 检索蛋白质的摘要信息。
-    响应包括基本注释，如蛋白质名称、分类学和已知同义词。
+    """
+    Retrieve summary information for a protein from PubChem by its UniProt or other accession number.
+    The response includes basic annotations such as the protein’s name, taxonomy, and known synonyms.
     
     Args:
-        accession: 蛋白质登录号（字符串），例如 UniProt ID 或 NCBI 登录号
+        accession: Protein accession number (string), e.g., UniProt ID or NCBI accession
     
     Returns:
-        包含以下内容的字典：
+        A dictionary containing:
         - ProteinSummaries:
-            • ProteinSummary: 摘要条目列表，每个包含：
-                - ProteinAccession: 查询的登录号
-                - Name: 官方蛋白质名称
-                - TaxonomyID: NCBI 分类学标识符（例如 9606）
-                - Taxonomy: 生物的拉丁名和通用名
-                - Synonym: 替代名称或酶分类列表
+            • ProteinSummary: List of summary entries, each with:
+                - ProteinAccession: The queried accession number
+                - Name: Official protein name
+                - TaxonomyID: NCBI taxonomy identifier (e.g., 9606)
+                - Taxonomy: Latin name and common name of the organism
+                - Synonym: List of alternative names or enzyme classifications
     
     Query example:
         {"accession": "P00734"}
@@ -470,23 +489,24 @@ async def get_protein_summary_by_accession(accession: str):
 
 @mcp.tool()
 async def get_taxonomy_summary_by_taxonomyid(taxonomy_id: str):
-    """通过 NCBI 分类学 ID 检索生物分类学条目的摘要信息。
-    响应包括科学名称和通用名称、等级、谱系和同义词。
+    """
+    Retrieve summary information for a biological taxonomy entry given its NCBI Taxonomy ID.
+    The response includes scientific and common names, rank, lineage, and synonyms.
     
     Args:
-        taxonomy_id: NCBI 分类学 ID（整数或字符串）
+        taxonomy_id: NCBI Taxonomy ID (integer or string)
     
     Returns:
-        包含以下内容的字典：
+        A dictionary containing:
         - TaxonomySummaries:
-            • TaxonomySummary: 摘要条目列表，每个包含：
-                - TaxonomyID:      数字分类学标识符
-                - ScientificName:  拉丁科学名称（例如 "Homo sapiens"）
-                - CommonName:      通用名称（例如 "human"）
-                - Rank:            分类学等级（例如 "species"）
-                - RankedLineage:   分层谱系，包含键：
-                    • Superkingdom、Kingdom、Phylum、Class、Order、Family、Genus、Species
-                - Synonym:         替代名称或历史名称列表
+            • TaxonomySummary: List of summary entries, each with:
+                - TaxonomyID:      Numeric taxonomy identifier
+                - ScientificName:  Latin scientific name (e.g., "Homo sapiens")
+                - CommonName:      Common name (e.g., "human")
+                - Rank:            Taxonomic rank (e.g., "species")
+                - RankedLineage:   Hierarchical lineage with keys:
+                    • Superkingdom, Kingdom, Phylum, Class, Order, Family, Genus, Species
+                - Synonym:         List of alternative names or historic names
     
     Query example:
         {"taxonomy_id": "9606"}
@@ -501,18 +521,19 @@ async def get_taxonomy_summary_by_taxonomyid(taxonomy_id: str):
 
 @mcp.tool()
 async def get_conformers_by_cid(cid: str):
-    """检索给定 PubChem 化合物 CID 的可用构象异构体标识符。
-    构象异构体表示为化合物计算或提供的不同 3D 几何结构。
+    """
+    Retrieve available conformer identifiers for a given PubChem compound CID.
+    Conformers represent different 3D geometries computed or provided for the compound.
     
     Args:
-        cid: PubChem 化合物 ID（整数或字符串）
+        cid: PubChem Compound ID (integer or string)
     
     Returns:
-        包含以下内容的字典：
+        A dictionary containing:
         - InformationList:
-            • Information: 条目列表，每个包含：
-                - CID:          PubChem 化合物 ID
-                - ConformerID:  化合物的构象异构体标识符列表
+            • Information: List of entries, each with:
+                - CID:          PubChem Compound ID
+                - ConformerID:  List of conformer identifiers for the compound
     
     Query example:
         {"cid": "2244"}
@@ -527,15 +548,16 @@ async def get_conformers_by_cid(cid: str):
 
 @mcp.tool()
 async def get_compounds_by_smiles(smiles: str):
-    """基于给定的 SMILES 字符串从 PubChem 检索化合物对象。
-    每个返回的对象代表一个匹配的化合物条目。
+    """
+    Retrieve compound objects from PubChem based on a given SMILES string.
+    Each returned object represents a matching compound entry.
     
     Args:
-        smiles: 查询结构的 SMILES 字符串（例如 "CCO" 表示乙醇）
+        smiles: SMILES string of the query structure (e.g., "CCO" for ethanol)
     
     Returns:
-        与 SMILES 查询匹配的化合物对象列表。
-        例如，"Compound(702)" 表示 CID 为 702 的 PubChem 化合物。
+        A list of compound objects matching the SMILES query.
+        For example, "Compound(702)" indicates the PubChem compound with CID 702.
     
     Query example:
         {"smiles": "CCO"}
@@ -550,15 +572,16 @@ async def get_compounds_by_smiles(smiles: str):
 
 @mcp.tool()
 async def get_compounds_by_formula(formula: str):
-    """基于分子式从 PubChem 检索化合物对象。
-    响应返回匹配的化合物条目列表。
+    """
+    Retrieve compound objects from PubChem based on a molecular formula.
+    The response returns a list of matching compound entries.
     
     Args:
-        formula: 分子式字符串（例如 "C2H6O"）
+        formula: Molecular formula string (e.g., "C2H6O")
     
     Returns:
-        与分子式匹配的化合物对象列表。
-        每个条目表示为 "Compound(<CID>)"，其中 <CID> 是 PubChem 化合物 ID。
+        A list of compound objects matching the formula.
+        Each entry is represented as "Compound(<CID>)", where <CID> is the PubChem Compound ID.
     
     Query example:
         {"formula": "C2H6O"}
@@ -573,13 +596,14 @@ async def get_compounds_by_formula(formula: str):
 
 @mcp.tool()
 async def get_molecular_formula(compound):
-    """获取化合物的分子式。
+    """
+    Get the molecular formula of a compound.
     
     Args:
-        compound: PubChemPy 化合物对象
+        compound: A PubChemPy Compound object
             
     Returns:
-        化合物的分子式
+        The molecular formula of the compound
     """
     try:
         result = pubchem_api.get_molecular_formula(compound)
@@ -589,13 +613,14 @@ async def get_molecular_formula(compound):
 
 @mcp.tool()
 async def get_molecular_weight(compound):
-    """获取化合物的分子量。
+    """
+    Get the molecular weight of a compound.
     
     Args:
-        compound: PubChemPy 化合物对象
+        compound: A PubChemPy Compound object
             
     Returns:
-        化合物的分子量
+        The molecular weight of the compound
     """
     try:
         result = pubchem_api.get_molecular_weight(compound)
@@ -605,13 +630,14 @@ async def get_molecular_weight(compound):
 
 @mcp.tool()
 async def get_isomeric_smiles(compound):
-    """获取化合物的异构 SMILES。
+    """
+    Get the isomeric SMILES of a compound.
     
     Args:
-        compound: PubChemPy 化合物对象
+        compound: A PubChemPy Compound object
             
     Returns:
-        化合物的异构 SMILES
+        The isomeric SMILES of the compound
     """
     try:
         result = pubchem_api.get_isomeric_smiles(compound)
@@ -621,13 +647,14 @@ async def get_isomeric_smiles(compound):
 
 @mcp.tool()
 async def get_xlogp(compound):
-    """获取化合物的 XLogP 值。
+    """
+    Get the XLogP value of a compound.
     
     Args:
-        compound: PubChemPy 化合物对象
+        compound: A PubChemPy Compound object
             
     Returns:
-        化合物的 XLogP 值
+        The XLogP value of the compound
     """
     try:
         result = pubchem_api.get_xlogp(compound)
@@ -637,13 +664,14 @@ async def get_xlogp(compound):
 
 @mcp.tool()
 async def get_iupac_name(compound):
-    """获取化合物的 IUPAC 名称。
+    """
+    Get the IUPAC name of a compound.
     
     Args:
-        compound: PubChemPy 化合物对象
+        compound: A PubChemPy Compound object
             
     Returns:
-        化合物的 IUPAC 名称
+        The IUPAC name of the compound
     """
     try:
         result = pubchem_api.get_iupac_name(compound)
@@ -653,13 +681,14 @@ async def get_iupac_name(compound):
 
 @mcp.tool()
 async def get_synonyms(compound):
-    """获取化合物的同义词。
+    """
+    Get the synonyms of a compound.
     
     Args:
-        compound: PubChemPy 化合物对象
+        compound: A PubChemPy Compound object
             
     Returns:
-        化合物的同义词列表
+        List of synonyms of the compound
     """
     try:
         result = pubchem_api.get_synonyms(compound)
@@ -669,21 +698,22 @@ async def get_synonyms(compound):
 
 @mcp.tool()
 async def get_cids_by_smiles(smiles: str):
-    """获取与药物 SMILES 对应的 CID。
+    """
+    Obtain the CID corresponding to the drug smiles
     
     Args:
-        smiles: SMILES 表示法
+        smiles: SMILES notation
         
     Returns:
-        CID 列表
+        List of CIDs
     
     Args:
-        smiles: SMILES（字符串）
+        smiles: Smiles (string)
     
     Query example: {"smiles": "CC(=O)OC1=CC=CC=C1C(=O)O"}
     
     Returns:
-        CID 列表
+        A list of cids
     """
 
 
@@ -695,15 +725,16 @@ async def get_cids_by_smiles(smiles: str):
 
 @mcp.tool()
 async def get_cids_by_formula(formula: str):
-    """通过分子式获取 CID 列表。
+    """
+    Get a list of CIDs by molecular formula.
     
     Args:
-        formula: 药物的分子式（字符串）
+        formula: Formula of the drug(string)
     
     Query example: {"formula": "C9H8O4"}
     
     Returns:
-        CID 列表
+        List of CIDs
     """
 
 
@@ -715,17 +746,18 @@ async def get_cids_by_formula(formula: str):
 
 @mcp.tool()
 async def get_sids_by_name(name: str):
-    """通过名称获取 SID 列表。
+    """
+    Get a list of SIDs by name.
     
     Args:
-        name: 物质名称
+        name: Name of the substance
     
     Query example: {"name": "aspirin"}
     
     Returns:
-        包含以下字段的字典：
-            CID: 药物的 CID
-            SID: SID 列表
+        A dict containing the following fields:
+            CID: the cid of the drug
+            SID: a list of SIDs
     """
 
 
@@ -737,13 +769,14 @@ async def get_sids_by_name(name: str):
 
 @mcp.tool()
 async def get_substance_by_sid_pcp(sid: str):
-    """使用 PubChemPy 通过 SID 获取物质对象。
+    """
+    Get a Substance object by SID using PubChemPy.
     
     Args:
-        sid: PubChem 物质 ID
+        sid: PubChem Substance ID
         
     Returns:
-        PubChemPy 物质对象（但此工具返回 Substance(sid)）
+        A PubChemPy Substance object (But this tool returns Substance(sid))
     
     Query example: {"sid": 4594}
     """
@@ -757,13 +790,14 @@ async def get_substance_by_sid_pcp(sid: str):
 
 @mcp.tool()
 async def get_substances_by_name_pcp(name: str):
-    """使用 PubChemPy 通过名称获取物质对象列表。
+    """
+    Get a list of Substance objects by name using PubChemPy.
     
     Args:
-        name: 物质名称
+        name: Substance name
         
     Returns:
-        PubChemPy 物质对象列表（元素为 "Substance(sid)" 的列表）
+        List of PubChemPy Substance objects (A list whose elements are "Substance(sid)")
     
     Query example: {"name": "aspirin"}
     """
@@ -777,13 +811,14 @@ async def get_substances_by_name_pcp(name: str):
 
 @mcp.tool()
 async def get_substances_source_id(sid: str):
-    """通过 SID 获取物质的来源 ID（原始数据库（例如 DrugBank、ChEMBL 等）分配给化合物或物质的唯一标识符）。
+    """
+    Get the source ID (Unique identifier assigned to the compound or substance by the original database (e.g. DrugBank, ChEMBL, etc.)) of a substance by SID.
     
     Args:
-        sid: PubChem 物质 ID
+        sid: PubChem Substance ID
         
     Returns:
-        物质的来源 ID
+        The source ID of the substance
     
     Query example: {"sid": 123456}
     """
@@ -797,13 +832,14 @@ async def get_substances_source_id(sid: str):
 
 @mcp.tool()
 async def get_substances_synonyms(sid: str):
-    """通过 SID 获取物质的同义词（同一化学物质的不同名称或标识符）。
+    """
+    Get the synonyms (Different names or identifiers for the same chemical substance) of a substance by SID.
     
     Args:
-        sid: PubChem 物质 ID
+        sid: PubChem Substance ID
         
     Returns:
-        物质的同义词列表
+        List of synonyms of the substance
     
     Query example: {"sid": 123456}
     """
@@ -817,14 +853,15 @@ async def get_substances_synonyms(sid: str):
 
 @mcp.tool()
 async def get_compound_dict(compound, properties):
-    """获取化合物性质的字典。
+    """
+    Get a dictionary of a compound's properties.
     
     Args:
-        compound: PubChemPy 化合物对象
-        properties: 要包含在字典中的性质名称列表
+        compound: A PubChemPy Compound object
+        properties: List of property names to include in the dictionary
             
     Returns:
-        包含化合物指定性质的字典
+        Dictionary containing the specified properties of the compound
     """
     try:
         result = pubchem_api.get_compound_dict(compound, properties)
@@ -834,13 +871,14 @@ async def get_compound_dict(compound, properties):
 
 @mcp.tool()
 async def get_compounds_3d(name: str):
-    """获取具有 3D 结构的化合物对象列表。
+    """
+    Get a list of compound objects with 3D structures.
     
     Args:
-        name: 化学名称
+        name: Chemical name
             
     Returns:
-        具有 3D 结构的 PubChemPy 化合物对象列表
+        List of PubChemPy Compound objects with 3D structures
     """
     try:
         result = pubchem_api.get_compounds_3d(name)
@@ -850,13 +888,14 @@ async def get_compounds_3d(name: str):
 
 @mcp.tool()
 async def get_compounds_dict(compound_cid: str):
-    """通过 CID 获取化合物的字典表示。
+    """
+    Get a dictionary representation of a compound by CID.
     
     Args:
-        compound_cid: PubChem 化合物 ID
+        compound_cid: PubChem Compound ID
         
     Returns:
-        包含化合物信息的字典
+        Dictionary containing compound information
     
     Query example: {"compound_cid": 962}
     """
@@ -870,15 +909,16 @@ async def get_compounds_dict(compound_cid: str):
 
 @mcp.tool()
 async def get_substructure_cas(smiles: str):
-    """获取包含指定子结构的化合物的 CAS 注册号。
+    """
+    Get CAS Registry Numbers for compounds containing a specified substructure.
     
     Args:
-        smiles: 子结构的 SMILES 表示法（字符串）
+        smiles: SMILES notation of the substructure (string)
     
     Query example: {"smiles": "CN"}
     
     Returns:
-        CAS 注册号列表
+        List of CAS Registry Numbers
     """
 
 
@@ -891,17 +931,17 @@ async def get_substructure_cas(smiles: str):
 
 @mcp.prompt()
 def system_prompt():
-    """客户端的系统提示。"""
-    prompt = """你可以访问用于从 PubChem 搜索和检索化学信息的工具，PubChem 是一个化学分子及其针对生物测定活性的数据库。PubChem 由美国国立卫生研究院（NIH）下属的国家医学图书馆（NLM）的一个组成部分——国家生物技术信息中心（NCBI）维护。
+    """System prompt for client."""
+    prompt = """You have access to tools for searching and retrieving chemical information from PubChem, which is a database of chemical molecules and their activities against biological assays. PubChem is maintained by the National Center for Biotechnology Information (NCBI), a component of the National Library of Medicine (NLM), which is part of the United States National Institutes of Health (NIH).
 
-你可以通过名称、SMILES 表示法、分子量或结构特征搜索化合物。你可以检索有关化合物的详细信息，包括其性质、同义词和描述。
+You can search for compounds by name, SMILES notation, molecular weight, or structural features. You can retrieve detailed information about compounds, including their properties, synonyms, and descriptions.
 
-使用 API 工具为用户的查询提取相关的化学信息。当用户询问化学品或药物时，尝试提供全面的信息，包括：
-- 基本标识符（CID、分子式）
-- 物理性质（分子量等）
-- 通用名称和同义词
-- 化学结构信息（如可用）
-- 相关的生物活性（如相关）
+Use the API tools to extract relevant chemical information for the user's queries. When the user asks about a chemical or drug, try to provide comprehensive information including:
+- Basic identifiers (CID, molecular formula)
+- Physical properties (molecular weight, etc.)
+- Common names and synonyms
+- Chemical structure information when available
+- Biological activities when relevant
 
-如果用户没有提供缺失的参数，请用合理的值填充。"""
+Fill in missing arguments with sensible values if the user hasn't provided them."""
     return prompt

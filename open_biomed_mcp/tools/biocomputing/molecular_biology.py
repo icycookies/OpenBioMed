@@ -13,26 +13,26 @@ from bs4 import BeautifulSoup
 
 
 def annotate_open_reading_frames(sequence, min_length, search_reverse=False, filter_subsets=False):
-    """使用Biopython在DNA序列中查找所有开放阅读框（ORF）。
-    搜索正向和反向互补链。
+    """Find all Open Reading Frames (ORFs) in a DNA sequence using Biopython.
+    Searches both forward and reverse complement strands.
 
-    参数
-        sequence (str): DNA序列
-        min_length (int): ORF的最小长度（核苷酸）
-        search_reverse (bool): 是否搜索反向互补链（默认：False，除非您想搜索反向ORF）
-        filter_nested (bool): 是否过滤掉具有相同结束但较晚开始的ORF（默认：False，除非您想删除嵌套ORF）
+    Args:
+        sequence (str): DNA sequence
+        min_length (int): Minimum length of ORF in nucleotides
+        search_reverse (bool): Whether to search the reverse complement strand (default: False unless you want to search for reverse ORFs)
+        filter_nested (bool): Whether to filter out ORFs with same end but later start (default: False unless you want to remove nested ORFs)
 
-    返回
-        dict: 包含以下内容的字典：
-            - explanation: 输出字段的说明
-            - summary_stats: 找到的ORF的统计概览
-            - orfs: 所有找到的ORF列表，其中每个ORF包含：
-                - sequence: ORF的核苷酸序列
-                - aa_sequence: 翻译的氨基酸序列
-                - start: 原始序列中的起始位置（从0开始）
-                - end: 原始序列中的结束位置
-                - strand: 正向链为'+'，反向互补为'-'
-                - frame: 阅读框（正向为1,2,3；反向为-1,-2,-3）
+    Returns:
+        dict: Dictionary containing:
+            - explanation: Explanation of the output fields
+            - summary_stats: Statistical overview of found ORFs
+            - orfs: List of all found ORFs, where each ORF contains:
+                - sequence: Nucleotide sequence of the ORF
+                - aa_sequence: Translated amino acid sequence
+                - start: Start position in original sequence (0-based)
+                - end: End position in original sequence
+                - strand: '+' for forward strand, '-' for reverse complement
+                - frame: Reading frame (1,2,3 for forward; -1,-2,-3 for reverse)
 
     """
     ORF = namedtuple("ORF", ["sequence", "aa_sequence", "start", "end", "strand", "frame"])
@@ -165,15 +165,15 @@ def annotate_open_reading_frames(sequence, min_length, search_reverse=False, fil
 
 
 def annotate_plasmid(sequence: str, is_circular: bool = True) -> dict[str, Any]:
-    """使用pLannotate的命令行界面注释DNA序列。
+    """Annotate a DNA sequence using pLannotate's command-line interface.
 
-    参数
-        sequence (str): 要注释的DNA序列
-        is_circular (bool): 序列是否为环状（默认：True）
-        return_plot (bool): 是否返回Bokeh绘图对象（默认：False）
+    Args:
+        sequence (str): The DNA sequence to annotate
+        is_circular (bool): Whether the sequence is circular (default: True)
+        return_plot (bool): Whether to return the Bokeh plot object (default: False)
 
-    返回
-        Dict: 包含注释结果的字典，如果注释失败则返回None
+    Returns:
+        Dict: Dictionary containing annotation results or None if annotation fails
 
     """
     try:
@@ -250,17 +250,17 @@ def annotate_plasmid(sequence: str, is_circular: bool = True) -> dict[str, Any]:
 
 
 def get_gene_coding_sequence(gene_name: str, organism: str, email: str = None) -> list[dict[str, str]]:
-    """从NCBI Entrez检索指定基因的编码序列。
+    """Retrieves the coding sequence(s) of a specified gene from NCBI Entrez.
 
-    参数
-        gene_name: 基因名称
-        organism: 生物体名称
-        email: NCBI Entrez的电子邮件地址（推荐）
+    Args:
+        gene_name: Name of the gene
+        organism: Name of the organism
+        email: Email address for NCBI Entrez (recommended)
 
-    返回
-        包含以下内容的字典列表：
-            - refseq_id: 基因的RefSeq ID
-            - sequence: 基因的编码序列
+    Returns:
+        List of dictionaries containing:
+            - refseq_id: RefSeq ID of the gene
+            - sequence: Coding sequence of the gene
 
     """
     if email:
@@ -328,17 +328,17 @@ def get_gene_coding_sequence(gene_name: str, organism: str, email: str = None) -
 
 
 def get_plasmid_sequence(identifier: str, is_addgene: bool = None) -> dict[str, Any] | None:
-    """统一函数，用于从Addgene或NCBI检索质粒序列。
-    如果is_addgene为True或identifier为数字，则使用Addgene。
-    否则使用质粒名称搜索NCBI。
+    """Unified function to retrieve plasmid sequences from either Addgene or NCBI.
+    If is_addgene is True or identifier is numeric, uses Addgene.
+    Otherwise searches NCBI using the plasmid name.
 
-    参数
-        identifier (str): Addgene ID或质粒名称
-        is_addgene (bool, optional): 如果为True则强制Addgene查找，如果为False则强制NCBI。
-            如果为None，则尝试根据identifier格式自动检测。
+    Args:
+        identifier (str): Either an Addgene ID or plasmid name
+        is_addgene (bool, optional): Force Addgene lookup if True, force NCBI if False.
+            If None, attempts to auto-detect based on identifier format.
 
-    返回
-        Optional[Dict[str, Any]]: 如果找到，返回质粒序列和元数据，否则返回None
+    Returns:
+        Optional[Dict[str, Any]]: The plasmid sequence and metadata if found, None otherwise
 
     """
 
@@ -420,21 +420,22 @@ def get_plasmid_sequence(identifier: str, is_addgene: bool = None) -> dict[str, 
 
 
 def align_sequences(long_seq: str, short_seqs: str | list[str]) -> list[dict]:
-    """将短序列（引物）比对到较长序列，允许一个错配。
-    检查正向和反向互补链。
+    """Align short sequences (primers) to a longer sequence, allowing for one mismatch.
+    Checks both forward and reverse complement strands.
 
-    参数
-        long_seq (str): 目标DNA序列
-        short_seqs (Union[str, List[str]]): 单个引物或引物列表
+    Args:
+        long_seq (str): Target DNA sequence
+        short_seqs (Union[str, List[str]]): Single primer or list of primers
 
-    返回
-        List[Dict]: 每个短序列的比对结果列表，包括：
-            - explanation: 输出字段的说明
-            - sequence: 被比对的短序列
-            - alignments: 包含以下内容的字典列表：
-                - position: 目标序列中从0开始的起始位置
-                - strand: 正向链为'+'，反向互补为'-'
-                - mismatches: 任何错配的元组列表（位置，预期碱基，找到的碱基）
+    Returns:
+        List[Dict]: List of alignment results for each short sequence, including:
+            - explanation: Explanation of the output fields
+            - sequence: the short sequence that was aligned
+            - alignments: list of dictionaries containing:
+                - position: 0-based start position in the target sequence
+                - strand: '+' for forward strand, '-' for reverse complement
+                - mismatches: list of tuples (position, expected_base, found_base)
+                  for any mismatches
 
     """
     # Standardize input
@@ -493,16 +494,16 @@ def align_sequences(long_seq: str, short_seqs: str | list[str]) -> list[dict]:
 
 
 def pcr_simple(sequence: str, forward_primer: str, reverse_primer: str, circular: bool = False) -> dict:
-    """使用给定的引物和序列模拟PCR扩增。
+    """Simulate PCR amplification with given primers and sequence.
 
-    参数
-        sequence (str): 序列字符串或质粒文件路径
-        forward_primer (str): 正向引物序列（5'到3'）
-        reverse_primer (str): 反向引物序列（5'到3'）
-        circular (bool): 序列是否为环状（默认：False）
+    Args:
+        sequence (str): Either a sequence string or path to plasmid file
+        forward_primer (str): Forward primer sequence (5' to 3')
+        reverse_primer (str): Reverse primer sequence (5' to 3')
+        circular (bool): Whether the sequence is circular (default: False)
 
-    返回
-        dict: PCR模拟结果，包括产物和引物结合详情
+    Returns:
+        dict: Results of PCR simulation including products and primer binding details
 
     """
     # First check if primers are valid using existing function
@@ -599,15 +600,15 @@ def pcr_simple(sequence: str, forward_primer: str, reverse_primer: str, circular
 
 
 def digest_sequence(dna_sequence: str, enzyme_names: list[str], is_circular: bool = True) -> dict:
-    """使用Biopython的catalyze方法模拟限制性内切酶消化并返回生成的DNA片段。
+    """Simulates restriction enzyme digestion using Biopython's catalyze method and returns the resulting DNA fragments.
 
-    参数
-        enzyme_names (str | list): 限制性内切酶名称或酶名称列表
-        dna_sequence (str): 输入DNA序列
-        is_circular (bool): DNA序列是否为环状（True）或线性（False）
+    Args:
+        enzyme_names (str | list): Name of the restriction enzyme or list of enzyme names
+        dna_sequence (str): Input DNA sequence
+        is_circular (bool): Whether the DNA sequence is circular (True) or linear (False)
 
-    返回
-        Dict: 包含消化片段及其属性（包括位置）的字典
+    Returns:
+        Dict: Dictionary containing the digestion fragments and their properties including positions
 
     """
     # Convert sequence to Biopython Seq object
@@ -722,15 +723,15 @@ def digest_sequence(dna_sequence: str, enzyme_names: list[str], is_circular: boo
 
 
 def find_restriction_sites(dna_sequence: str, enzymes: list[str], is_circular: bool = True) -> dict:
-    """识别给定DNA序列中指定酶的限制性内切酶位点。
+    """Identifies restriction enzyme sites in a given DNA sequence for specified enzymes.
 
-    参数
-        dna_sequence (str): 完整的输入DNA序列
-        enzymes (List[str]): 要检查的限制性内切酶名称列表
-        is_circular (bool): DNA序列是否为环状（True）或线性（False）
+    Args:
+        dna_sequence (str): Complete input DNA sequence
+        enzymes (List[str]): List of restriction enzyme names to check
+        is_circular (bool): Whether the DNA sequence is circular (True) or linear (False)
 
-    返回
-        Dict: 包含ning all identified restriction sites
+    Returns:
+        Dict: Dictionary containing all identified restriction sites
 
     """
     # Convert string to Bio.Seq object
@@ -788,14 +789,14 @@ def find_restriction_sites(dna_sequence: str, enzymes: list[str], is_circular: b
 
 
 def find_restriction_enzymes(sequence: str, is_circular: bool = False) -> dict[str, list]:
-    """在DNA序列中查找常见的限制性内切酶位点。
+    """Finds common restriction enzyme sites in a DNA sequence.
 
-    参数
-        sequence (str): 要分析的DNA序列
-        is_circular (bool): 序列是否为环状（默认：False）
+    Args:
+        sequence (str): DNA sequence to analyze
+        is_circular (bool): Whether the sequence is circular (default: False)
 
-    返回
-        Dict[str, list]: 酶及其切割位置的字典
+    Returns:
+        Dict[str, list]: Dictionary of enzymes and their cut positions
 
     """
     # Convert to Bio.Seq and analyze
@@ -819,19 +820,19 @@ def find_restriction_enzymes(sequence: str, is_circular: bool = False) -> dict[s
 
 
 def find_sequence_mutations(query_sequence, reference_sequence, query_start=1):
-    """将查询序列与参考序列进行比较以识别突变。
+    """Compare query sequence against reference sequence to identify mutations.
 
-    参数
-        query_sequence (str): 正在分析的序列
-        reference_sequence (str): 要比较的参考序列
-        query_start (int): 查询序列的起始位置
+    Args:
+        query_sequence (str): The sequence being analyzed
+        reference_sequence (str): The reference sequence to compare against
+        query_start (int): The start position of the query sequence
 
-    返回
-        list: 格式为RefAA_Position_QueryAA的突变列表
+    Returns:
+        list: List of mutations in format RefAA_Position_QueryAA
 
-    示例
-        如果query_sequence = "ACGT"且reference_sequence = "AGGT"，
-        输出将是["A1C", "G2T"]，表示位置1和2的突变。
+    Example:
+        If query_sequence = "ACGT" and reference_sequence = "AGGT",
+        the output would be ["A1C", "G2T"] indicating mutations at positions 1 and 2.
 
     """
     if not all([query_sequence, reference_sequence, query_start]):
@@ -878,20 +879,20 @@ def design_knockout_sgrna(
     species: str = "human",
     num_guides: int = 1,
 ) -> dict[str, Any]:
-    """通过搜索预计算的sgRNA库为CRISPR敲除设计sgRNA。
-    返回用于靶向特定基因的优化引导RNA。
+    """Design sgRNAs for CRISPR knockout by searching pre-computed sgRNA libraries.
+    Returns optimized guide RNAs for targeting a specific gene.
 
-    参数
-        gene_name (str): 目标基因符号/名称（例如，"EGFR"、"TP53"）
-        species (str): 目标生物体物种（默认："human"）
-        num_guides (int): 要返回的引导数量（默认：1）
+    Args:
+        gene_name (str): Target gene symbol/name (e.g., "EGFR", "TP53")
+        species (str): Target organism species (default: "human")
+        num_guides (int): Number of guides to return (default: 1)
 
-    返回
-        Dict: 包含以下内容的字典：
-            - explanation: 输出字段的说明
-            - gene_name: 目标基因名称
-            - species: 目标物种
-            - guides: sgRNA序列列表
+    Returns:
+        Dict: Dictionary containing:
+            - explanation: Explanation of the output fields
+            - gene_name: Target gene name
+            - species: Target species
+            - guides: List of sgRNA sequences
 
     """
     DEFAULT_LIBRARIES = {
@@ -948,10 +949,10 @@ def design_knockout_sgrna(
 
 
 def get_oligo_annealing_protocol() -> dict[str, Any]:
-    """返回不含磷酸化的寡核苷酸退火标准协议。
+    """Return a standard protocol for annealing oligonucleotides without phosphorylation.
 
-    返回
-        Dict: 包含寡核苷酸退火详细协议步骤的字典
+    Returns:
+        Dict: Dictionary containing detailed protocol steps for oligo annealing
 
     """
     protocol = {
@@ -1010,18 +1011,19 @@ def get_golden_gate_assembly_protocol(
     insert_lengths: list[int] = None,
     is_library_prep: bool = False,
 ) -> dict[str, Any]:
-    """根据插入片段数量和特定DNA序列返回定制的Golden Gate组装协议。
+    """Return a customized protocol for Golden Gate assembly based on the number of inserts
+    and specific DNA sequences.
 
-    参数
-        num_inserts (int): 要组装的插入片段数量（默认：1）
-        enzyme_name (str): 要使用的IIS型限制性内切酶
-        vector_length (int): 目标载体的长度（bp）
-        vector_amount_ng (float): 要使用的载体量（ng）（默认：75.0）
-        insert_lengths (List[int]): 插入片段长度列表（bp）（可选）
-        is_library_prep (bool): 是否用于文库制备（默认：False）
+    Args:
+        num_inserts (int): Number of inserts to be assembled (default: 1)
+        enzyme_name (str): Type IIS restriction enzyme to be used
+        vector_length (int): Length of the destination vector in bp
+        vector_amount_ng (float): Amount of vector to use in ng (default: 75.0)
+        insert_lengths (List[int]): List of insert lengths in bp (optional)
+        is_library_prep (bool): Whether this is for library preparation (default: False)
 
-    返回
-        Dict: 包含Golden Gate组装详细协议步骤的字典
+    Returns:
+        Dict: Dictionary containing detailed protocol steps for Golden Gate assembly
 
     """
     # Validate enzyme name
@@ -1194,14 +1196,14 @@ def get_golden_gate_assembly_protocol(
 def get_bacterial_transformation_protocol(
     antibiotic: str = "ampicillin", is_repetitive: bool = False
 ) -> dict[str, Any]:
-    """返回细菌转化的标准协议。
+    """Return a standard protocol for bacterial transformation.
 
-    参数
-        antibiotic (str): 选择抗生素（默认："ampicillin"）
-        is_repetitive (bool): 序列是否包含重复元素（默认：False）
+    Args:
+        antibiotic (str): Selection antibiotic (default: "ampicillin")
+        is_repetitive (bool): Whether the sequence contains repetitive elements (default: False)
 
-    返回
-        Dict: 包含细菌转化详细协议步骤的字典
+    Returns:
+        Dict: Dictionary containing detailed protocol steps for bacterial transformation
 
     """
     # Set incubation temperature based on whether sequence is repetitive
@@ -1282,20 +1284,20 @@ def design_primer(
     max_tm: float = 65.0,
     search_window: int = 100,
 ) -> dict[str, Any] | None:
-    """在给定的序列窗口内设计单个引物。
+    """Design a single primer within the given sequence window.
 
-    参数
-        sequence (str): 目标DNA序列
-        start_pos (int): 引物搜索的起始位置
-        primer_length (int): 要设计的引物长度（默认：20）
-        min_gc (float): 最小GC含量（默认：0.4）
-        max_gc (float): 最大GC含量（默认：0.6）
-        min_tm (float): 最小熔解温度（°C）（默认：55.0）
-        max_tm (float): 最大熔解温度（°C）（默认：65.0）
-        search_window (int): 搜索引物的窗口大小（默认：100）
+    Args:
+        sequence (str): Target DNA sequence
+        start_pos (int): Starting position for primer search
+        primer_length (int): Length of the primer to design (default: 20)
+        min_gc (float): Minimum GC content (default: 0.4)
+        max_gc (float): Maximum GC content (default: 0.6)
+        min_tm (float): Minimum melting temperature in °C (default: 55.0)
+        max_tm (float): Maximum melting temperature in °C (default: 65.0)
+        search_window (int): Size of window to search for primers (default: 100)
 
-    返回
-        Optional[Dict[str, Any]]: 包含引物信息的字典，如果未找到合适的引物则返回None
+    Returns:
+        Optional[Dict[str, Any]]: Dictionary with primer information or None if no suitable primer found
 
     """
     # Extract candidate region for primer design
@@ -1360,30 +1362,30 @@ def design_verification_primers(
     min_tm: float = 55.0,
     max_tm: float = 65.0,
 ) -> dict[str, Any]:
-    """设计Sanger测序引物以验证质粒中的特定区域。
+    """Design Sanger sequencing primers to verify a specific region in a plasmid.
 
-    首先尝试使用现有引物池中的引物。如果它们不能完全覆盖该区域，
-    则根据需要设计额外的引物。
+    First tries to use primers from an existing primer pool. If they cannot fully
+    cover the region, designs additional primers as needed.
 
-    参数
-        plasmid_sequence (str): 完整的质粒序列
-        target_region (Tuple[int, int]): 要验证的起始和结束位置（从0开始的索引）
-        existing_primers (Optional[List[Dict[str, str]]]): 现有引物列表，包含
-                                                         其序列和可选名称。
-                                                         如果为None，使用常见实验室引物。
-        is_circular (bool): 质粒是否为环状（默认：True）
-        coverage_length (int): 每个引物的典型读长（默认：800bp）
-        primer_length (int): 新设计引物的长度（默认：20）
-        min_gc (float): 新引物的最小GC含量（默认：0.4）
-        max_gc (float): 新引物的最大GC含量（默认：0.6）
-        min_tm (float): 最小熔解温度（°C）（默认：55.0）
-        max_tm (float): 最大熔解温度（°C）（默认：65.0）
+    Args:
+        plasmid_sequence (str): The complete plasmid sequence
+        target_region (Tuple[int, int]): Start and end positions to verify (0-based indexing)
+        existing_primers (Optional[List[Dict[str, str]]]): List of existing primers with
+                                                         their sequences and optional names.
+                                                         If None, uses common lab primers.
+        is_circular (bool): Whether the plasmid is circular (default: True)
+        coverage_length (int): Typical read length for each primer (default: 800bp)
+        primer_length (int): Length of newly designed primers (default: 20)
+        min_gc (float): Minimum GC content for new primers (default: 0.4)
+        max_gc (float): Maximum GC content for new primers (default: 0.6)
+        min_tm (float): Minimum melting temperature in °C (default: 55.0)
+        max_tm (float): Maximum melting temperature in °C (default: 65.0)
 
-    返回
-        Dict: 包含以下内容的字典：
-            - target_region: 要验证的区域
-            - recommended_primers: 要使用的引物列表（来自现有和/或新设计）
-            - coverage_map: 引物如何覆盖目标区域
+    Returns:
+        Dict: Dictionary containing:
+            - target_region: The region to be verified
+            - recommended_primers: List of primers to use (from existing and/or newly designed)
+            - coverage_map: How the primers cover the target region
 
     """
     # Use default primers if none are provided
@@ -1700,16 +1702,17 @@ def design_golden_gate_oligos(
     enzyme_name: str,
     is_circular: bool = True,
 ) -> dict[str, Any]:
-    """通过识别骨架突出端并创建匹配的插入寡核苷酸来设计Golden Gate组装的寡核苷酸。
+    """Design oligos for Golden Gate assembly by identifying backbone overhangs
+    and creating matching insert oligos.
 
-    参数
-        backbone_sequence (str): 质粒/骨架序列
-        insert_sequence (str): 要插入的序列
-        enzyme_name (str): 要使用的IIS型限制性内切酶
-        is_circular (bool): 骨架是否为环状（默认：True）
+    Args:
+        backbone_sequence (str): The plasmid/backbone sequence
+        insert_sequence (str): Sequence to be inserted
+        enzyme_name (str): Type IIS restriction enzyme to be used
+        is_circular (bool): Whether the backbone is circular (default: True)
 
-    返回
-        Dict: 包含突出端信息和设计的寡核苷酸的字典
+    Returns:
+        Dict: Dictionary containing overhang information and designed oligos
 
     """
     # Dictionary of enzyme properties
@@ -1849,21 +1852,21 @@ def golden_gate_assembly(
     fragments: list[dict[str, str]],
     is_circular: bool = True,
 ) -> dict[str, Any]:
-    """模拟Golden Gate组装以预测最终构建序列。
+    """Simulate Golden Gate assembly to predict final construct sequences.
 
-    参数
-        backbone_sequence (str): 完整的骨架序列
-        enzyme_name (str): 要使用的IIS型限制性内切酶（例如，"BsmBI"、"BsaI"）
-        fragments (List[Dict[str, str]]): 要插入的片段列表，包含以下之一：
-            - name + fwd_oligo + rev_oligo: 具有匹配突出端的寡核苷酸对
-            - name + sequence: 包含限制性位点的双链DNA片段
-        is_circular (bool): 骨架是否为环状（默认：True）
+    Args:
+        backbone_sequence (str): Complete backbone sequence
+        enzyme_name (str): Type IIS restriction enzyme to be used (e.g., "BsmBI", "BsaI")
+        fragments (List[Dict[str, str]]): List of fragments to insert, containing one of:
+            - name + fwd_oligo + rev_oligo: Oligo pair with matching overhangs
+            - name + sequence: Double-stranded DNA fragment containing restriction sites
+        is_circular (bool): Whether the backbone is circular (default: True)
 
-    返回
-        Dict: 包含以下内容的字典：
-            - success: 布尔值，指示组装是否成功
-            - assembled_sequence: 最终组装的序列
-            - message: 如果组装失败的错误消息
+    Returns:
+        Dict: Dictionary containing:
+            - success: Boolean indicating if assembly was successful
+            - assembled_sequence: The final assembled sequence
+            - message: Error message if assembly failed
 
     """
     # Dictionary of enzyme properties

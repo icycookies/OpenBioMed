@@ -18,11 +18,11 @@ _MAX_DOC_CHARS = int("50000")
 
 
 def _load_pylabrobot_tutorial_content(section: str) -> str:
-    """从多个来源加载PLR教程/文档文本，具有优雅的回退机制。
+    """Load PLR tutorial/docs text from multiple sources with graceful fallback.
 
-    优先级：
-      1) 来自已安装的pylabrobot包的文档（docs/user_guide/...）
-      2) 内省已安装的包（pylabrobot）
+    Precedence:
+      1) Docs from installed pylabrobot package (docs/user_guide/...)
+      2) Introspect installed package (pylabrobot)
     """
     docs: list[str] = []
 
@@ -53,11 +53,11 @@ def _load_pylabrobot_tutorial_content(section: str) -> str:
 
 
 def _collect_docs_from_github_zip(repo: str, ref: str, section: str) -> list[tuple[str, str]] | list[str]:
-    """下载GitHub仓库zip文件并提取该部分的user_guide文档。
+    """Download GitHub repo zip and extract user_guide docs for the section.
 
-    使用：
-      - docs/user_guide/00_liquid-handling 用于 section == "liquid"
-      - docs/user_guide/01_material-handling 用于 section == "material"
+    Uses:
+      - docs/user_guide/00_liquid-handling for section == "liquid"
+      - docs/user_guide/01_material-handling for section == "material"
     """
     if not repo:
         return []
@@ -156,10 +156,10 @@ def _collect_docs_from_github_zip(repo: str, ref: str, section: str) -> list[tup
 
 
 def _format_liquid_user_guide(named_docs: list[tuple[str, str]]) -> str:
-    """将液体处理文档按策划的顺序组装，并添加标题。
+    """Assemble liquid-handling docs into a curated order with headings.
 
-    named_docs: 来自GitHub的（filename_lower, text）列表。
-    返回单个格式化的字符串。
+    named_docs: list of (filename_lower, text) from GitHub.
+    Returns a single formatted string.
     """
     sections = [
         (
@@ -207,7 +207,7 @@ def _format_liquid_user_guide(named_docs: list[tuple[str, str]]) -> str:
 
 
 def get_pylabrobot_documentation_liquid() -> str:
-    """获取PyLabRobot教程特定部分的文档。"""
+    """Get the documentation for a specific section of the PyLabRobot tutorial."""
     tutorial_content = """Notes:
 - Use hamilton_96_tiprack_1000uL_filter instead of HTF (deprecated). Note the capital L in uL.
 - Use Cor_96_wellplate_360ul_Fb instead of Corning_96_wellplate_360ul_Fb.
@@ -236,39 +236,39 @@ def test_pylabrobot_script(
     save_test_report: bool = False,
     test_report_dir: str = None,
 ) -> dict[str, Any]:
-    """使用模拟和验证测试PyLabRobot脚本。
+    """Test a PyLabRobot script using simulation and validation.
 
-    使用PyLabRobot的ChatterboxBackend和跟踪系统来
-    验证生成的脚本，无需物理硬件。
+    Uses PyLabRobot's ChatterboxBackend and tracking systems to
+    validate generated scripts without requiring physical hardware.
 
-    参数
-        script_input (str): PyLabRobot脚本代码字符串，或.py文件的文件路径
-        enable_tracking (bool): 启用吸头和体积跟踪以进行错误检测
-        timeout_seconds (int): 超时前的最大执行时间
-        save_test_report (bool): 是否将详细测试结果保存到文件
-        test_report_dir (str, optional): 保存测试报告的目录
+    Args:
+        script_input (str): Either the PyLabRobot script code as a string, or a file path to a .py file
+        enable_tracking (bool): Enable tip and volume tracking for error detection
+        timeout_seconds (int): Maximum execution time before timeout
+        save_test_report (bool): Whether to save detailed test results to file
+        test_report_dir (str, optional): Directory to save test reports
 
-    返回
-        dict: 包含以下内容的字典：
-            - success (bool): 脚本是否通过所有测试
-            - test_results (dict): 每个验证步骤的详细测试结果
-            - execution_summary (dict): 执行的操作摘要
-            - errors (list): 遇到的错误列表
-            - warnings (list): 警告列表
-            - test_report_path (str): 如果请求，保存的报告路径
+    Returns:
+        dict: Dictionary containing:
+            - success (bool): Whether the script passed all tests
+            - test_results (dict): Detailed test results for each validation step
+            - execution_summary (dict): Summary of operations performed
+            - errors (list): List of errors encountered
+            - warnings (list): List of warnings
+            - test_report_path (str): Path to saved report if requested
 
-    示例
-        >>> # 使用脚本内容字符串测试
+    Example:
+        >>> # Test with script content string
         >>> script = "async def main(): ..."
         >>> result = test_pylabrobot_script(script)
 
-        >>> # 使用文件路径测试
+        >>> # Test with file path
         >>> result = test_pylabrobot_script("/path/to/script.py")
 
         >>> if result["success"]:
-        ...     print("测试通过！")
+        ...     print("Test passed!")
         ... else:
-        ...     print(f"测试失败：{result['errors']}")
+        ...     print(f"Test failed: {result['errors']}")
     """
     start_time = time.time()
     test_results = {
@@ -375,7 +375,7 @@ def test_pylabrobot_script(
 
 
 def _validate_pylabrobot_imports(script_content: str) -> dict[str, Any]:
-    """验证脚本中的所有PyLabRobot导入是否可用。"""
+    """Validate that all PyLabRobot imports in the script are available."""
     import_errors = []
     import_warnings = []
 
@@ -427,7 +427,7 @@ def _validate_pylabrobot_imports(script_content: str) -> dict[str, Any]:
 
 
 def _modify_script_for_testing(script_content: str, enable_tracking: bool) -> str:
-    """修改脚本以使用模拟后端并启用跟踪。"""
+    """Modify script to use simulation backends and enable tracking."""
     modified_script = script_content
 
     # Replace STARBackend with LiquidHandlerChatterboxBackend for simulation
@@ -491,7 +491,7 @@ except ImportError:
 
 
 def _execute_script_safely(script_content: str, timeout_seconds: int) -> dict[str, Any]:
-    """在安全环境中执行修改后的脚本。"""
+    """Execute the modified script in a safe environment."""
     errors = []
     warnings = []
     summary = {"operations_performed": 0, "tips_used": 0, "liquid_transferred": 0.0}
@@ -548,7 +548,7 @@ def _execute_script_safely(script_content: str, timeout_seconds: int) -> dict[st
 
 
 def _run_script_with_monitoring(script_path: str) -> dict[str, Any]:
-    """运行脚本并监控其执行。"""
+    """Run the script and monitor its execution."""
     # Note: This is a simplified version. In practice, you might want to
     # use subprocess or other isolation methods for safety
 
@@ -618,7 +618,7 @@ def _create_test_result(
     save_test_report: bool,
     test_report_dir: str,
 ) -> dict[str, Any]:
-    """创建最终的测试结果字典。"""
+    """Create the final test result dictionary."""
     # Calculate total execution time
     total_execution_time = time.time() - start_time
     execution_summary["total_execution_time"] = total_execution_time

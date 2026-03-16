@@ -11,12 +11,12 @@ _captured_plots = []
 
 
 def run_python_repl(command: str) -> str:
-    """在持久环境中执行提供的 Python 命令并返回输出。
-    在一次执行中定义的变量将在后续执行中可用。
+    """Executes the provided Python command in a persistent environment and returns the output.
+    Variables defined in one execution will be available in subsequent executions.
     """
 
     def execute_in_repl(command: str) -> str:
-        """在持久环境中执行命令的辅助函数。"""
+        """Helper function to execute the command in the persistent environment."""
         old_stdout = sys.stdout
         sys.stdout = mystdout = StringIO()
 
@@ -45,7 +45,7 @@ def run_python_repl(command: str) -> str:
 
 
 def _capture_matplotlib_plots():
-    """捕获在执行期间可能生成的任何 matplotlib 图表。"""
+    """Capture any matplotlib plots that might have been generated during execution."""
     global _captured_plots
     try:
         import matplotlib.pyplot as plt
@@ -79,7 +79,7 @@ def _capture_matplotlib_plots():
 
 
 def _apply_matplotlib_patches():
-    """对 matplotlib 函数应用简单的猴子补丁以自动捕获图表。"""
+    """Apply simple monkey patches to matplotlib functions to automatically capture plots."""
     try:
         import matplotlib.pyplot as plt
 
@@ -92,7 +92,7 @@ def _apply_matplotlib_patches():
         original_savefig = plt.savefig
 
         def show_with_capture(*args, **kwargs):
-            """增强的 show 函数，在显示图表之前捕获它们。"""
+            """Enhanced show function that captures plots before displaying them."""
             # Capture any plots before showing
             _capture_matplotlib_plots()
             # Print a message to indicate plot was generated
@@ -101,7 +101,7 @@ def _apply_matplotlib_patches():
             return original_show(*args, **kwargs)
 
         def savefig_with_capture(*args, **kwargs):
-            """增强的 savefig 函数，在保存图表后捕获它们。"""
+            """Enhanced savefig function that captures plots after saving them."""
             # Get the filename from args if provided
             filename = args[0] if args else kwargs.get("fname", "unknown")
             # Call the original savefig function
@@ -127,27 +127,27 @@ def _apply_matplotlib_patches():
 
 
 def get_captured_plots():
-    """获取所有捕获的 matplotlib 图表。"""
+    """Get all captured matplotlib plots."""
     global _captured_plots
     return _captured_plots.copy()
 
 
 def clear_captured_plots():
-    """清除所有捕获的 matplotlib 图表。"""
+    """Clear all captured matplotlib plots."""
     global _captured_plots
     _captured_plots = []
 
 
 def read_function_source_code(function_name: str) -> str:
-    """从任何模块路径读取函数的源代码。
+    """Read the source code of a function from any module path.
 
-    参数
+    Parameters
     ----------
-        function_name (str): 完全限定的函数名称（例如 'bioagentos.tool.support_tools.write_python_code'）
+        function_name (str): Fully qualified function name (e.g., 'bioagentos.tool.support_tools.write_python_code')
 
-    返回
+    Returns
     -------
-        str: 函数的源代码
+        str: The source code of the function
 
     """
     import importlib
@@ -204,70 +204,70 @@ def download_synapse_data(
     timeout: int = 300,
     entity_type: str = "dataset",
 ):
-    """使用实体 ID 从 Synapse 下载数据。
+    """Download data from Synapse using entity IDs.
 
-    使用 synapse CLI 从 Synapse 下载文件、文件夹或项目。
-    需要 SYNAPSE_AUTH_TOKEN 环境变量进行身份验证。
-    如果不可用，会自动安装 synapseclient。
+    Uses the synapse CLI to download files, folders, or projects from Synapse.
+    Requires SYNAPSE_AUTH_TOKEN environment variable for authentication.
+    Automatically installs synapseclient if not available.
 
-    关键提示：始终从 query_synapse() 搜索结果或用户提示中检查实体类型，并传递正确的 entity_type！
-    默认的 entity_type="dataset" 可能不适合您的实体。
+    CRITICAL: Always check entity type from query_synapse() search results or user hints and pass the correct entity_type!
+    The default entity_type="dataset" may not be appropriate for your entity.
 
-    重要提示：仅 entity_type="file" 支持多个实体 ID。
-    对于数据集、文件夹和项目，仅支持单个 entity_id。
+    IMPORTANT: Multiple entity IDs are only supported for entity_type="file".
+    For datasets, folders, and projects, only a single entity_id is supported.
 
-    参数
+    Parameters
     ----------
     entity_ids : str or list of str
-        要下载的 Synapse 实体 ID。
-        - 对于文件：可以是单个 ID 字符串或 ID 字符串列表
-        - 对于数据集/文件夹/项目：必须仅为单个 ID 字符串
-    download_location : str, 默认 "."
-        文件将下载到的目录（默认为当前目录）
-    follow_link : bool, 默认 False
-        是否跟随链接下载链接的实体
-    recursive : bool, 默认 False
-        是否递归下载文件夹及其内容
-        仅对 entity_type="folder" 有效 - 对其他类型忽略
-    timeout : int, 默认 300
-        每个下载操作的超时时间（秒）
-    entity_type : str, 默认 "dataset"
-        Synapse 实体的类型（"dataset"、"file"、"folder"、"project"）
-        必须与搜索结果或用户提示中的实际实体类型匹配！
-        默认的 "dataset" 应仅用于实际的数据集。
-        检查搜索结果中的 'node_type' 字段以确定正确的类型。
+        Synapse entity ID(s) to download.
+        - For files: Can be a single ID string or list of ID strings
+        - For datasets/folders/projects: Must be a single ID string only
+    download_location : str, default "."
+        Directory where files will be downloaded (current directory by default)
+    follow_link : bool, default False
+        Whether to follow links to download the linked entity
+    recursive : bool, default False
+        Whether to recursively download folders and their contents
+        ONLY valid for entity_type="folder" - ignored for other types
+    timeout : int, default 300
+        Timeout in seconds for each download operation
+    entity_type : str, default "dataset"
+        Type of Synapse entity ("dataset", "file", "folder", "project")
+        MUST match the actual entity type from search results or user hints!
+        The default "dataset" should only be used for actual datasets.
+        Check the 'node_type' field in search results to determine correct type.
 
-    返回
+    Returns
     -------
     dict
-        包含下载结果和任何错误的字典
+        Dictionary containing download results and any errors
 
-    注意
+    Notes
     -----
-    需要 SYNAPSE_AUTH_TOKEN 环境变量，其中包含您的 Synapse 个人
-    访问令牌以进行身份验证。
+    Requires SYNAPSE_AUTH_TOKEN environment variable with your Synapse personal
+    access token for authentication.
 
-    代理使用指南：
-    1. 始终检查 query_synapse() 搜索结果或用户提示中的 'node_type' 字段
-    2. 传递与 node_type 匹配的正确 entity_type 参数
-    3. 除非确认，否则不要依赖默认的 entity_type="dataset"
-    4. 对于多个下载，确保所有实体都是 "file" 类型
-    5. 仅对 entity_type="folder" 使用 recursive=True
+    AGENT USAGE GUIDANCE:
+    1. Always check the 'node_type' field from query_synapse() search results or user hints
+    2. Pass the correct entity_type parameter matching the node_type
+    3. Do NOT rely on the default entity_type="dataset" unless confirmed
+    4. For multiple downloads, ensure all entities are of type "file"
+    5. Only use recursive=True with entity_type="folder"
 
-    示例
+    Examples
     --------
-    # 使用 query_synapse() 搜索后，检查 node_type 并使用适当的 entity_type：
+    # After searching with query_synapse(), check node_type and use appropriate entity_type:
 
-    # 如果搜索结果显示 'node_type': 'dataset'
+    # If search result shows 'node_type': 'dataset'
     download_synapse_data("syn123456", entity_type="dataset")
 
-    # 如果搜索结果显示 'node_type': 'file'
+    # If search result shows 'node_type': 'file'
     download_synapse_data("syn654321", entity_type="file")
 
-    # 如果搜索结果显示 'node_type': 'folder'
+    # If search result shows 'node_type': 'folder'
     download_synapse_data("syn789012", entity_type="folder", recursive=True)
 
-    # 多个文件（仅当所有都是 'node_type': 'file' 时）
+    # Multiple files (only if all are 'node_type': 'file')
     download_synapse_data(["syn111", "syn222"], entity_type="file")
     """
     import os

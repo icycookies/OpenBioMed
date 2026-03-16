@@ -11,18 +11,6 @@ import pandas as pd
 
 
 def run_diffdock_with_smiles(pdb_path, smiles_string, local_output_dir, gpu_device=0, use_gpu=True):
-    """使用 SMILES 字符串运行 DiffDock 分子对接。
-
-    参数:
-        pdb_path: PDB 文件路径
-        smiles_string: 配体的 SMILES 字符串
-        local_output_dir: 本地输出目录
-        gpu_device: GPU 设备编号（默认: 0）
-        use_gpu: 是否使用 GPU（默认: True）
-
-    返回:
-        包含对接过程摘要的字符串
-    """
     try:
         summary = []
 
@@ -106,18 +94,6 @@ def run_diffdock_with_smiles(pdb_path, smiles_string, local_output_dir, gpu_devi
 
 
 def docking_autodock_vina(smiles_list, receptor_pdb_file, box_center, box_size, ncpu=1):
-    """使用 AutoDock Vina 执行分子对接。
-
-    参数:
-        smiles_list: SMILES 字符串列表
-        receptor_pdb_file: 受体 PDB 文件路径
-        box_center: 对接盒中心坐标
-        box_size: 对接盒大小
-        ncpu: 使用的 CPU 核心数（默认: 1）
-
-    返回:
-        包含对接得分的研究日志字符串
-    """
     from tdc import Oracle
 
     log = []
@@ -158,16 +134,6 @@ def docking_autodock_vina(smiles_list, receptor_pdb_file, box_center, box_size, 
 
 
 def run_autosite(pdb_file, output_dir, spacing=1.0):
-    """运行 AutoSite 识别蛋白质结合位点。
-
-    参数:
-        pdb_file: PDB 文件路径
-        output_dir: 输出目录
-        spacing: 网格间距（默认: 1.0）
-
-    返回:
-        包含 AutoSite 运行结果的研究日志字符串
-    """
     # Prepare the output directory
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -216,16 +182,16 @@ def run_autosite(pdb_file, output_dir, spacing=1.0):
 
 # Function to get TxGNN predictions and return a summarized string output
 def retrieve_topk_repurposing_drugs_from_disease_txgnn(disease_name, data_lake_path, k=5):
-    """该函数计算用于药物重定位的 TxGNN 模型预测。它接收数据路径、疾病名称，
-    并返回经过 sigmoid 转换后得分最高的前 K 个预测药物的摘要。
+    """This function computes TxGNN model predictions for drug repurposing. It takes in the paths to the data,
+    the disease name, and returns a summary of the top K predicted drugs with their sigmoid-transformed scores.
 
-    参数:
-    - disease_name (str): 要检索药物预测的疾病名称。
-    - data_lake_path (str): 包含 TxGNN 预测数据的数据湖路径。
-    - k (int, 可选): 要返回的顶部药物预测数量。默认为 5。
+    Args:
+    - disease_name (str): The name of the disease for which the drug predictions are to be retrieved.
+    - data_lake_path (str): The path to the data lake containing the TxGNN predictions.
+    - k (int, optional): The number of top drug predictions to return. Defaults to 5.
 
-    返回:
-    - str: 步骤摘要和前 K 个药物预测及其得分。
+    Returns:
+    - str: A summary of the steps and the top K drug predictions with their scores.
 
     """
 
@@ -279,16 +245,8 @@ def retrieve_topk_repurposing_drugs_from_disease_txgnn(disease_name, data_lake_p
     return summary
 
 
+# ADMET prediction function with research log format
 def predict_admet_properties(smiles_list, ADMET_model_type="MPNN"):
-    """使用研究日志格式预测 ADMET 属性。
-
-    参数:
-        smiles_list: SMILES 字符串列表
-        ADMET_model_type: ADMET 模型类型，可选 "MPNN"、"CNN" 或 "Morgan"
-
-    返回:
-        包含 ADMET 预测的研究日志字符串
-    """
     try:
         from DeepPurpose import CompoundPred, utils
     except Exception:
@@ -402,17 +360,8 @@ def predict_admet_properties(smiles_list, ADMET_model_type="MPNN"):
     return research_log
 
 
+# Binding Affinity prediction function with model_type validation
 def predict_binding_affinity_protein_1d_sequence(smiles_list, amino_acid_sequence, affinity_model_type="MPNN-CNN"):
-    """使用模型类型验证预测结合亲和力。
-
-    参数:
-        smiles_list: SMILES 字符串列表
-        amino_acid_sequence: 蛋白质的氨基酸序列
-        affinity_model_type: 亲和力模型类型，可选 "CNN-CNN"、"MPNN-CNN"、"Morgan-CNN"、"Morgan-AAC" 或 "Daylight-AAC"
-
-    返回:
-        包含结合亲和力预测的研究日志字符串
-    """
     try:
         from DeepPurpose import DTI, utils
     except Exception:
@@ -463,30 +412,30 @@ def predict_binding_affinity_protein_1d_sequence(smiles_list, amino_acid_sequenc
 
 
 def analyze_accelerated_stability_of_pharmaceutical_formulations(formulations, storage_conditions, time_points):
-    """分析药物制剂在加速储存条件下的稳定性。
+    """Analyzes the stability of pharmaceutical formulations under accelerated storage conditions.
 
-    参数
+    Parameters
     ----------
     formulations : list of dict
-        制剂字典列表，每个包含:
-        - 'name': str, 制剂名称
-        - 'active_ingredient': str, 活性药物成分名称
-        - 'concentration': float, 浓度（mg/mL）
-        - 'excipients': list, 辅料列表
+        List of formulation dictionaries, each containing:
+        - 'name': str, name of the formulation
+        - 'active_ingredient': str, name of the active pharmaceutical ingredient
+        - 'concentration': float, concentration in mg/mL
+        - 'excipients': list, list of excipients
 
     storage_conditions : list of dict
-        储存条件字典列表，每个包含:
-        - 'temperature': float, 温度（°C）
-        - 'humidity': float, 相对湿度百分比（固体剂型可选）
-        - 'description': str, 储存条件描述（例如 "室温"、"加速"）
+        List of storage condition dictionaries, each containing:
+        - 'temperature': float, temperature in °C
+        - 'humidity': float, relative humidity in percentage (optional for solid dosage forms)
+        - 'description': str, description of storage condition (e.g., "Room Temperature", "Accelerated")
 
     time_points : list of int
-        用于评估稳定性的时间点列表（天数）
+        List of time points in days to evaluate stability
 
-    返回
+    Returns
     -------
     str
-        总结稳定性测试过程和结果的研究日志
+        Research log summarizing the stability testing process and results
 
     """
     # Create output directory if it doesn't exist
@@ -628,23 +577,23 @@ def analyze_accelerated_stability_of_pharmaceutical_formulations(formulations, s
 def run_3d_chondrogenic_aggregate_assay(
     chondrocyte_cells, test_compounds, culture_duration_days=21, measurement_intervals=7
 ):
-    """生成用于执行 3D 软骨细胞聚集培养实验的详细方案，以评估化合物对软骨形成的影响。
+    """Generates a detailed protocol for performing a 3D chondrogenic aggregate culture assay to evaluate compounds' effects on chondrogenesis.
 
-    参数
+    Parameters
     ----------
     chondrocyte_cells : dict
-        包含细胞信息的字典，包括 'source'、'passage_number' 和 'cell_density'
+        Dictionary with cell information including 'source', 'passage_number', and 'cell_density'
     test_compounds : list of dict
-        要测试的化合物列表，每个包含 'name'、'concentration' 和 'vehicle' 键
+        List of compounds to test, each with 'name', 'concentration', and 'vehicle' keys
     culture_duration_days : int
-        培养期的总持续时间（天）（默认: 21）
+        Total duration of the culture period in days (default: 21)
     measurement_intervals : int
-        测量之间的间隔天数（默认: 7）
+        Interval in days between measurements (default: 7)
 
-    返回
+    Returns
     -------
     str
-        3D 软骨细胞聚集培养实验的详细方案文档
+        Detailed protocol document for the 3D chondrogenic aggregate culture assay
 
     """
     from datetime import datetime
@@ -731,19 +680,19 @@ def run_3d_chondrogenic_aggregate_assay(
 
 
 def grade_adverse_events_using_vcog_ctcae(clinical_data_file):
-    """使用 VCOG-CTCAE 标准对动物研究中的不良事件进行分级和监测。
+    """Grade and monitor adverse events in animal studies using the VCOG-CTCAE standard.
 
-    参数
+    Parameters
     ----------
     clinical_data_file : str
-        包含临床评估数据的 CSV 文件路径，列包括:
-        subject_id, time_point, symptom, severity, measurement（可选）
+        Path to a CSV file containing clinical evaluation data with columns:
+        subject_id, time_point, symptom, severity, measurement (optional)
 
-    返回
+    Returns
     -------
     str
-        总结不良事件分级过程和结果的研究日志。
-        分级事件保存到 'vcog_ctcae_graded_events.csv'。
+        A research log summarizing the adverse event grading process and results.
+        The graded events are saved to 'vcog_ctcae_graded_events.csv'.
 
     """
     import json
@@ -1122,20 +1071,21 @@ def grade_adverse_events_using_vcog_ctcae(clinical_data_file):
 
 
 def analyze_radiolabeled_antibody_biodistribution(time_points, tissue_data):
-    """分析放射性标记抗体的生物分布和药代动力学特征。
+    """Analyze biodistribution and pharmacokinetic profile of radiolabeled antibodies.
 
-    参数
+    Parameters
     ----------
     time_points : list or numpy.ndarray
-        进行测量的时间点（小时）
+        Time points (hours) at which measurements were taken
     tissue_data : dict
-        字典，键为组织名称，值为对应于 time_points 的 %IA/g 测量值列表/数组。
-        必须包含 'tumor' 作为键之一。
+        Dictionary where keys are tissue names and values are lists/arrays of %IA/g
+        measurements corresponding to time_points. Must include 'tumor' as one of the keys.
 
-    返回
+    Returns
     -------
     str
-        总结生物分布分析、药代动力学参数和肿瘤与正常组织比率的研究日志
+        Research log summarizing the biodistribution analysis, pharmacokinetic parameters,
+        and tumor-to-normal tissue ratios
 
     """
     import json
@@ -1259,33 +1209,33 @@ def analyze_radiolabeled_antibody_biodistribution(time_points, tissue_data):
 def estimate_alpha_particle_radiotherapy_dosimetry(
     biodistribution_data, radiation_parameters, output_file="dosimetry_results.csv"
 ):
-    """估算α粒子放射治疗药物对肿瘤和正常器官的辐射吸收剂量。
+    """Estimate radiation absorbed doses to tumor and normal organs for alpha-particle radiotherapeutics.
 
-    该函数实现医学内部辐射剂量（MIRD）方案，基于健康小鼠的生物分布数据
-    和辐射传输参数计算吸收剂量。
+    This function implements the Medical Internal Radiation Dose (MIRD) schema to calculate
+    absorbed doses based on biodistribution data from healthy mice and radiation transport parameters.
 
-    参数
+    Parameters
     ----------
     biodistribution_data : dict
-        字典，键为器官/组织名称，值为时间-活度测量值列表。
-        每个测量值应为 (time_hours, percent_injected_activity) 元组。
-        必须包含所有相关器官的条目，包括 'tumor'。
+        Dictionary containing organ/tissue names as keys and a list of time-activity measurements as values.
+        Each measurement should be a tuple of (time_hours, percent_injected_activity).
+        Must include entries for all relevant organs including 'tumor'.
 
     radiation_parameters : dict
-        包含α发射放射性核素辐射参数的字典:
-        - 'radionuclide': str - 放射性核素名称（例如 'Ac-225'）
-        - 'half_life_hours': float - 物理半衰期（小时）
-        - 'energy_per_decay_MeV': float - 每次衰变释放的能量（MeV）
-        - 'radiation_weighting_factor': float - α粒子的辐射权重因子
-        - 'S_factors': dict - 每个源-靶器官对的 S 因子（Gy/Bq-s）
+        Dictionary containing radiation parameters for the alpha-emitting radionuclide:
+        - 'radionuclide': str - Name of the radionuclide (e.g., 'Ac-225')
+        - 'half_life_hours': float - Physical half-life in hours
+        - 'energy_per_decay_MeV': float - Energy released per decay in MeV
+        - 'radiation_weighting_factor': float - Radiation weighting factor for alpha particles
+        - 'S_factors': dict - S-factors (Gy/Bq-s) for each source-target organ pair
 
-    output_file : str, 可选
-        保存剂量学结果的文件名（默认: "dosimetry_results.csv"）
+    output_file : str, optional
+        Filename to save the dosimetry results (default: "dosimetry_results.csv")
 
-    返回
+    Returns
     -------
     str
-        总结剂量学估算过程和结果的研究日志
+        Research log summarizing the dosimetry estimation process and results
 
     """
     import csv
@@ -1375,28 +1325,28 @@ def perform_mwas_cyp2c19_metabolizer_status(
     pvalue_threshold=0.05,
     output_file="significant_cpg_sites.csv",
 ):
-    """执行全甲基化组关联研究（MWAS）以识别与 CYP2C19 代谢状态显著相关的 CpG 位点。
+    """Perform a Methylome-wide Association Study (MWAS) to identify CpG sites significantly associated with CYP2C19 metabolizer status.
 
-    参数
+    Parameters
     ----------
     methylation_data_path : str
-        包含 DNA 甲基化 beta 值的 CSV 或 TSV 文件路径。
-        行应为样本，列应为 CpG 位点。
+        Path to CSV or TSV file containing DNA methylation beta values.
+        Rows should be samples, columns should be CpG sites.
     metabolizer_status_path : str
-        包含每个样本 CYP2C19 代谢状态的 CSV 或 TSV 文件路径。
-        应包含样本 ID 列和状态列（例如 poor、intermediate、normal、rapid、ultrarapid）。
-    covariates_path : str, 可选
-        包含回归模型中要调整的协变量的 CSV 或 TSV 文件路径
-        （例如年龄、性别、吸烟状态）。
-    pvalue_threshold : float, 可选
-        多重检验校正后的显著性 P 值阈值。默认为 0.05。
-    output_file : str, 可选
-        保存显著 CpG 位点的文件名。默认为 "significant_cpg_sites.csv"。
+        Path to CSV or TSV file containing CYP2C19 metabolizer status for each sample.
+        Should have a sample ID column and a status column (e.g., poor, intermediate, normal, rapid, ultrarapid).
+    covariates_path : str, optional
+        Path to CSV or TSV file containing covariates to adjust for in the regression model
+        (e.g., age, sex, smoking status).
+    pvalue_threshold : float, optional
+        P-value threshold for significance after multiple testing correction. Default is 0.05.
+    output_file : str, optional
+        Filename to save significant CpG sites. Default is "significant_cpg_sites.csv".
 
-    返回
+    Returns
     -------
     str
-        总结 MWAS 分析和结果的研究日志。
+        A research log summarizing the MWAS analysis and results.
 
     """
     import time
@@ -1571,17 +1521,18 @@ def perform_mwas_cyp2c19_metabolizer_status(
 
 
 def calculate_physicochemical_properties(smiles_string):
-    """计算候选药物分子的关键理化性质。
+    """Calculate key physicochemical properties of a drug candidate molecule.
 
-    参数
+    Parameters
     ----------
     smiles_string : str
-        SMILES 格式的分子结构
+        The molecular structure in SMILES format
 
-    返回
+    Returns
     -------
     str
-        总结计算的理化性质并指示详细结果保存位置的研究日志
+        A research log summarizing the calculated physicochemical properties and
+        indicating where the detailed results are saved
 
     """
     import csv
@@ -1670,28 +1621,28 @@ def analyze_xenograft_tumor_growth_inhibition(
     subject_column,
     output_dir="./results",
 ):
-    """分析不同治疗组中异种移植模型的肿瘤生长抑制情况。
+    """Analyze tumor growth inhibition in xenograft models across different treatment groups.
 
-    参数
+    Parameters
     ----------
     data_path : str
-        包含肿瘤体积测量值的 CSV 或 TSV 文件路径。文件应包含
-        时间、体积、治疗组和受试者 ID 列
+        Path to CSV or TSV file containing tumor volume measurements. The file should have columns for
+        time, volume, treatment group, and subject ID
     time_column : str
-        包含时间点的列名（例如 'Day'、'Time'）
+        Name of the column containing time points (e.g., 'Day', 'Time')
     volume_column : str
-        包含肿瘤体积测量值的列名
+        Name of the column containing tumor volume measurements
     group_column : str
-        包含治疗组标签的列名
+        Name of the column containing treatment group labels
     subject_column : str
-        包含受试者/小鼠标识符的列名
-    output_dir : str, 可选
-        保存输出文件的目录（默认: "./results"）
+        Name of the column containing subject/mouse identifiers
+    output_dir : str, optional
+        Directory to save output files (default: "./results")
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤、发现和生成的文件路径的研究日志
+        Research log summarizing the analysis steps, findings, and generated file paths
 
     """
     import os
@@ -1911,17 +1862,18 @@ def analyze_xenograft_tumor_growth_inhibition(
 
 
 def analyze_pixel_distribution(image_path: str) -> dict:
-    """分析 Western blot 或 DNA 电泳图像并返回像素分布统计信息。
+    """Analyze western blot or DNA electrophoresis images and return pixel distribution statistics.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        输入灰度图像的路径。如果未提供后缀，将自动添加 .png。
+        Path to the input grayscale image. Automatically appends .png if no suffix is provided.
 
-    返回
+    Returns
     -------
     dict
-        包含图像形状、强度统计、百分位数、直方图值和预定义区间亮度分布的摘要字典。
+        Summary dictionary containing image shape, intensity statistics, percentiles,
+        histogram values, and brightness distribution for predefined buckets.
 
     """
     import cv2
@@ -1979,38 +1931,38 @@ def find_roi_from_image(
     number_of_bands: int,
     debug: bool = True,
 ) -> tuple[str, list]:
-    """从图像中查找由 analyze_pixel_distribution 函数确定的条带的感兴趣区域（ROI）。
+    """Find the ROIs of the bands from the image which is determined by analyze_pixel_distribution function.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        输入图像的路径。
+        Path to the input image.
     lower_threshold : int
-        低于此值的像素强度用于生成二值图像。
+        Pixel intensities lower than this value are used to make the binary image.
     upper_threshold : int
-        大于或等于此值的像素强度用于生成二值图像。
+        Pixel intensities greater than or equal to this value are used to make the binary image.
     number_of_bands : int
-        图像中条带的实际数量。
-    debug : bool, 可选
-        如果为 True，绘制绿色轮廓（凸包）和蓝色关键点框用于调试。
-        默认为 True。
+        The actual number of bands in the image.
+    debug : bool, optional
+        If True, draw green contours (hulls) and blue keypoint boxes for debugging.
+        Default is True.
 
-    返回
+    Returns
     -------
     tuple[str, list]
-        包含以下内容的元组:
-        - str: 保存的标注图像的绝对路径
-        - list: (x, y, width, height) 格式的 ROI 坐标列表。
-        ROI 列表可以转换为 analyze_western_blot 的 target_bands:
+        A tuple containing:
+        - str: Absolute path to the saved annotated image
+        - list: List of ROI coordinates in (x, y, width, height) format.
+        The ROI list can be converted to target_bands for analyze_western_blot:
         annotated_path, rois = find_roi_from_image(...)
         target_bands = [{"name": f"band_{i}", "roi": list(roi)} for i, roi in enumerate(rois)]
 
-    异常
+    Raises
     ------
     ValueError
-        如果阈值超出有效范围或不一致。
+        If threshold values are outside the valid range or inconsistent.
     FileNotFoundError
-        如果无法加载源图像。
+        If the source image cannot be loaded.
 
     """
     from collections.abc import Iterable, Sequence
@@ -2402,31 +2354,31 @@ def analyze_western_blot(
     antibody_info,
     output_dir="./results",
 ):
-    """对 Western blot 图像执行密度测定分析以量化相对蛋白表达。
+    """Performs densitometric analysis of Western blot images to quantify relative protein expression.
 
-    参数
+    Parameters
     ----------
     blot_image_path : str
-        Western blot 图像文件的路径
+        Path to the Western blot image file
     target_bands : list of dict
-        包含目标蛋白条带信息的字典列表。
-        每个字典应包含 'name' 和 'roi'（感兴趣区域，格式为 [x, y, width, height]）。
-        从 find_roi_from_image 输出生成:
+        List of dictionaries containing information about target protein bands.
+        Each dict should have 'name' and 'roi' (region of interest as [x, y, width, height]).
+        To generate this from find_roi_from_image output:
         annotated_path, rois = find_roi_from_image(...)
         target_bands = [{"name": f"band_{i}", "roi": list(roi)} for i, roi in enumerate(rois)]
-        或手动指定名称: target_bands = [{"name": "protein_name", "roi": [x, y, w, h]}, ...]
+        Or manually specify names: target_bands = [{"name": "protein_name", "roi": [x, y, w, h]}, ...]
     loading_control_band : dict
-        包含上样对照蛋白（例如 β-actin、GAPDH）的 'name' 和 'roi' 的字典
+        Dictionary with 'name' and 'roi' for the loading control protein (e.g., β-actin, GAPDH)
     antibody_info : dict
-        包含所用抗体信息的字典
-        应包含 'primary' 和 'secondary' 键及抗体详情
-    output_dir : str, 可选
-        保存输出文件的目录，默认为 './results'
+        Dictionary containing information about antibodies used
+        Should have 'primary' and 'secondary' keys with antibody details
+    output_dir : str, optional
+        Directory to save output files, defaults to './results'
 
-    返回
+    Returns
     -------
     str
-        总结 Western blot 分析过程和结果的研究日志
+        Research log summarizing the Western blot analysis process and results
 
     """
     import os
@@ -2507,17 +2459,17 @@ def analyze_western_blot(
 
 def _load_ddinter_data(data_lake_path):
     """
-    从 pickle 文件加载 DDInter 数据集，必要时进行处理。
+    Load DDInter datasets from pickle files, processing if needed.
 
-    参数
+    Parameters
     ----------
     data_lake_path : str
-        包含 DDInter pickle 文件的数据湖目录路径
+        Path to data lake directory containing DDInter pickle files
 
-    返回
+    Returns
     -------
     tuple
-        (drug_info, interaction_matrix, name_mapping) 字典
+        (drug_info, interaction_matrix, name_mapping) dictionaries
     """
     import os
     import pickle
@@ -2554,17 +2506,17 @@ def _load_ddinter_data(data_lake_path):
 
 def _process_ddinter_data_inline(data_lake_path, output_dir):
     """
-    将 DDInter CSV 文件处理为标准化的 pickle 文件。
+    Process DDInter CSV files into standardized pickle files.
 
-    该函数处理原始 DDInter 2.0 CSV 文件并创建标准化的
-    数据结构，用于 Biomni 药物-药物相互作用分析。
+    This function processes raw DDInter 2.0 CSV files and creates standardized
+    data structures for use in Biomni drug-drug interaction analysis.
 
-    参数
+    Parameters
     ----------
     data_lake_path : str
-        包含原始 DDInter CSV 文件的数据湖目录路径
+        Path to data lake directory containing raw DDInter CSV files
     output_dir : str
-        保存处理后的 pickle 文件的目录
+        Directory to save processed pickle files
     """
     import os
     import pickle
@@ -2623,14 +2575,7 @@ def _process_ddinter_data_inline(data_lake_path, output_dir):
 
 
 def _standardize_drug_name_processing(drug_name):
-    """在处理过程中标准化药物名称以实现一致匹配。
-
-    参数:
-        drug_name: 原始药物名称
-
-    返回:
-        标准化的药物名称字符串
-    """
+    """Standardize drug names for consistent matching during processing."""
     import pandas as pd
 
     if pd.isna(drug_name):
@@ -2651,14 +2596,7 @@ def _standardize_drug_name_processing(drug_name):
 
 
 def _build_drug_registry_inline(dataframes):
-    """从所有相互作用构建综合药物注册表。
-
-    参数:
-        dataframes: 包含药物相互作用数据的 DataFrame 列表
-
-    返回:
-        药物注册表字典
-    """
+    """Build comprehensive drug registry from all interactions."""
 
     drug_registry = {}
 
@@ -2702,14 +2640,7 @@ def _build_drug_registry_inline(dataframes):
 
 
 def _create_interaction_matrix_inline(dataframes):
-    """使用标准化药物名称创建相互作用矩阵以实现快速查找。
-
-    参数:
-        dataframes: 包含药物相互作用数据的 DataFrame 列表
-
-    返回:
-        相互作用矩阵字典
-    """
+    """Create interaction matrix for fast lookups using standardized drug names."""
     from collections import defaultdict
 
     import pandas as pd
@@ -2746,14 +2677,7 @@ def _create_interaction_matrix_inline(dataframes):
 
 
 def _create_name_mapping_inline(drug_info):
-    """创建药物名称到 ID 的映射以进行模糊匹配。
-
-    参数:
-        drug_info: 药物信息字典
-
-    返回:
-        名称映射字典
-    """
+    """Create drug name to ID mapping for fuzzy matching."""
     name_mapping = {}
 
     for drug_id, drug_data in drug_info.items():
@@ -2768,15 +2692,7 @@ def _create_name_mapping_inline(drug_info):
 
 
 def _generate_ddinter_statistics_inline(drug_info, interaction_matrix):
-    """生成有关处理数据的统计信息。
-
-    参数:
-        drug_info: 药物信息字典
-        interaction_matrix: 相互作用矩阵字典
-
-    返回:
-        统计信息字典
-    """
+    """Generate statistics about the processed data."""
     from collections import defaultdict
 
     stats = {
@@ -2816,19 +2732,19 @@ def _generate_ddinter_statistics_inline(drug_info, interaction_matrix):
 
 def _standardize_drug_name(drug_name, name_mapping):
     """
-    使用模糊匹配对照 DDInter 数据库标准化药物名称。
+    Standardize drug names using fuzzy matching against DDInter database.
 
-    参数
+    Parameters
     ----------
     drug_name : str
-        原始药物名称
+        Original drug name
     name_mapping : dict
-        药物名称到 ID 的映射字典
+        Drug name to ID mapping dictionary
 
-    返回
+    Returns
     -------
     str or None
-        标准化的药物名称，如果未找到则返回 None
+        Standardized drug name or None if not found
     """
     from difflib import get_close_matches
 
@@ -2846,23 +2762,23 @@ def _standardize_drug_name(drug_name, name_mapping):
 
 def _format_interaction_result(interaction_data, drug_name_a, drug_name_b, include_mechanisms=True):
     """
-    格式化相互作用结果用于研究日志。
+    Format interaction results for research log.
 
-    参数
+    Parameters
     ----------
     interaction_data : list
-        相互作用数据字典列表
+        List of interaction data dictionaries
     drug_name_a : str
-        第一个药物名称
+        First drug name
     drug_name_b : str
-        第二个药物名称
+        Second drug name
     include_mechanisms : bool
-        是否包含详细的机制信息
+        Whether to include detailed mechanism information
 
-    返回
+    Returns
     -------
     str
-        格式化的相互作用描述
+        Formatted interaction description
     """
     if not interaction_data:
         return f"No interactions found between {drug_name_a} and {drug_name_b}"
@@ -2884,23 +2800,23 @@ def _format_interaction_result(interaction_data, drug_name_a, drug_name_b, inclu
 
 def query_drug_interactions(drug_names, interaction_types=None, severity_levels=None, data_lake_path=None):
     """
-    从 DDInter 数据库查询药物-药物相互作用。
+    Query drug-drug interactions from DDInter database.
 
-    参数
+    Parameters
     ----------
     drug_names : list of str
-        要查询相互作用的药物名称列表
-    interaction_types : list of str, 可选
-        按相互作用类型过滤（例如 ['synergistic', 'antagonistic']）
-    severity_levels : list of str, 可选
-        按严重程度级别过滤（例如 ['Major', 'Moderate', 'Minor']）
-    data_lake_path : str, 可选
-        包含 DDInter 数据的数据湖目录路径
+        List of drug names to query for interactions
+    interaction_types : list of str, optional
+        Filter by interaction types (e.g., ['synergistic', 'antagonistic'])
+    severity_levels : list of str, optional
+        Filter by severity levels (e.g., ['Major', 'Moderate', 'Minor'])
+    data_lake_path : str, optional
+        Path to data lake directory containing DDInter data
 
-    返回
+    Returns
     -------
     str
-        包含详细相互作用分析的研究日志
+        Research log with detailed interaction analysis
     """
     from datetime import datetime
 
@@ -3015,23 +2931,23 @@ def query_drug_interactions(drug_names, interaction_types=None, severity_levels=
 
 def check_drug_combination_safety(drug_list, include_mechanisms=True, include_management=True, data_lake_path=None):
     """
-    分析药物组合的安全性以识别潜在相互作用。
+    Analyze safety of a drug combination for potential interactions.
 
-    参数
+    Parameters
     ----------
     drug_list : list of str
-        要分析组合安全性的药物列表
-    include_mechanisms : bool, 默认 True
-        包含相互作用机制描述
-    include_management : bool, 默认 True
-        包含管理建议
-    data_lake_path : str, 可选
-        包含 DDInter 数据的数据湖目录路径
+        List of drugs to analyze for combination safety
+    include_mechanisms : bool, default True
+        Include interaction mechanism descriptions
+    include_management : bool, default True
+        Include management recommendations
+    data_lake_path : str, optional
+        Path to data lake directory containing DDInter data
 
-    返回
+    Returns
     -------
     str
-        包含安全性分析和建议的研究日志
+        Research log with safety analysis and recommendations
     """
     from datetime import datetime
 
@@ -3180,21 +3096,21 @@ def check_drug_combination_safety(drug_list, include_mechanisms=True, include_ma
 
 def analyze_interaction_mechanisms(drug_pair, detailed_analysis=True, data_lake_path=None):
     """
-    分析两种特定药物之间的相互作用机制。
+    Analyze interaction mechanisms between two specific drugs.
 
-    参数
+    Parameters
     ----------
     drug_pair : tuple of str
-        要分析的药物名称对 (drug1, drug2)
-    detailed_analysis : bool, 默认 True
-        包含详细的机制信息
-    data_lake_path : str, 可选
-        包含 DDInter 数据的数据湖目录路径
+        Pair of drug names to analyze (drug1, drug2)
+    detailed_analysis : bool, default True
+        Include detailed mechanistic information
+    data_lake_path : str, optional
+        Path to data lake directory containing DDInter data
 
-    返回
+    Returns
     -------
     str
-        包含机制分析的研究日志
+        Research log with mechanism analysis
     """
     from datetime import datetime
 
@@ -3336,23 +3252,23 @@ def analyze_interaction_mechanisms(drug_pair, detailed_analysis=True, data_lake_
 
 def find_alternative_drugs_ddinter(target_drug, contraindicated_drugs, therapeutic_class=None, data_lake_path=None):
     """
-    查找不与禁忌药物相互作用的替代药物。
+    Find alternative drugs that don't interact with contraindicated drugs.
 
-    参数
+    Parameters
     ----------
     target_drug : str
-        要查找替代品的药物
+        Drug to find alternatives for
     contraindicated_drugs : list of str
-        要避免相互作用的药物列表
-    therapeutic_class : str, 可选
-        将搜索限制在特定治疗类别
-    data_lake_path : str, 可选
-        包含 DDInter 数据的数据湖目录路径
+        List of drugs to avoid interactions with
+    therapeutic_class : str, optional
+        Limit search to specific therapeutic class
+    data_lake_path : str, optional
+        Path to data lake directory containing DDInter data
 
-    返回
+    Returns
     -------
     str
-        包含替代药物建议的研究日志
+        Research log with alternative drug recommendations
     """
     from datetime import datetime
 
@@ -3540,10 +3456,10 @@ def find_alternative_drugs_ddinter(target_drug, contraindicated_drugs, therapeut
 
 class OpenFDAClient:
     """
-    用于与 FDA 的 OpenFDA API 交互的客户端。
+    Client for interacting with the FDA's OpenFDA API.
 
-    通过 OpenFDA API 提供全面的药物安全监测、不良事件分析
-    和监管情报功能。
+    Provides comprehensive drug safety monitoring, adverse event analysis,
+    and regulatory intelligence capabilities through the OpenFDA API.
     """
 
     BASE_URL = "https://api.fda.gov"
@@ -3732,14 +3648,7 @@ class OpenFDAClient:
 
 
 def _standardize_drug_name_fda(drug_name: str) -> str:
-    """标准化药物名称用于 FDA API 查询。
-
-    参数:
-        drug_name: 原始药物名称
-
-    返回:
-        标准化的药物名称字符串
-    """
+    """Standardize drug names for FDA API queries."""
     # Handle None/empty values
     if not drug_name:
         return ""
@@ -3758,15 +3667,7 @@ def _standardize_drug_name_fda(drug_name: str) -> str:
 
 
 def _apply_fda_filters(response_data: dict, filters: dict) -> dict:
-    """对 FDA 响应应用查询后过滤。
-
-    参数:
-        response_data: FDA API 响应数据
-        filters: 过滤器字典
-
-    返回:
-        过滤后的响应数据字典
-    """
+    """Apply post-query filtering to FDA responses."""
     if not response_data.get("results"):
         return response_data
 
@@ -3820,14 +3721,7 @@ def _apply_fda_filters(response_data: dict, filters: dict) -> dict:
 
 
 def _extract_fda_safety_signals(response_list: list[dict]) -> dict:
-    """从不良事件数据中提取安全信号。
-
-    参数:
-        response_list: FDA API 响应列表
-
-    返回:
-        包含安全信号数据的字典
-    """
+    """Extract safety signals from adverse event data."""
     drug_signals = {}
     reaction_patterns = {}
     temporal_patterns = {}
@@ -3916,14 +3810,7 @@ def _extract_fda_safety_signals(response_list: list[dict]) -> dict:
 
 
 def _generate_fda_statistics(response_data: dict) -> dict:
-    """从 FDA 响应生成汇总统计信息。
-
-    参数:
-        response_data: FDA API 响应数据
-
-    返回:
-        统计信息字典
-    """
+    """Generate summary statistics from FDA responses."""
     stats = {
         "total_reports": 0,
         "serious_reports": 0,
@@ -3983,16 +3870,7 @@ def _generate_fda_statistics(response_data: dict) -> dict:
 
 
 def _format_adverse_event_summary(response_data: dict, drug_name: str, include_details: bool = True) -> str:
-    """将不良事件数据格式化为可读摘要。
-
-    参数:
-        response_data: FDA API 响应数据
-        drug_name: 药物名称
-        include_details: 是否包含详细信息（默认: True）
-
-    返回:
-        格式化的摘要字符串
-    """
+    """Format adverse event data into readable summary."""
     if not response_data.get("results"):
         return f"No adverse events found for {drug_name} in the FDA database."
 
@@ -4030,16 +3908,7 @@ def _format_adverse_event_summary(response_data: dict, drug_name: str, include_d
 
 
 def _format_drug_label_summary(response_data: dict, drug_name: str, sections: list[str] | None = None) -> str:
-    """将药物标签信息格式化为可读摘要。
-
-    参数:
-        response_data: FDA API 响应数据
-        drug_name: 药物名称
-        sections: 要包含的部分列表（可选）
-
-    返回:
-        格式化的摘要字符串
-    """
+    """Format drug label information into readable summary."""
     if not response_data.get("results"):
         return f"No drug label information found for {drug_name} in the FDA database."
 
@@ -4095,16 +3964,7 @@ def _format_drug_label_summary(response_data: dict, drug_name: str, sections: li
 
 
 def _format_recall_summary(response_data: dict, drug_name: str, include_details: bool = True) -> str:
-    """将召回信息格式化为结构化输出。
-
-    参数:
-        response_data: FDA API 响应数据
-        drug_name: 药物名称
-        include_details: 是否包含详细信息（默认: True）
-
-    返回:
-        格式化的摘要字符串
-    """
+    """Format recall information into structured output."""
     if not response_data.get("results"):
         return f"No drug recalls found for {drug_name} in the FDA database."
 
@@ -4137,17 +3997,7 @@ def _format_safety_signal_summary(
     comparison_period: tuple[str, str] | None = None,
     signal_threshold: float = 2.0,
 ) -> str:
-    """格式化安全信号分析结果。
-
-    参数:
-        signals_data: 安全信号数据字典
-        drug_list: 药物名称列表
-        comparison_period: 比较时间段（可选）
-        signal_threshold: 信号阈值（默认: 2.0）
-
-    返回:
-        格式化的摘要字符串
-    """
+    """Format safety signal analysis results."""
     summary = "OpenFDA Safety Signal Analysis\n"
     summary += "=" * 29 + "\n"
     summary += f"Drugs analyzed: {drug_list}\n"
@@ -4216,17 +4066,17 @@ def query_fda_adverse_events(
     limit: int = 100,
 ) -> str:
     """
-    查询特定药物的 FDA 不良事件报告。
+    Query FDA adverse event reports for specific drugs.
 
-    参数:
-        drug_name: 要查询的药物名称
-        date_range: 可选的日期范围，格式为 (start_date, end_date)，使用 YYYY-MM-DD 格式
-        severity_filter: 可选的严重程度级别过滤器 ["serious", "non_serious"]
-        outcome_filter: 可选的结果过滤器 ["life_threatening", "hospitalization", "death"]
-        limit: 返回的最大结果数
+    Args:
+        drug_name: Name of the drug to query
+        date_range: Optional date range as (start_date, end_date) in YYYY-MM-DD format
+        severity_filter: Optional filter by severity levels ["serious", "non_serious"]
+        outcome_filter: Optional filter by outcomes ["life_threatening", "hospitalization", "death"]
+        limit: Maximum number of results to return
 
-    返回:
-        包含不良事件分析的格式化字符串
+    Returns:
+        Formatted string with adverse event analysis
     """
     try:
         # Validate input
@@ -4293,15 +4143,15 @@ def query_fda_adverse_events(
 
 def get_fda_drug_label_info(drug_name: str, sections: list[str] | None = None) -> str:
     """
-    检索 FDA 药物标签信息。
+    Retrieve FDA drug label information.
 
-    参数:
-        drug_name: 要查询的药物名称
-        sections: 可选的要检索的特定部分列表
+    Args:
+        drug_name: Name of the drug to query
+        sections: Optional list of specific sections to retrieve
                  ["indications_and_usage", "contraindications", "warnings", "dosage_and_administration"]
 
-    返回:
-        包含药物标签信息的格式化字符串
+    Returns:
+        Formatted string with drug label information
     """
     try:
         # Validate input
@@ -4333,15 +4183,15 @@ def check_fda_drug_recalls(
     drug_name: str, classification: list[str] | None = None, date_range: tuple[str, str] | None = None
 ) -> str:
     """
-    检查 FDA 药物召回和执法行动。
+    Check for FDA drug recalls and enforcement actions.
 
-    参数:
-        drug_name: 要检查的药物名称
-        classification: 可选的召回类别过滤器 ["Class I", "Class II", "Class III"]
-        date_range: 可选的召回日期范围
+    Args:
+        drug_name: Name of the drug to check
+        classification: Optional filter by recall class ["Class I", "Class II", "Class III"]
+        date_range: Optional date range for recalls
 
-    返回:
-        包含召回信息的格式化字符串
+    Returns:
+        Formatted string with recall information
     """
     try:
         # Validate input
@@ -4382,15 +4232,15 @@ def analyze_fda_safety_signals(
     drug_list: list[str], comparison_period: tuple[str, str] | None = None, signal_threshold: float = 2.0
 ) -> str:
     """
-    分析多种药物的安全信号。
+    Analyze safety signals across multiple drugs.
 
-    参数:
-        drug_list: 要分析的药物名称列表
-        comparison_period: 可选的比较时间段
-        signal_threshold: 信号检测阈值
+    Args:
+        drug_list: List of drug names to analyze
+        comparison_period: Optional comparison time period
+        signal_threshold: Threshold for signal detection
 
-    返回:
-        包含安全信号分析的格式化字符串
+    Returns:
+        Formatted string with safety signal analysis
     """
     try:
         # Validate input parameters

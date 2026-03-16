@@ -26,27 +26,27 @@ async def get_studies(
     count_total: bool = False
 ):
     """
-    在 ClinicalTrials.gov 上使用结构化查询参数搜索临床试验。
-    支持使用 query、filter 和 post_filter 参数的复杂查询。
-    返回分页结果，可选包含总计数。
+    Search clinical trials with structured query parameters on ClinicalTrials.gov.
+    Supports complex queries with query, filter and post-filter parameters.
+    Returns paginated results with optional total count.
     
     Args:
-        query: query.* 字段的参数（例如 {"cond": "cancer"}）
-        filter: filter.* 字段的参数（例如 {"status": "RECRUITING"}）
-        post_filter: postFilter.* 字段的参数
-        fields: 要返回的字段列表（例如 ["NCTId", "BriefTitle"]）
-        sort: 排序字段（例如 ["@relevance", "EnrollmentCount:desc"]）
-        page_size: 每页结果数量（最大 1000）
-        page_token: 下一页的令牌
-        format: 响应格式（"json" 或 "csv"）
-        markup_format: 文本格式（"markdown" 或 "legacy"）
-        count_total: 是否包含总计数
+        query: Parameters for query.* fields (e.g., {"cond": "cancer"})
+        filter: Parameters for filter.* fields (e.g., {"status": "RECRUITING"})
+        post_filter: Parameters for postFilter.* fields
+        fields: List of fields to return (e.g., ["NCTId", "BriefTitle"])
+        sort: Sort fields (e.g., ["@relevance", "EnrollmentCount:desc"])
+        page_size: Number of results per page (max 1000)
+        page_token: Token for next page
+        format: Response format ("json" or "csv")
+        markup_format: Text formatting ("markdown" or "legacy")
+        count_total: Whether to include total count
         
     Returns:
-        包含以下内容的字典：
-        - studies: 匹配的研究列表
-        - next_page_token: 下一页的令牌（如果可用）
-        - total_count: 研究总数（如果 count_total=True）
+        Dictionary containing:
+        - studies: List of matching studies
+        - next_page_token: Token for next page (if available)
+        - total_count: Total number of studies (if count_total=True)
     
     Query example:  
         {'query': {'cond': 'cancer'}, 'filter': {'status': 'RECRUITING'}}
@@ -79,16 +79,16 @@ async def get_study(
     fields: Optional[list] = None
 ):
     """
-    获取单个临床试验的详细信息。
+    Get details for a single clinical trial.
     
     Args:
-        nct_id: NCT ID（例如 "NCT000001"）
-        format: 响应格式（"json"、"csv" 等）
-        markup_format: 文本格式（"markdown" 或 "legacy"）
-        fields: 要包含的字段列表
+        nct_id: The NCT ID (e.g., "NCT000001")
+        format: Response format ("json", "csv", etc.)
+        markup_format: Text formatting ("markdown" or "legacy")
+        fields: List of fields to include
         
     Returns:
-        包含研究详细信息的字典
+        Dictionary containing study details
     
     Query example: {"nct_id": "NCT000001"}
     """
@@ -105,14 +105,14 @@ async def get_metadata(
     include_historic_only: bool = False
 ):
     """
-    获取有关可用研究字段的元数据。
+    Get metadata about available study fields.
     
     Args:
-        include_indexed_only: 包含仅索引字段
-        include_historic_only: 包含仅历史字段
+        include_indexed_only: Include indexed-only fields
+        include_historic_only: Include historic-only fields
         
     Returns:
-        字段元数据字典
+        Dictionary of field metadata
     """
     return await to_thread(clinicaltrials_api.get_metadata,
         include_indexed_only=include_indexed_only,
@@ -122,44 +122,44 @@ async def get_metadata(
 @mcp.tool()
 async def get_search_areas():
     """
-    获取可用的搜索文档和区域。
+    Get available search documents and areas.
     
     Returns:
-        搜索区域字典
+        Dictionary of search areas
     """
     return await to_thread(clinicaltrials_api.get_search_areas)
 
 @mcp.tool()
 async def get_enums():
     """
-    获取枚举类型和值。
+    Get enumeration types and values.
     
     Returns:
-        枚举类型和值的字典
+        Dictionary of enum types and values
     """
     return await to_thread(clinicaltrials_api.get_enums)
 
 @mcp.tool()
 async def get_study_size_stats():
     """
-    获取有关研究记录大小的统计信息。
+    Get statistics about study record sizes.
     
     Returns:
-        大小统计信息字典
+        Dictionary of size statistics
     """
     return await to_thread(clinicaltrials_api.get_study_size_stats)
 
 @mcp.tool()
 async def get_field_value_stats(fields: list[str], types: Optional[list[str]] = None):
     """
-    获取字段的值统计信息。
+    Get value statistics for fields.
     
     Args:
-        fields: 字段名称列表
-        types: 按数据类型过滤（ENUM、STRING 等）
+        fields: List of field names
+        types: Filter by data types (ENUM, STRING, etc.)
         
     Returns:
-        字段值统计信息字典
+        Dictionary of field value statistics
     """
     return await to_thread(clinicaltrials_api.get_field_value_stats,
         fields=fields,
@@ -169,13 +169,13 @@ async def get_field_value_stats(fields: list[str], types: Optional[list[str]] = 
 @mcp.tool()
 async def get_field_size_stats(fields: Optional[list[str]] = None):
     """
-    获取列表/数组字段的大小统计信息。
+    Get size statistics for list/array fields.
     
     Args:
-        fields: 要过滤的字段名称列表
+        fields: List of field names to filter on
         
     Returns:
-        字段大小统计信息字典
+        Dictionary of field size statistics
     """
     return await to_thread(clinicaltrials_api.get_field_size_stats,
         fields=fields
@@ -183,7 +183,7 @@ async def get_field_size_stats(fields: Optional[list[str]] = None):
 
 @mcp.prompt()
 def system_prompt():
-    return """您是 ClinicalTrials.gov MCP 服务器。
-    您可以使用 ClinicalTrials.gov API 回答有关临床试验的问题。
-    始终在最终答案中包含工具调用的结果。"""
+    return """You are the ClinicalTrials.gov MCP server. 
+    You can answer questions about clinical trials using the ClinicalTrials.gov API.
+    Always include the result of tool calls in your final answer."""
 

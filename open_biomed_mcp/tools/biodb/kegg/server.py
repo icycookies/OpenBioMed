@@ -12,17 +12,19 @@ kegg_api = KeggAPI()
 
 @mcp.tool()
 async def kegg_info(db: str):
-    """此操作显示数据库发布信息及数据库统计信息。
-    除了 kegg、genes 和 ligand 之外，此操作还显示可在 link 操作中使用的链接数据库列表。
-    显示给定数据库的当前统计信息。
+    """
+    
+    This operation displays the database release information with statistics for the databases.
+    Except for kegg, genes and ligand, this operation also displays the list of linked databases that can be used in the link operation.
+    Displays the current statistics of a given database.
 
     Args:
-        db: kegg 数据库（字符串）
+        db: kegg database (string)
 
     Query example: {"db": "genes"}
 
     Returns:
-        文本消息
+        text message
     """
     try:
         result = kegg_api.kegg_info(database=db)
@@ -33,17 +35,19 @@ async def kegg_info(db: str):
 
 @mcp.tool()
 async def kegg_find(db: str, query: str, option: str = ''):
-    """KEGG find - 数据搜索。在给定数据库中查找与查询关键字或其他查询数据匹配的条目。
+    """
+    
+    KEGG find - Data search. Finds entries with matching query keywords or other query data in a given database.
 
     Args:
-        db: KEGG 数据库（字符串）
-        query: 要搜索的关键字或标识符（字符串）
-        option: 附加搜索选项（字符串）
+        db: KEGG database (string)
+        query: Keywords or identifiers to search (string)
+        option: Additional Search Options (string)
 
     Query example: {"db": "genes", "query": "p53", "option": ""}
     
     Returns:
-        制表符分隔的文本
+        tab-delimited text
     """
     try:
         result = kegg_api.kegg_find(database=db, query=query, option=option)
@@ -54,16 +58,18 @@ async def kegg_find(db: str, query: str, option: str = ''):
 
 @mcp.tool()
 async def kegg_list(db: str, org: str = ''):
-    """此操作可用于获取每个数据库中所有条目的列表。当已知生物体代码时，可以使用第二种形式获取特定生物体的通路列表。第三种形式是 brite 层次结构的类似选项。第四种形式可用于获取给定数据库条目标识符集的定义列表。可以给出的最大标识符数量为 10。
+    """
+    
+    This operation can be used to obtain a list of all entries in each database.When the organism code is known, the second form can be used to obtain a list of organism-specific pathways.The third form is a similar option for brite hierarchies.The fourth form may be used to obtain a list of definitions for a given set of database entry identifiers. The maximum number of identifiers that can be given is 10.
 
     Args:
-        db: kegg 数据库（字符串）
-        org: 可选参数，用于指定生物体前缀。仅当 db 为某些类型时有效（字符串）
+        db: kegg database (string)
+        org: Optional parameter to specify an organism prefix.Valid only if the db is of certain types (string)
 
     Query example: {"db": "pathway", "org": ""}
 
     Returns:
-        制表符分隔的文本
+        tab-delimited text
     """
     try:
         result = kegg_api.kegg_list(database=db, org=org)
@@ -74,16 +80,18 @@ async def kegg_list(db: str, org: str = ''):
 
 @mcp.tool()
 async def kegg_get(dbentries: str, option: str):
-    """此操作以平面文件格式或带选项的其他格式检索给定的数据库条目。平面文件格式适用于除 brite 之外的所有 KEGG 数据库。输入限制为最多 10 个条目。
+    """
+    
+    This operation retrieves given database entries in a flat file format or in other formats with options. Flat file formats are available for all KEGG databases except brite. The input is limited up to 10 entries.
 
     Args:
-        dbentries: 指定要查询的 KEGG 条目标识符或列表。多个条目用 + 分隔（字符串）
-        option: 控制返回数据的格式或内容（字符串）
+        dbentries: Specify the KEGG entry identifier or list to be queried.Multiple entries separated by +(string)
+        option:  Controls the format or content of returned data(string)
 
     Query example: {"dbentries": "path:hsa00010", "option": "kgml"}
 
     Returns:
-        平面文件数据库格式
+        flat file database format
     """
     try:
         result = kegg_api.kegg_get(dbentries=dbentries, option=option)
@@ -94,17 +102,19 @@ async def kegg_get(dbentries: str, option: str):
 
 @mcp.tool()
 async def kegg_conv(target_db: str, source_db_or_dbentries: str, option: str):
-    """此操作可用于将外部数据库的条目标识符（登录号）转换为 KEGG 标识符，反之亦然。第一种形式允许数据库到数据库的映射，而第二种形式允许转换选定数量的条目。数据库名称 "genes" 只能在第二种形式中使用。
+    """
+    
+    This operation can be used to convert entry identifiers (accession numbers) of outside databases to KEGG identifiers, and vice versa. The first form allows database to database mapping, while the second form allows conversion of a selected number of entries. The database name "genes" may be used only in the second form.
 
     Args:
-        target_db: 目标数据库（字符串）
-        source_db_or_dbentries: 源数据库或数据库条目（字符串）
-        option: 选项（字符串）
+        target_db: Target Db (string)
+        source_db_or_dbentries: Source Db Or Dbentries (string)
+        option: Option (string)
 
     Query example: {"target_db": "ncbi-geneid", "source_db_or_dbentries": "hsa:10458", "option": ""}
 
     Returns:
-        制表符分隔的文本
+        tab-delimited text
     """
     try:
         result = kegg_api.kegg_conv(
@@ -117,17 +127,19 @@ async def kegg_conv(target_db: str, source_db_or_dbentries: str, option: str):
 
 @mcp.tool()
 async def kegg_link(target_db: str, source_db_or_dbentries: str, option: str):
-    """KEGG link - 通过使用数据库交叉引用查找相关条目。
+    """
+    
+    KEGG link - find related entries by using database cross-references.
 
     Args:
-        target_db: 指定要映射到的目标数据库名称（字符串）
-        source_db_or_dbentries: 数据库名称或特定条目标识符（字符串）
-        option: 控制返回结果的格式或范围（字符串）
+        target_db: Specify the name of the target database to map to (string)
+        source_db_or_dbentries: Database name or Specific entry identifier (string)
+        option: Control the format or range of the returned results(string)
 
     Query example: {"target_db": "pathway", "source_db_or_dbentries": "hsa:10458", "option": ""}
 
     Returns:
-        制表符分隔的文本
+        tab-delimited text
     """
     try:
         result = kegg_api.kegg_link(
@@ -140,10 +152,10 @@ async def kegg_link(target_db: str, source_db_or_dbentries: str, option: str):
 
 @mcp.prompt()
 def system_prompt():
-    """客户端的系统提示。"""
-    prompt = """您可以访问用于搜索 KEGG 的工具，KEGG 是一个数据库资源，用于从分子水平信息（特别是基因组测序和其他高通量实验技术生成的大规模分子数据集）理解生物系统（如细胞、生物体和生态系统）的高级功能和效用。
-    使用 API 工具提取相关信息。
-    如果用户未提供缺失的参数，请用合理的值填充。"""
+    """System prompt for client."""
+    prompt = """You have access to tools for searching KEGG, a database resource for understanding high-level functions and utilities of the biological system, such as the cell, the organism and the ecosystem, from molecular-level information, especially large-scale molecular datasets generated by genome sequencing and other high-throughput experimental technologies.
+    Use the API tools to extract the relevant information.
+    Fill in missing arguments with sensible values if the user hasn't provided them. """
     return prompt
 
 

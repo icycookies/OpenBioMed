@@ -1,23 +1,23 @@
 description = [
     {
-        "description": "从头颈部MRI扫描生成面部解剖结构的3D模型",
+        "description": "Generate a 3D model of facial anatomy from MRI scans of the head and neck.",
         "name": "reconstruct_3d_face_from_mri",
         "optional_parameters": [
             {
                 "default": "./output",
-                "description": "输出文件保存的目录",
+                "description": "Directory where output files will be saved",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": "subject",
-                "description": "受试者标识符，用于输出文件名",
+                "description": "Identifier for the subject, used in output filenames",
                 "name": "subject_id",
                 "type": "str",
             },
             {
                 "default": 300,
-                "description": "面部组织初始分割的阈值",
+                "description": "Threshold value for initial segmentation of facial tissues",
                 "name": "threshold_value",
                 "type": "int",
             },
@@ -25,56 +25,56 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "MRI扫描文件的路径（NIfTI格式：.nii或.nii.gz）",
+                "description": "Path to the MRI scan file (NIfTI format: .nii or .nii.gz)",
                 "name": "mri_file_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "从听觉脑干反应（ABR）波形数据中提取P1波幅和潜伏期",
+        "description": "Extracts P1 amplitude and latency from Auditory Brainstem Response (ABR) waveform data.",
         "name": "analyze_abr_waveform_p1_metrics",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "ABR记录的时间点，单位为毫秒",
+                "description": "Time points of the ABR recording in milliseconds",
                 "name": "time_ms",
                 "type": "array-like",
             },
             {
                 "default": None,
-                "description": "ABR记录的振幅值，单位为微伏",
+                "description": "Amplitude values of the ABR recording in microvolts",
                 "name": "amplitude_uv",
                 "type": "array-like",
             },
         ],
     },
     {
-        "description": "使用FFT分析从高速视频显微镜数据中分析纤毛摆动频率",
+        "description": "Analyze ciliary beat frequency from high-speed video microscopy data using FFT analysis.",
         "name": "analyze_ciliary_beat_frequency",
         "optional_parameters": [
             {
                 "default": 5,
-                "description": "要分析的感兴趣区域数量",
+                "description": "Number of regions of interest to analyze",
                 "name": "roi_count",
                 "type": "int",
             },
             {
                 "default": 0,
-                "description": "考虑的最小频率，单位为Hz",
+                "description": "Minimum frequency to consider in Hz",
                 "name": "min_freq",
                 "type": "float",
             },
             {
                 "default": 30,
-                "description": "考虑的最大频率，单位为Hz",
+                "description": "Maximum frequency to consider in Hz",
                 "name": "max_freq",
                 "type": "float",
             },
             {
                 "default": "./",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -82,25 +82,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "纤毛摆动的高速视频显微镜文件路径",
+                "description": "Path to the high-speed video microscopy file of ciliary beating",
                 "name": "video_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "分析显微镜图像中两个荧光标记蛋白之间的共定位",
+        "description": "Analyze colocalization between two fluorescently labeled proteins in microscopy images.",
         "name": "analyze_protein_colocalization",
         "optional_parameters": [
             {
                 "default": "./output",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": "otsu",
-                "description": "图像阈值分割方法（'otsu'、'li'或'yen'）",
+                "description": "Method for thresholding images ('otsu', 'li', or 'yen')",
                 "name": "threshold_method",
                 "type": "str",
             },
@@ -108,25 +108,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "第一通道图像文件的路径（荧光蛋白1）",
+                "description": "Path to the first channel image file (fluorescent protein 1)",
                 "name": "channel1_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "第二通道图像文件的路径（荧光蛋白2）",
+                "description": "Path to the second channel image file (fluorescent protein 2)",
                 "name": "channel2_path",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "对生理时间序列数据执行余弦分析以表征昼夜节律",
+        "description": "Performs cosinor analysis on physiological time series data to characterize circadian rhythms.",
         "name": "perform_cosinor_analysis",
         "optional_parameters": [
             {
                 "default": 24.0,
-                "description": "节律周期（小时），昼夜节律默认为24小时",
+                "description": "Period of the rhythm in hours, default is 24 hours for circadian rhythms",
                 "name": "period",
                 "type": "float",
             }
@@ -134,31 +134,33 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "测量的时间点，单位为小时",
+                "description": "Time points of the measurements in hours",
                 "name": "time_data",
                 "type": "array-like",
             },
             {
                 "default": None,
-                "description": "对应每个时间点的生理测量值",
+                "description": "Physiological measurements corresponding to each time point",
                 "name": "physiological_data",
                 "type": "array-like",
             },
         ],
     },
     {
-        "description": "使用单指数扩散模型从扩散加权MRI数据计算表观扩散系数（ADC）图",
+        "description": "Calculate Apparent Diffusion Coefficient (ADC) map from "
+        "diffusion-weighted MRI data using monoexponential diffusion "
+        "model.",
         "name": "calculate_brain_adc_map",
         "optional_parameters": [
             {
                 "default": "adc_map.nii.gz",
-                "description": "输出ADC图的保存路径",
+                "description": "Path where the output ADC map will be saved",
                 "name": "output_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "二值掩膜文件的路径，用于将ADC计算限制在脑区域",
+                "description": "Path to a binary mask file to limit ADC calculation to brain regions",
                 "name": "mask_file_path",
                 "type": "str",
             },
@@ -166,43 +168,43 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含扩散加权MRI数据的4D NIfTI文件路径",
+                "description": "Path to the 4D NIfTI file containing diffusion-weighted MRI data",
                 "name": "dwi_file_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "对应4D DWI数据中每个体积的b值列表",
+                "description": "List of b-values corresponding to each volume in the 4D DWI data",
                 "name": "b_values",
                 "type": "List[float]",
             },
         ],
     },
     {
-        "description": "使用ELGA/ELGA1探针数据分析内溶酶体区室中的钙动力学",
+        "description": "Analyze calcium dynamics in endo-lysosomal compartments using ELGA/ELGA1 probe data.",
         "name": "analyze_endolysosomal_calcium_dynamics",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "施加处理/刺激的时间点（秒）",
+                "description": "Time point (in seconds) when treatment/stimulus was applied",
                 "name": "treatment_time",
                 "type": "float",
             },
             {
                 "default": "",
-                "description": "实验中使用的细胞类型",
+                "description": "Type of cells used in the experiment",
                 "name": "cell_type",
                 "type": "str",
             },
             {
                 "default": "",
-                "description": "施加的处理或刺激的名称",
+                "description": "Name of the treatment or stimulus applied",
                 "name": "treatment_name",
                 "type": "str",
             },
             {
                 "default": "calcium_analysis_results.txt",
-                "description": "保存详细分析结果的文件名",
+                "description": "Name of the file to save detailed analysis results",
                 "name": "output_file",
                 "type": "str",
             },
@@ -210,25 +212,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "测量的时间点，单位为秒",
+                "description": "Time points of the measurements in seconds",
                 "name": "time_points",
                 "type": "numpy.ndarray or list",
             },
             {
                 "default": None,
-                "description": "来自ELGA/ELGA1探针的发光强度值，对应Ca2+水平",
+                "description": "Luminescence intensity values from ELGA/ELGA1 probes corresponding to Ca2+ levels",
                 "name": "luminescence_values",
                 "type": "numpy.ndarray or list",
             },
         ],
     },
     {
-        "description": "使用气相色谱数据分析组织样本中的脂肪酸组成",
+        "description": "Analyzes fatty acid composition in tissue samples using gas chromatography data.",
         "name": "analyze_fatty_acid_composition_by_gc",
         "optional_parameters": [
             {
                 "default": "./results",
-                "description": "结果文件保存的目录",
+                "description": "Directory where result files will be saved",
                 "name": "output_directory",
                 "type": "str",
             }
@@ -236,31 +238,33 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含气相色谱数据的CSV文件路径，需包含'retention_time'和'peak_area'列",
+                "description": "Path to the CSV file containing gas "
+                "chromatography data with columns "
+                "'retention_time' and 'peak_area'",
                 "name": "gc_data_file",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "组织样本类型（例如：liver、kidney、heart、muscle、adipose）",
+                "description": "Type of tissue sample (e.g., liver, kidney, heart, muscle, adipose)",
                 "name": "tissue_type",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "正在分析的样本标识符",
+                "description": "Identifier for the sample being analyzed",
                 "name": "sample_id",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "分析原始血压数据以计算关键血流动力学参数",
+        "description": "Analyzes raw blood pressure data to calculate key hemodynamic parameters.",
         "name": "analyze_hemodynamic_data",
         "optional_parameters": [
             {
                 "default": "hemodynamic_results.csv",
-                "description": "保存计算参数的文件名",
+                "description": "Filename to save the calculated parameters",
                 "name": "output_file",
                 "type": "str",
             }
@@ -268,31 +272,33 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "原始血压测量值，单位为mmHg",
+                "description": "Raw blood pressure measurements in mmHg",
                 "name": "pressure_data",
                 "type": "numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "数据采集率，单位为Hz（每秒采样数）",
+                "description": "Data acquisition rate in Hz (samples per second)",
                 "name": "sampling_rate",
                 "type": "float",
             },
         ],
     },
     {
-        "description": "使用基于ODE的药代动力学模型模拟甲状腺激素在不同组织区室间的转运和结合",
+        "description": "Simulates the transport and binding of thyroid hormones "
+        "across different tissue compartments using an ODE-based "
+        "pharmacokinetic model.",
         "name": "simulate_thyroid_hormone_pharmacokinetics",
         "optional_parameters": [
             {
                 "default": "(0, 24)",
-                "description": "模拟的起始和结束时间，单位为小时",
+                "description": "Start and end time for simulation in hours",
                 "name": "time_span",
                 "type": "tuple",
             },
             {
                 "default": 100,
-                "description": "输出的时间点数量",
+                "description": "Number of time points to output",
                 "name": "time_points",
                 "type": "int",
             },
@@ -300,43 +306,47 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含模型参数的字典，包括transport_rates、binding_constants、metabolism_rates和volumes",
+                "description": "Dictionary containing model "
+                "parameters including "
+                "transport_rates, binding_constants, "
+                "metabolism_rates, and volumes",
                 "name": "parameters",
                 "type": "dict",
             },
             {
                 "default": None,
-                "description": "每个区室中所有分子种类的初始浓度字典",
+                "description": "Dictionary of initial concentrations for all molecular species in each compartment",
                 "name": "initial_conditions",
                 "type": "dict",
             },
         ],
     },
     {
-        "description": "分析图像以检测和量化β-淀粉样蛋白斑块，返回详细的分析日志",
+        "description": "Analyzes an image to detect and quantify amyloid-beta "
+        "plaques, returning a detailed analysis log.",
         "name": "quantify_amyloid_beta_plaques",
         "optional_parameters": [
             {
                 "default": "./results",
-                "description": "结果保存的目录",
+                "description": "Directory where results will be saved",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": "otsu",
-                "description": "图像阈值分割方法（otsu、adaptive或manual）",
+                "description": "Method for image thresholding (otsu, adaptive, or manual)",
                 "name": "threshold_method",
                 "type": "str",
             },
             {
                 "default": 50,
-                "description": "区域被视为斑块的最小尺寸，单位为像素²",
+                "description": "Minimum size in pixels² for a region to be considered a plaque",
                 "name": "min_plaque_size",
                 "type": "int",
             },
             {
                 "default": 127,
-                "description": "当threshold_method为manual时使用的阈值",
+                "description": "Threshold value to use when threshold_method is manual",
                 "name": "manual_threshold",
                 "type": "int",
             },
@@ -344,7 +354,7 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "要分析β-淀粉样蛋白斑块的图像文件路径",
+                "description": "Path to the image file to be analyzed for amyloid-beta plaques",
                 "name": "image_path",
                 "type": "str",
             }

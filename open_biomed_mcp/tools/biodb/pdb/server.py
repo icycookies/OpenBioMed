@@ -15,24 +15,25 @@ pdb_api = PDBAPI()
 # Entry-related tools
 @mcp.tool()
 async def pdb_get_structure(entry_id: str):
-    """获取 PDB 条目的详细结构信息。
+    """
+    Retrieve detailed structure information for a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 结构信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of structure information including:
                 - 'rcsb_id': PDB ID
-                - 'rcsb_accession_info': 登录号详情  
-                - 'struct': 结构元数据
-                - 'exptl': 实验详情
-                - 'citation': 出版物信息
-                - 'cell': 单位晶胞参数
-                - 'symmetry': 对称性信息
-                - 'pdbx_database_status': 条目状态
+                - 'rcsb_accession_info': accession details  
+                - 'struct': structure metadata
+                - 'exptl': experimental details
+                - 'citation': publication info
+                - 'cell': unit cell parameters
+                - 'symmetry': symmetry info
+                - 'pdbx_database_status': entry status
                 
-        如果未找到条目或发生错误，则返回空列表。
+        Returns empty list if entry not found or error occurs.
     
     Query example: {"entry_id": "1CRN"}
     """
@@ -41,23 +42,24 @@ async def pdb_get_structure(entry_id: str):
 
 @mcp.tool()
 async def pdb_get_pubmed_annotations(entry_id: str):
-    """获取 PDB 条目的 PubMed 文献注释。
+    """
+    Retrieve PubMed literature annotations for a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: PubMed 注释的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of PubMed annotations including:
                 - 'rcsb_id': PDB ID
-                - 'pubmed': PubMed 文章列表，包含：
+                - 'pubmed': list of PubMed articles with:
                     - 'id': PubMed ID
-                    - 'title': 文章标题
-                    - 'journal': 期刊信息
-                    - 'authors': 作者列表
-                    - 'year': 发表年份
+                    - 'title': article title
+                    - 'journal': journal info
+                    - 'authors': author list
+                    - 'year': publication year
                     
-        如果未找到注释或发生错误，则返回空列表。
+        Returns empty list if no annotations found or error occurs.
         
     Query example: {"entry_id": "1CRN"}
     """
@@ -67,29 +69,30 @@ async def pdb_get_pubmed_annotations(entry_id: str):
 # Entity-related tools
 @mcp.tool()
 async def pdb_get_polymer_entity(entry_id: str, entity_id: str):
-    """获取 PDB 条目中聚合物实体的详细信息。
+    """
+    Retrieve detailed information about a polymer entity in a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
-        entity_id (str): 聚合物实体标识符（通常为 "1"、"2" 等）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
+        entity_id (str): The polymer entity identifier (usually "1", "2", etc.)
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 聚合物实体信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of polymer entity info including:
                 - 'entity': 
-                    - 'id': 实体 ID
-                    - 'type': 实体类型（例如 "polymer"）
-                    - 'src_method': 来源方法
-                    - 'pdbx_description': 描述
-                    - 'pdbx_number_of_molecules': 分子数量
-                    - 'pdbx_ec': EC 编号
-                    - 'pdbx_mutation': 突变信息
-                    - 'pdbx_fragment': 片段信息
+                    - 'id': entity ID
+                    - 'type': entity type (e.g. "polymer")
+                    - 'src_method': source method
+                    - 'pdbx_description': description
+                    - 'pdbx_number_of_molecules': molecule count
+                    - 'pdbx_ec': EC numbers
+                    - 'pdbx_mutation': mutation info
+                    - 'pdbx_fragment': fragment info
                 - 'rcsb_polymer_entity':
-                    - 'container_identifiers': 容器信息
-                    - 'entity_poly': 聚合物详情
+                    - 'container_identifiers': container info
+                    - 'entity_poly': polymer details
                     
-        如果未找到实体或发生错误，则返回空列表。
+        Returns empty list if entity not found or error occurs.
         
     Query example: {"entry_id": "1CRN", "entity_id": "1"}
     """
@@ -98,26 +101,27 @@ async def pdb_get_polymer_entity(entry_id: str, entity_id: str):
 
 @mcp.tool()
 async def pdb_get_branched_entity(entry_id: str, entity_id: str):
-    """获取 PDB 条目中分支实体的详细信息。
+    """
+    Retrieve detailed information about a branched entity in a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
-        entity_id (str): 分支实体标识符（通常为 "1"、"2" 等）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
+        entity_id (str): The branched entity identifier (usually "1", "2", etc.)
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 分支实体信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of branched entity info including:
                 - 'entity':
-                    - 'id': 实体 ID
-                    - 'type': 实体类型（例如 "branched"）
-                    - 'pdbx_description': 描述
-                    - 'pdbx_number_of_molecules': 分子数量
+                    - 'id': entity ID
+                    - 'type': entity type (e.g. "branched")
+                    - 'pdbx_description': description
+                    - 'pdbx_number_of_molecules': molecule count
                 - 'rcsb_branched_entity':
-                    - 'container_identifiers': 容器信息
-                    - 'branched_entity': 分支详情
-                    - 'branched_entity_instance_count': 实例数量
+                    - 'container_identifiers': container info
+                    - 'branched_entity': branched details
+                    - 'branched_entity_instance_count': instance count
                     
-        如果未找到实体或发生错误，则返回空列表。
+        Returns empty list if entity not found or error occurs.
         
     Query example: {"entry_id": "1CRN", "entity_id": "1"}
     """
@@ -126,26 +130,27 @@ async def pdb_get_branched_entity(entry_id: str, entity_id: str):
 
 @mcp.tool()
 async def pdb_get_nonpolymer_entity(entry_id: str, entity_id: str):
-    """获取 PDB 条目中非聚合物实体的详细信息。
+    """
+    Retrieve detailed information about a non-polymer entity in a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
-        entity_id (str): 非聚合物实体标识符（通常为 "1"、"2" 等）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
+        entity_id (str): The non-polymer entity identifier (usually "1", "2", etc.)
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 非聚合物实体信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of non-polymer entity info including:
                 - 'entity':
-                    - 'id': 实体 ID
-                    - 'type': 实体类型（例如 "non-polymer"）
-                    - 'pdbx_description': 描述
-                    - 'pdbx_number_of_molecules': 分子数量
+                    - 'id': entity ID
+                    - 'type': entity type (e.g. "non-polymer")
+                    - 'pdbx_description': description
+                    - 'pdbx_number_of_molecules': molecule count
                 - 'rcsb_non_polymer_entity':
-                    - 'container_identifiers': 容器信息
-                    - 'non_polymer_comp': 化学组分详情
-                    - 'non_polymer_entity_instance_count': 实例数量
+                    - 'container_identifiers': container info
+                    - 'non_polymer_comp': chemical component details
+                    - 'non_polymer_entity_instance_count': instance count
                     
-        如果未找到实体或发生错误，则返回空列表。
+        Returns empty list if entity not found or error occurs.
         
     Query example: {"entry_id": "1CRN", "entity_id": "1"}
     """
@@ -155,25 +160,26 @@ async def pdb_get_nonpolymer_entity(entry_id: str, entity_id: str):
 # Entity instance tools
 @mcp.tool()
 async def pdb_get_polymer_entity_instance(entry_id: str, instance_id: str):
-    """获取 PDB 条目中聚合物实体实例的详细信息。
+    """
+    Retrieve detailed information about a polymer entity instance in a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
-        instance_id (str): 聚合物实体实例标识符（通常为 "1"、"2" 等）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
+        instance_id (str): The polymer entity instance identifier (usually "1", "2", etc.)
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 聚合物实体实例信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of polymer entity instance info including:
                 - 'rcsb_polymer_entity_instance':
-                    - 'id': 实例 ID
-                    - 'asym_id': 不对称单元 ID
-                    - 'auth_asym_id': 作者不对称单元 ID
-                    - 'entity_id': 父实体 ID
-                    - 'transformation': 变换矩阵
-                    - 'struct_asym': 结构不对称单元信息
-                    - 'rcsb_polymer_entity_instance_container_identifiers': 容器信息
+                    - 'id': instance ID
+                    - 'asym_id': asymmetric unit ID
+                    - 'auth_asym_id': author asymmetric unit ID
+                    - 'entity_id': parent entity ID
+                    - 'transformation': transformation matrix
+                    - 'struct_asym': structure asymmetric unit info
+                    - 'rcsb_polymer_entity_instance_container_identifiers': container info
                     
-        如果未找到实例或发生错误，则返回空列表。
+        Returns empty list if instance not found or error occurs.
         
     Query example: {"entry_id": "1CRN", "instance_id": "1"}
     """
@@ -182,25 +188,26 @@ async def pdb_get_polymer_entity_instance(entry_id: str, instance_id: str):
 
 @mcp.tool()
 async def pdb_get_branched_entity_instance(entry_id: str, instance_id: str):
-    """获取 PDB 条目中分支实体实例的详细信息。
+    """
+    Retrieve detailed information about a branched entity instance in a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
-        instance_id (str): 分支实体实例标识符（通常为 "1"、"2" 等）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
+        instance_id (str): The branched entity instance identifier (usually "1", "2", etc.)
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 分支实体实例信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of branched entity instance info including:
                 - 'rcsb_branched_entity_instance':
-                    - 'id': 实例 ID
-                    - 'asym_id': 不对称单元 ID
-                    - 'auth_asym_id': 作者不对称单元 ID
-                    - 'entity_id': 父实体 ID
-                    - 'transformation': 变换矩阵
-                    - 'struct_asym': 结构不对称单元信息
-                    - 'rcsb_branched_entity_instance_container_identifiers': 容器信息
+                    - 'id': instance ID
+                    - 'asym_id': asymmetric unit ID
+                    - 'auth_asym_id': author asymmetric unit ID
+                    - 'entity_id': parent entity ID
+                    - 'transformation': transformation matrix
+                    - 'struct_asym': structure asymmetric unit info
+                    - 'rcsb_branched_entity_instance_container_identifiers': container info
                     
-        如果未找到实例或发生错误，则返回空列表。
+        Returns empty list if instance not found or error occurs.
         
     Query example: {"entry_id": "1CRN", "instance_id": "1"}
     """
@@ -209,25 +216,26 @@ async def pdb_get_branched_entity_instance(entry_id: str, instance_id: str):
 
 @mcp.tool()
 async def pdb_get_nonpolymer_entity_instance(entry_id: str, instance_id: str):
-    """获取 PDB 条目中非聚合物实体实例的详细信息。
+    """
+    Retrieve detailed information about a non-polymer entity instance in a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
-        instance_id (str): 非聚合物实体实例标识符（通常为 "1"、"2" 等）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
+        instance_id (str): The non-polymer entity instance identifier (usually "1", "2", etc.)
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 非聚合物实体实例信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of non-polymer entity instance info including:
                 - 'rcsb_non_polymer_entity_instance':
-                    - 'id': 实例 ID
-                    - 'asym_id': 不对称单元 ID
-                    - 'auth_asym_id': 作者不对称单元 ID
-                    - 'entity_id': 父实体 ID
-                    - 'transformation': 变换矩阵
-                    - 'struct_asym': 结构不对称单元信息
-                    - 'rcsb_non_polymer_entity_instance_container_identifiers': 容器信息
+                    - 'id': instance ID
+                    - 'asym_id': asymmetric unit ID
+                    - 'auth_asym_id': author asymmetric unit ID
+                    - 'entity_id': parent entity ID
+                    - 'transformation': transformation matrix
+                    - 'struct_asym': structure asymmetric unit info
+                    - 'rcsb_non_polymer_entity_instance_container_identifiers': container info
                     
-        如果未找到实例或发生错误，则返回空列表。
+        Returns empty list if instance not found or error occurs.
         
     Query example: {"entry_id": "1CRN", "instance_id": "1"}
     """
@@ -237,27 +245,28 @@ async def pdb_get_nonpolymer_entity_instance(entry_id: str, instance_id: str):
 # Annotation tools
 @mcp.tool()
 async def pdb_get_uniprot_annotations(entry_id: str, entity_id: str):
-    """获取 PDB 条目中聚合物实体的 UniProt 注释。
+    """
+    Retrieve UniProt annotations for a polymer entity in a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
-        entity_id (str): 聚合物实体标识符（通常为 "1"、"2" 等）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
+        entity_id (str): The polymer entity identifier (usually "1", "2", etc.)
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: UniProt 注释的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of UniProt annotations including:
                 - 'rcsb_id': PDB ID
-                - 'entity_id': 实体 ID
-                - 'uniprot_accession': UniProt 登录号
+                - 'entity_id': entity ID
+                - 'uniprot_accession': UniProt accession number
                 - 'uniprot_id': UniProt ID
-                - 'uniprot_name': 蛋白质名称
-                - 'uniprot_description': 蛋白质描述
-                - 'uniprot_sequence': 蛋白质序列
-                - 'uniprot_organism': 来源生物
-                - 'uniprot_gene': 基因名称
-                - 'uniprot_domain': 结构域注释
+                - 'uniprot_name': protein name
+                - 'uniprot_description': protein description
+                - 'uniprot_sequence': protein sequence
+                - 'uniprot_organism': source organism
+                - 'uniprot_gene': gene name
+                - 'uniprot_domain': domain annotations
                 
-        如果未找到注释或发生错误，则返回空列表。
+        Returns empty list if no annotations found or error occurs.
         
     Query example: {"entry_id": "1CRN", "entity_id": "1"}
     """
@@ -266,29 +275,30 @@ async def pdb_get_uniprot_annotations(entry_id: str, entity_id: str):
 
 @mcp.tool()
 async def pdb_get_drugbank_annotations(component_id: str):
-    """获取 PDB 中化学组分的 DrugBank 注释。
+    """
+    Retrieve DrugBank annotations for a chemical component in PDB.
     
     Args:
-        component_id (str): 3 字母化学组分 ID（例如 "ATP"、"HEM"）
+        component_id (str): The 3-letter chemical component ID (e.g. "ATP", "HEM")
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: DrugBank 注释的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of DrugBank annotations including:
                 - 'drugbank_id': DrugBank ID
-                - 'name': 药物名称
-                - 'description': 药物描述
-                - 'groups': 药物组别（例如已批准、实验性）
-                - 'indication': 治疗适应症
-                - 'pharmacology': 药理作用
-                - 'mechanism_of_action': 作用机制描述
-                - 'toxicity': 毒性信息
-                - 'metabolism': 代谢途径
-                - 'targets': 药物靶点列表，包含：
+                - 'name': drug name
+                - 'description': drug description
+                - 'groups': drug groups (e.g. approved, experimental)
+                - 'indication': therapeutic indications
+                - 'pharmacology': pharmacological action
+                - 'mechanism_of_action': mechanism description
+                - 'toxicity': toxicity information
+                - 'metabolism': metabolic pathway
+                - 'targets': list of drug targets with:
                     - 'uniprot_id': UniProt ID
-                    - 'gene_name': 基因名称
-                    - 'action': 药物对靶点的作用
+                    - 'gene_name': gene name
+                    - 'action': drug action on target
                     
-        如果未找到注释或发生错误，则返回空列表。
+        Returns empty list if no annotations found or error occurs.
         
     Query example: {"component_id": "ATP"}
     """
@@ -298,29 +308,30 @@ async def pdb_get_drugbank_annotations(component_id: str):
 # Assembly tools
 @mcp.tool()
 async def pdb_get_structural_assembly(entry_id: str, assembly_id: str = "1"):
-    """获取 PDB 条目的结构组装信息。
+    """
+    Retrieve structural assembly information for a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
-        assembly_id (str): 组装标识符（默认："1"）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
+        assembly_id (str): The assembly identifier (default: "1")
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 组装信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of assembly information including:
                 - 'rcsb_struct_assembly':
-                    - 'id': 组装 ID
-                    - 'details': 组装描述
-                    - 'method': 组装方法
-                    - 'oligomeric_details': 寡聚状态
-                    - 'polymer_entity_instance_count': 实例数量
-                    - 'rcsb_struct_assembly_provenance': 来源信息
-                    - 'rcsb_struct_assembly_container_identifiers': 容器信息
-                - 'assemblies': 组装组件列表，包含：
-                    - 'assembly_id': 组件 ID
-                    - 'asym_id_list': 不对称单元 ID 列表
-                    - 'transformation': 变换矩阵
+                    - 'id': assembly ID
+                    - 'details': assembly description
+                    - 'method': assembly method
+                    - 'oligomeric_details': oligomeric state
+                    - 'polymer_entity_instance_count': instance count
+                    - 'rcsb_struct_assembly_provenance': provenance info
+                    - 'rcsb_struct_assembly_container_identifiers': container info
+                - 'assemblies': list of assembly components with:
+                    - 'assembly_id': component ID
+                    - 'asym_id_list': list of asymmetric unit IDs
+                    - 'transformation': transformation matrix
                     
-        如果未找到组装或发生错误，则返回空列表。
+        Returns empty list if assembly not found or error occurs.
         
     Query example: {"entry_id": "1CRN", "assembly_id": "1"}
     """
@@ -330,32 +341,33 @@ async def pdb_get_structural_assembly(entry_id: str, assembly_id: str = "1"):
 # Interface tools
 @mcp.tool()
 async def pdb_get_polymer_interface(entry_id: str, assembly_id: str, interface_id: str):
-    """获取 PDB 条目中聚合物界面的详细信息。
+    """
+    Retrieve detailed information about a polymer interface in a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
-        assembly_id (str): 组装标识符（通常为 "1"、"2" 等）
-        interface_id (str): 界面标识符（通常为 "1"、"2" 等）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
+        assembly_id (str): The assembly identifier (usually "1", "2", etc.)
+        interface_id (str): The interface identifier (usually "1", "2", etc.)
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 界面信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of interface information including:
                 - 'rcsb_interface_info':
-                    - 'id': 界面 ID
-                    - 'interface_area': 界面面积（单位：Å²）
-                    - 'solvent_content': 溶剂含量百分比
-                    - 'interface_type': 界面分类
-                    - 'interface_chemistry': 化学组成
+                    - 'id': interface ID
+                    - 'interface_area': interface area in Å²
+                    - 'solvent_content': solvent content percentage
+                    - 'interface_type': interface classification
+                    - 'interface_chemistry': chemical composition
                 - 'interface_partner':
-                    - 'asym_id': 不对称单元 ID 列表
-                    - 'entity_id': 实体 ID 列表
-                    - 'interface_residues': 界面残基列表
+                    - 'asym_id': list of asymmetric unit IDs
+                    - 'entity_id': list of entity IDs
+                    - 'interface_residues': list of interface residues
                 - 'interface_features':
-                    - 'hydrogen_bonds': 氢键数量和详情
-                    - 'salt_bridges': 盐桥数量和详情
-                    - 'disulfide_bonds': 二硫键数量和详情
+                    - 'hydrogen_bonds': count and details
+                    - 'salt_bridges': count and details
+                    - 'disulfide_bonds': count and details
                     
-        如果未找到界面或发生错误，则返回空列表。
+        Returns empty list if interface not found or error occurs.
         
     Query example: {"entry_id": "1CRN", "assembly_id": "1", "interface_id": "1"}
     """
@@ -365,33 +377,34 @@ async def pdb_get_polymer_interface(entry_id: str, assembly_id: str, interface_i
 # Chemical component tools
 @mcp.tool()
 async def pdb_get_chemical_component(component_id: str):
-    """获取 PDB 中化学组分的详细信息。
+    """
+    Retrieve detailed information about a chemical component in PDB.
     
     Args:
-        component_id (str): 3 字母化学组分 ID（例如 "ATP"、"HEM"）
+        component_id (str): The 3-letter chemical component ID (e.g. "ATP", "HEM")
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 化学组分信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of chemical component information including:
                 - 'chem_comp':
-                    - 'id': 组分 ID
-                    - 'name': 组分名称
-                    - 'type': 组分类型
-                    - 'formula': 化学式
-                    - 'formula_weight': 分子量
-                    - 'pdbx_formal_charge': 形式电荷
-                    - 'pdbx_initial_date': 添加日期
-                    - 'pdbx_modified_date': 最后修改日期
-                    - 'pdbx_release_status': 发布状态
-                - 'pdbx_chem_comp_descriptor': 描述符
-                - 'pdbx_chem_comp_identifier': 标识符
-                - 'pdbx_chem_comp_feature': 特征
-                - 'pdbx_chem_comp_audit': 审计信息
-                - 'rcsb_chem_comp_container_identifiers': 容器信息
-                - 'rcsb_chem_comp_related': 相关组分
-                - 'rcsb_chem_comp_synonyms': 同义词
+                    - 'id': component ID
+                    - 'name': component name
+                    - 'type': component type
+                    - 'formula': chemical formula
+                    - 'formula_weight': molecular weight
+                    - 'pdbx_formal_charge': formal charge
+                    - 'pdbx_initial_date': date added
+                    - 'pdbx_modified_date': last modified
+                    - 'pdbx_release_status': release status
+                - 'pdbx_chem_comp_descriptor': descriptors
+                - 'pdbx_chem_comp_identifier': identifiers
+                - 'pdbx_chem_comp_feature': features
+                - 'pdbx_chem_comp_audit': audit info
+                - 'rcsb_chem_comp_container_identifiers': container info
+                - 'rcsb_chem_comp_related': related components
+                - 'rcsb_chem_comp_synonyms': synonyms
                     
-        如果未找到组分或发生错误，则返回空列表。
+        Returns empty list if component not found or error occurs.
         
     Query example: {"component_id": "ATP"}
     """
@@ -401,26 +414,27 @@ async def pdb_get_chemical_component(component_id: str):
 # Group tools
 @mcp.tool()
 async def pdb_get_aggregation_group_provenance(group_id: str):
-    """获取 PDB 中聚合组的来源信息。
+    """
+    Retrieve provenance information for an aggregation group in PDB.
     
     Args:
-        group_id (str): 聚合组标识符（例如 "1"、"2"）
+        group_id (str): The aggregation group identifier (e.g. "1", "2")
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 聚合组来源的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of aggregation group provenance including:
                 - 'rcsb_aggregation_group_provenance':
-                    - 'group_id': 组 ID
-                    - 'aggregation_method': 使用的方法
-                    - 'aggregation_criteria': 标准详情
-                    - 'aggregation_version': 版本信息
-                    - 'aggregation_date': 聚合日期
-                    - 'aggregation_software': 使用的软件
-                    - 'aggregation_parameters': 使用的参数
-                    - 'aggregation_references': 参考信息
-                    - 'aggregation_notes': 附加说明
+                    - 'group_id': group ID
+                    - 'aggregation_method': method used
+                    - 'aggregation_criteria': criteria details
+                    - 'aggregation_version': version info
+                    - 'aggregation_date': date of aggregation
+                    - 'aggregation_software': software used
+                    - 'aggregation_parameters': parameters used
+                    - 'aggregation_references': reference info
+                    - 'aggregation_notes': additional notes
                     
-        如果未找到组或发生错误，则返回空列表。
+        Returns empty list if group not found or error occurs.
         
     Query example: {"group_id": "1"}
     """
@@ -429,26 +443,27 @@ async def pdb_get_aggregation_group_provenance(group_id: str):
 
 @mcp.tool()
 async def pdb_get_pdb_cluster_data_aggregation(cluster_id: str):
-    """获取 PDB 聚类的数据聚合信息。
+    """
+    Retrieve data aggregation information for a PDB cluster.
     
     Args:
-        cluster_id (str): 聚类标识符（例如 "1"、"2"）
+        cluster_id (str): The cluster identifier (e.g. "1", "2")
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 聚类数据聚合的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of cluster data aggregation including:
                 - 'rcsb_cluster_data_aggregation':
-                    - 'cluster_id': 聚类 ID
-                    - 'cluster_size': 成员数量
-                    - 'cluster_method': 聚类方法
-                    - 'cluster_cutoff': 相似性阈值
-                    - 'cluster_members': 成员 PDB ID 列表
-                    - 'cluster_representative': 代表性 PDB ID
-                    - 'cluster_sequence_identity': 平均序列一致性
-                    - 'cluster_rmsd': 平均结构 RMSD
-                    - 'cluster_coverage': 序列覆盖度
+                    - 'cluster_id': cluster ID
+                    - 'cluster_size': number of members
+                    - 'cluster_method': clustering method
+                    - 'cluster_cutoff': similarity cutoff
+                    - 'cluster_members': list of member PDB IDs
+                    - 'cluster_representative': representative PDB ID
+                    - 'cluster_sequence_identity': average sequence identity
+                    - 'cluster_rmsd': average structural RMSD
+                    - 'cluster_coverage': sequence coverage
                     
-        如果未找到聚类或发生错误，则返回空列表。
+        Returns empty list if cluster not found or error occurs.
         
     Query example: {"cluster_id": "1"}
     """
@@ -457,26 +472,27 @@ async def pdb_get_pdb_cluster_data_aggregation(cluster_id: str):
 
 @mcp.tool()
 async def pdb_get_pdb_cluster_data_aggregation_method(method_id: str):
-    """获取 PDB 聚类数据聚合方法的详细信息。
+    """
+    Retrieve details about a PDB cluster data aggregation method.
     
     Args:
-        method_id (str): 方法标识符（例如 "sequence_identity"、"structure_similarity"）
+        method_id (str): The method identifier (e.g. "sequence_identity", "structure_similarity")
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 方法详情的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of method details including:
                 - 'rcsb_cluster_data_aggregation_method':
-                    - 'id': 方法 ID
-                    - 'name': 方法名称
-                    - 'description': 方法描述
-                    - 'version': 方法版本
-                    - 'parameters': 方法参数
-                    - 'reference': 参考信息
-                    - 'software': 使用的软件
-                    - 'cutoff': 相似性阈值
-                    - 'coverage': 序列覆盖度值
+                    - 'id': method ID
+                    - 'name': method name
+                    - 'description': method description
+                    - 'version': method version
+                    - 'parameters': method parameters
+                    - 'reference': reference info
+                    - 'software': software used
+                    - 'cutoff': similarity cutoff value
+                    - 'coverage': sequence coverage value
                     
-        如果未找到方法或发生错误，则返回空列表。
+        Returns empty list if method not found or error occurs.
         
     Query example: {"method_id": "sequence_identity"}
     """
@@ -486,29 +502,30 @@ async def pdb_get_pdb_cluster_data_aggregation_method(method_id: str):
 # Residue tools
 @mcp.tool()
 async def pdb_get_residue_chains(entry_id: str):
-    """获取 PDB 条目的残基链信息。
+    """
+    Retrieve residue chain information for a PDB entry.
     
     Args:
-        entry_id (str): 4 字符的 PDB 条目 ID（例如 "1CRN"、"1TUP"）
+        entry_id (str): The 4-character PDB entry ID (e.g. "1CRN", "1TUP")
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 残基链信息的 JSON 字符串，包括：
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string of residue chain information including:
                 - 'rcsb_id': PDB ID
-                - 'chains': 链列表，包含：
-                    - 'asym_id': 不对称单元 ID
-                    - 'auth_asym_id': 作者不对称单元 ID
-                    - 'entity_id': 父实体 ID
-                    - 'entity_type': 实体类型（聚合物/分支/非聚合物）
-                    - 'residues': 残基列表，包含：
-                        - 'residue_number': 残基编号
-                        - 'residue_name': 残基名称
-                        - 'chem_comp_id': 化学组分 ID
-                        - 'pdbx_PDB_ins_code': 插入代码
-                        - 'pdbx_formal_charge': 形式电荷
-                        - 'pdbx_polymer_type': 聚合物类型
+                - 'chains': list of chains with:
+                    - 'asym_id': asymmetric unit ID
+                    - 'auth_asym_id': author asymmetric unit ID
+                    - 'entity_id': parent entity ID
+                    - 'entity_type': entity type (polymer/branched/non-polymer)
+                    - 'residues': list of residues with:
+                        - 'residue_number': residue number
+                        - 'residue_name': residue name
+                        - 'chem_comp_id': chemical component ID
+                        - 'pdbx_PDB_ins_code': insertion code
+                        - 'pdbx_formal_charge': formal charge
+                        - 'pdbx_polymer_type': polymer type
                     
-        如果未找到链或发生错误，则返回空列表。
+        Returns empty list if no chains found or error occurs.
         
     Query example: {"entry_id": "1CRN"}
     """
@@ -517,26 +534,27 @@ async def pdb_get_residue_chains(entry_id: str):
 
 @mcp.tool()
 async def pdb_get_entry_groups(group_id: str):
-    """从 RCSB PDB 获取指定组沉积 ID 的详细组信息。
+    """
+    Retrieve detailed group information from RCSB PDB for a specified Group Deposition ID.
     
     Args:
-        group_id (str): PDB 组沉积 ID（例如 "G_1002011"）
+        group_id (str): The PDB Group Deposition ID (e.g., "G_1002011")
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 包含以下内容的 JSON 字符串：
-                - rcsb_id: 组级 RCSB 标识符
-                - rcsb_group_container_identifiers: 组和成员 ID 关系
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string containing:
+                - rcsb_id: Group-level RCSB identifier
+                - rcsb_group_container_identifiers: Group and member ID relationships
                     - group_id
                     - group_provenance_id
                     - parent_member_ids
                     - group_member_ids
-                - rcsb_group_info: 名称、描述、粒度和成员数量
-                - rcsb_group_statistics: 相似性分数阈值和分数范围
-                - rcsb_group_accession_info: 版本信息
-                - rcsb_group_related: 相关组结构（如有）
+                - rcsb_group_info: Name, description, granularity, and member count
+                - rcsb_group_statistics: Similarity score cutoff and score range
+                - rcsb_group_accession_info: Version information
+                - rcsb_group_related: Related group structures (if any)
                 
-        如果未找到组或发生错误，则返回空列表。
+        Returns empty list if group not found or error occurs.
         
     Query example: {"group_id": "G_1002011"}
     """
@@ -545,15 +563,16 @@ async def pdb_get_entry_groups(group_id: str):
 
 @mcp.tool()
 async def pdb_get_polymer_entity_groups(group_id: str):
-    """通过 UniProt ID 或序列聚类 ID 从 RCSB PDB 获取聚合物实体组。
+    """
+    Retrieve a polymer entity group from RCSB PDB by UniProt ID or sequence cluster ID.
     
     Args:
-        group_id (str): UniProt ID（例如 "Q3Y9I6"）或 RCSB 序列聚类 ID
+        group_id (str): A UniProt ID (e.g., "Q3Y9I6") or RCSB sequence cluster ID
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 包含以下内容的 JSON 字符串：
-                - rcsb_id: 实体组标识符
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string containing:
+                - rcsb_id: Identifier for the entity group
                 - rcsb_group_container_identifiers:
                     - group_id
                     - group_provenance_id
@@ -562,20 +581,20 @@ async def pdb_get_polymer_entity_groups(group_id: str):
                 - rcsb_group_info:
                     - group_name
                     - group_description
-                    - group_members_granularity（例如 assembly、chain）
+                    - group_members_granularity (e.g., assembly, chain)
                     - group_members_count
                 - rcsb_group_statistics:
                     - similarity_cutoff
                     - similarity_score_min / max
                 - rcsb_group_accession_info:
                     - version
-                - rcsb_group_related: 相关组条目
-                - rcsb_polymer_entity_group_members_rankings: 排名信息
+                - rcsb_group_related: Related group entries
+                - rcsb_polymer_entity_group_members_rankings: Ranking info
                 - rcsb_polymer_entity_group_sequence_alignment:
-                    - abstract_reference: 参考序列信息
-                    - group_members_alignment: 对齐的成员序列
+                    - abstract_reference: Reference sequence info
+                    - group_members_alignment: Aligned member sequences
                     
-        如果未找到组或发生错误，则返回空列表。
+        Returns empty list if group not found or error occurs.
         
     Query example: {"group_id": "Q3Y9I6"}
     """
@@ -584,15 +603,16 @@ async def pdb_get_polymer_entity_groups(group_id: str):
 
 @mcp.tool()
 async def pdb_get_nonpolymer_entity_groups(group_id: str):
-    """通过化学组分 ID 从 RCSB PDB 获取非聚合物实体组对象。
+    """
+    Retrieve a non-polymer entity group object from RCSB PDB by Chemical Component ID.
     
     Args:
-        group_id (str): 化学组分 ID（例如 "HEM" 表示血红素基团）
+        group_id (str): The Chemical Component ID (e.g., "HEM" for heme group)
         
     Returns:
-        List[types.TextContent]: 包含一个 TextContent 对象的列表，其中：
-            - text: 包含以下内容的 JSON 字符串：
-                - rcsb_id: 组级标识符
+        List[types.TextContent]: A list containing one TextContent object with:
+            - text: JSON string containing:
+                - rcsb_id: Group-level identifier
                 - rcsb_group_container_identifiers:
                     - group_id
                     - group_provenance_id
@@ -608,13 +628,13 @@ async def pdb_get_nonpolymer_entity_groups(group_id: str):
                     - similarity_score_min / max
                 - rcsb_group_accession_info:
                     - version
-                - rcsb_group_related: 相关组（如有）
-                - rcsb_polymer_entity_group_members_rankings: 排名信息
+                - rcsb_group_related: Related groups (if any)
+                - rcsb_polymer_entity_group_members_rankings: Ranking info
                 - rcsb_polymer_entity_group_sequence_alignment:
                     - abstract_reference
                     - group_members_alignment
                     
-        如果未找到组或发生错误，则返回空列表。
+        Returns empty list if group not found or error occurs.
         
     Query example: {"group_id": "HEM"}
     """
@@ -623,6 +643,6 @@ async def pdb_get_nonpolymer_entity_groups(group_id: str):
 
 @mcp.prompt()
 def system_prompt():
-    return """你是蛋白质数据库（PDB）MCP 服务器。
-    你可以使用 PDB API 回答有关蛋白质结构和相关数据的问题。
-    始终在最终答案中包含工具调用的结果。"""
+    return """You are the Protein Data Bank (PDB) MCP server. 
+    You can answer questions about protein structures and related data using the PDB API.
+    Always include the result of tool calls in your final answer."""

@@ -1,17 +1,20 @@
 description = [
     {
-        "description": "优化厌氧消化过程条件以最大化VFA产量或甲烷产量。",
+        "description": "Optimize anaerobic digestion process conditions to maximize VFA production or methane yield.",
         "name": "optimize_anaerobic_digestion_process",
         "optional_parameters": [
             {
                 "default": "methane_yield",
-                "description": "要最大化的目标输出，可选'vfa_production'或'methane_yield'",
+                "description": "Target output to maximize, either 'vfa_production' or 'methane_yield'",
                 "name": "target_output",
                 "type": "str",
             },
             {
                 "default": "rsm",
-                "description": "用于优化的方法，可选'rsm'（响应面法）或'genetic'（遗传算法）",
+                "description": "Method used for optimization, "
+                "either 'rsm' (Response Surface "
+                "Methodology) or 'genetic' (Genetic "
+                "Algorithm)",
                 "name": "optimization_method",
                 "type": "str",
             },
@@ -19,31 +22,42 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含废物特性的字典，如total_solids、volatile_solids和cod",
+                "description": "Dictionary containing waste "
+                "characteristics such as "
+                "total_solids, volatile_solids, and "
+                "cod",
                 "name": "waste_characteristics",
                 "type": "dict",
             },
             {
                 "default": None,
-                "description": "包含操作参数及其范围的字典，包括hrt、olr、if_ratio、temperature和ph",
+                "description": "Dictionary containing operational "
+                "parameters and their ranges for "
+                "hrt, olr, if_ratio, temperature, "
+                "and ph",
                 "name": "operational_parameters",
                 "type": "dict",
             },
         ],
     },
     {
-        "description": "使用HPLC-ICP-MS技术分析液体样品中的砷形态。返回总结分析步骤和结果的研究日志。",
+        "description": "Analyzes arsenic speciation in liquid samples using "
+        "HPLC-ICP-MS technique. Returns a research log summarizing "
+        "analysis steps and results.",
         "name": "analyze_arsenic_speciation_hplc_icpms",
         "optional_parameters": [
             {
                 "default": "Unknown Sample",
-                "description": "正在分析的样品名称",
+                "description": "Name of the sample being analyzed",
                 "name": "sample_name",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "包含校准标准数据的字典，包含每种砷形态的已知浓度",
+                "description": "Dictionary containing calibration "
+                "standards data with known "
+                "concentrations for each arsenic "
+                "species",
                 "name": "calibration_data",
                 "type": "dict",
             },
@@ -51,31 +65,35 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含样品数据的字典，键为样品ID，值为字典，其中保留时间（分钟）为键，信号强度为值",
+                "description": "Dictionary containing sample data "
+                "with keys as sample IDs and values "
+                "as dictionaries with retention "
+                "times (in minutes) as keys and "
+                "signal intensities as values",
                 "name": "sample_data",
                 "type": "dict",
             }
         ],
     },
     {
-        "description": "使用计算机视觉技术从琼脂平板图像中计数细菌菌落。",
+        "description": "Count bacterial colonies from an image of agar plate using computer vision techniques.",
         "name": "count_bacterial_colonies",
         "optional_parameters": [
             {
                 "default": 1,
-                "description": "平板样品的稀释因子",
+                "description": "Dilution factor of the plated sample",
                 "name": "dilution_factor",
                 "type": "float",
             },
             {
                 "default": 65.0,
-                "description": "琼脂平板的面积（平方厘米）",
+                "description": "Area of the agar plate in square centimeters",
                 "name": "plate_area_cm2",
                 "type": "float",
             },
             {
                 "default": "./output",
-                "description": "保存输出图像和结果的目录",
+                "description": "Directory to save output images and results",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -83,43 +101,43 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "包含琼脂平板上细菌菌落的图像文件路径",
+                "description": "Path to the image file containing bacterial colonies on agar plate",
                 "name": "image_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "使用Prokka注释细菌基因组以识别基因、蛋白质和功能特征。",
+        "description": "Annotate a bacterial genome using Prokka to identify genes, proteins, and functional features.",
         "name": "annotate_bacterial_genome",
         "optional_parameters": [
             {
                 "default": "annotation_results",
-                "description": "保存注释结果的目录",
+                "description": "Directory where annotation results will be saved",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": "",
-                "description": "生物体的属名",
+                "description": "Genus name for the organism",
                 "name": "genus",
                 "type": "str",
             },
             {
                 "default": "",
-                "description": "生物体的种名",
+                "description": "Species name for the organism",
                 "name": "species",
                 "type": "str",
             },
             {
                 "default": "",
-                "description": "菌株标识符",
+                "description": "Strain identifier",
                 "name": "strain",
                 "type": "str",
             },
             {
                 "default": "",
-                "description": "输出文件的前缀",
+                "description": "Prefix for output files",
                 "name": "prefix",
                 "type": "str",
             },
@@ -127,49 +145,49 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "FASTA格式的组装基因组序列文件路径",
+                "description": "Path to the assembled genome sequence file in FASTA format",
                 "name": "genome_file_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "使用系列稀释和点样平板法量化细菌浓度（CFU/mL）。",
+        "description": "Quantify bacterial concentration (CFU/mL) using serial dilutions and spot plating.",
         "name": "enumerate_bacterial_cfu_by_serial_dilution",
         "optional_parameters": [
             {
                 "default": 1.0,
-                "description": "初始细菌样品的体积（毫升）",
+                "description": "Volume of the initial bacterial sample in milliliters",
                 "name": "initial_sample_volume_ml",
                 "type": "float",
             },
             {
                 "default": 100000000.0,
-                "description": "初始样品中细菌的估计浓度（CFU/mL）",
+                "description": "Estimated concentration of bacteria in the initial sample (CFU/mL)",
                 "name": "estimated_concentration",
                 "type": "float",
             },
             {
                 "default": 10,
-                "description": "每次稀释降低浓度的因子",
+                "description": "Factor by which each dilution reduces the concentration",
                 "name": "dilution_factor",
                 "type": "int",
             },
             {
                 "default": 8,
-                "description": "要执行的系列稀释次数",
+                "description": "Number of serial dilutions to perform",
                 "name": "num_dilutions",
                 "type": "int",
             },
             {
                 "default": 3,
-                "description": "每个稀释度要平板的重复点样数",
+                "description": "Number of replicate spots to plate for each dilution",
                 "name": "spots_per_dilution",
                 "type": "int",
             },
             {
                 "default": "cfu_enumeration_results.csv",
-                "description": "保存CFU计数结果的文件名",
+                "description": "Filename to save the CFU enumeration results",
                 "name": "output_file",
                 "type": "str",
             },
@@ -177,18 +195,18 @@ description = [
         "required_parameters": [],
     },
     {
-        "description": "使用常微分方程对细菌种群随时间的动态进行建模。",
+        "description": "Model bacterial population dynamics over time using ordinary differential equations.",
         "name": "model_bacterial_growth_dynamics",
         "optional_parameters": [
             {
                 "default": 24,
-                "description": "总模拟时间（小时）",
+                "description": "Total simulation time in hours",
                 "name": "simulation_time",
                 "type": "float",
             },
             {
                 "default": 0.1,
-                "description": "模拟输出的时间步长",
+                "description": "Time step for simulation output",
                 "name": "time_step",
                 "type": "float",
             },
@@ -196,49 +214,50 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "初始细菌种群大小（CFU/ml或细胞数）",
+                "description": "Initial bacterial population size (CFU/ml or cells)",
                 "name": "initial_population",
                 "type": "float",
             },
             {
                 "default": None,
-                "description": "细菌生长速率（每小时）",
+                "description": "Bacterial growth rate (per hour)",
                 "name": "growth_rate",
                 "type": "float",
             },
             {
                 "default": None,
-                "description": "细菌从系统中清除的速率（每小时）",
+                "description": "Rate at which bacteria are cleared from the system (per hour)",
                 "name": "clearance_rate",
                 "type": "float",
             },
             {
                 "default": None,
-                "description": "环境的最大承载能力（CFU/ml或细胞数）",
+                "description": "Maximum carrying capacity of the environment (CFU/ml or cells)",
                 "name": "niche_size",
                 "type": "float",
             },
         ],
     },
     {
-        "description": "使用结晶紫染色测定数据量化生物膜生物量并返回详细的研究日志。",
+        "description": "Quantifies biofilm biomass using crystal violet staining "
+        "assay data and returns a detailed research log.",
         "name": "quantify_biofilm_biomass_crystal_violet",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "与od_values对应的生物膜样品名称",
+                "description": "Names of the biofilm samples corresponding to od_values",
                 "name": "sample_names",
                 "type": "List[str]",
             },
             {
                 "default": 0,
-                "description": "od_values中阴性对照样品的索引",
+                "description": "Index of the negative control sample in od_values",
                 "name": "control_index",
                 "type": "int",
             },
             {
                 "default": None,
-                "description": "将结果保存为CSV文件的路径",
+                "description": "Path to save the results as CSV file",
                 "name": "save_path",
                 "type": "str",
             },
@@ -246,25 +265,29 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "结晶紫染色的光密度测量值，表示样品的吸光度读数",
+                "description": "Optical density measurements from "
+                "crystal violet staining "
+                "representing absorbance readings "
+                "for samples",
                 "name": "od_values",
                 "type": "List[float] or numpy.ndarray",
             }
         ],
     },
     {
-        "description": "对荧光显微镜图像执行自动细胞分割并量化形态学指标。",
+        "description": "Perform automated cell segmentation and quantify "
+        "morphological metrics from fluorescence microscopy images.",
         "name": "segment_and_analyze_microbial_cells",
         "optional_parameters": [
             {
                 "default": "./output",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": 50,
-                "description": "过滤噪声的最小细胞大小（像素）",
+                "description": "Minimum cell size in pixels to filter noise",
                 "name": "min_cell_size",
                 "type": "int",
             },
@@ -272,31 +295,36 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "荧光显微镜图像文件的路径",
+                "description": "Path to the fluorescence microscopy image file",
                 "name": "image_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "使用Cellpose/Omnipose库的预训练模型通过深度学习对荧光显微镜图像执行细胞分割。",
+        "description": "Perform cell segmentation on fluorescence microscopy images "
+        "using deep learning with pre-trained models from the "
+        "Cellpose/Omnipose library.",
         "name": "segment_cells_with_deep_learning",
         "optional_parameters": [
             {
                 "default": "bact_fluor_omni",
-                "description": "要使用的预训练模型名称（选项包括：'bact_fluor_omni'、'cyto'、'nuclei'等）",
+                "description": "Name of the pre-trained model to "
+                "use (Options include: "
+                "'bact_fluor_omni', 'cyto', "
+                "'nuclei', etc.)",
                 "name": "model_type",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "细胞的预期直径（像素）。如果为None，则自动估计直径",
+                "description": "Expected diameter of cells in pixels. If None, diameter is automatically estimated",
                 "name": "diameter",
                 "type": "float",
             },
             {
                 "default": "segmentation_results",
-                "description": "保存分割结果的目录",
+                "description": "Directory to save segmentation results",
                 "name": "save_dir",
                 "type": "str",
             },
@@ -304,19 +332,19 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "荧光显微镜图像文件的路径",
+                "description": "Path to the fluorescence microscopy image file",
                 "name": "image_path",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "使用广义Lotka-Volterra（gLV）模型模拟微生物群落动态。",
+        "description": "Simulate microbial community dynamics using the Generalized Lotka-Volterra (gLV) model.",
         "name": "simulate_generalized_lotka_volterra_dynamics",
         "optional_parameters": [
             {
                 "default": "glv_simulation_results.csv",
-                "description": "保存模拟结果的文件名",
+                "description": "Filename to save the simulation results",
                 "name": "output_file",
                 "type": "str",
             }
@@ -324,37 +352,40 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "每个微生物物种的初始丰度（一维数组）",
+                "description": "Initial abundances of each microbial species (1D array)",
                 "name": "initial_abundances",
                 "type": "numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "每个微生物物种的内在生长速率（一维数组）",
+                "description": "Intrinsic growth rates for each microbial species (1D array)",
                 "name": "growth_rates",
                 "type": "numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "相互作用系数矩阵，其中A[i,j]表示物种j对物种i的影响（二维数组）",
+                "description": "Matrix of interaction coefficients "
+                "where A[i,j] represents the effect "
+                "of species j on species i (2D "
+                "array)",
                 "name": "interaction_matrix",
                 "type": "numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "评估模型的时间点",
+                "description": "Time points at which to evaluate the model",
                 "name": "time_points",
                 "type": "numpy.ndarray",
             },
         ],
     },
     {
-        "description": "使用ViennaRNA预测RNA分子的二级结构。",
+        "description": "Predict the secondary structure of an RNA molecule using ViennaRNA.",
         "name": "predict_rna_secondary_structure",
         "optional_parameters": [
             {
                 "default": "rna_structure",
-                "description": "输出文件的前缀",
+                "description": "Prefix for output files",
                 "name": "output_prefix",
                 "type": "str",
             }
@@ -362,31 +393,31 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "RNA序列（由A、U、G、C核苷酸组成）",
+                "description": "The RNA sequence (consisting of A, U, G, C nucleotides)",
                 "name": "rna_sequence",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "使用Gillespie算法执行微生物种群动态的随机模拟。",
+        "description": "Performs stochastic simulation of microbial population dynamics using the Gillespie algorithm.",
         "name": "simulate_microbial_population_dynamics",
         "optional_parameters": [
             {
                 "default": 100,
-                "description": "最大模拟时间",
+                "description": "Maximum simulation time",
                 "name": "max_time",
                 "type": "float",
             },
             {
                 "default": 100,
-                "description": "要运行的随机模拟次数",
+                "description": "Number of stochastic simulations to run",
                 "name": "num_simulations",
                 "type": "int",
             },
             {
                 "default": 100,
-                "description": "要记录轨迹的时间点数量",
+                "description": "Number of time points to record for trajectories",
                 "name": "time_points",
                 "type": "int",
             },
@@ -394,25 +425,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "每个微生物物种的初始种群大小",
+                "description": "Initial population sizes for each microbial species",
                 "name": "initial_populations",
                 "type": "List[int]",
             },
             {
                 "default": None,
-                "description": "每个物种的人均生长速率",
+                "description": "Per capita growth rates for each species",
                 "name": "growth_rates",
                 "type": "List[float]",
             },
             {
                 "default": None,
-                "description": "每个物种的人均死亡/清除速率",
+                "description": "Per capita death/clearance rates for each species",
                 "name": "clearance_rates",
                 "type": "List[float]",
             },
             {
                 "default": None,
-                "description": "每个物种的最大可持续种群数量",
+                "description": "Maximum sustainable population for each species",
                 "name": "carrying_capacities",
                 "type": "List[float]",
             },

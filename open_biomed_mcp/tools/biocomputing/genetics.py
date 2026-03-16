@@ -5,25 +5,17 @@ def liftover_coordinates(
     output_format: str,
     data_path: str,
 ) -> str:
-    """在hg19和hg38格式之间执行基因组坐标转换，并提供详细的中间步骤。
+    """Perform liftover of genomic coordinates between hg19 and hg38 formats with detailed intermediate steps.
 
-    参数
-    ----------
-    chromosome : str
-        染色体编号（例如，'1'、'X'）。
-    position : int
-        基因组位置。
-    input_format : str
-        输入基因组构建版本（'hg19'或'hg38'）。
-    output_format : str
-        输出基因组构建版本（'hg19'或'hg38'）。
-    data_path : str
-        liftover链文件的路径。
+    Args:
+        chromosome (str): Chromosome number (e.g., '1', 'X').
+        position (int): Genomic position.
+        input_format (str): Input genome build ('hg19' or 'hg38').
+        output_format (str): Output genome build ('hg19' or 'hg38').
+        data_path (str): Path to liftover chain files.
 
-    返回值
-    -------
-    str
-        详细说明步骤和最终结果或遇到的任何错误的字符串。
+    Returns:
+        str: A detailed string explaining the steps and the final result or any error encountered.
 
     """
     from pyliftover import LiftOver
@@ -93,45 +85,46 @@ def bayesian_finemapping_with_deep_vi(
     hidden_dim=64,
     credible_threshold=0.95,
 ):
-    """使用深度变分推理从GWAS汇总统计进行贝叶斯精细定位。
+    """Performs Bayesian fine-mapping from GWAS summary statistics using deep variational inference.
 
-    该函数实现基于深度神经网络的变分推理方法，从GWAS汇总统计和连锁不平衡（LD）信息
-    计算后验包含概率（PIPs）和可信集，用于识别潜在的因果变异。
+    This function implements a deep neural network-based variational inference approach to compute
+    posterior inclusion probabilities (PIPs) and credible sets for putative causal variants from
+    GWAS summary statistics and linkage disequilibrium (LD) information.
 
-    参数
+    Parameters
     ----------
     gwas_summary_path : str
-        包含GWAS汇总统计的CSV或TSV文件路径。预期列：
-        - 'variant_id': 每个变异的标识符
-        - 'effect_size': 每个变异的效应大小（beta）
-        - 'pvalue': 每个变异的P值
-        - 'se': 每个变异的标准误（可选）
+        Path to CSV or TSV file containing GWAS summary statistics. Expected columns:
+        - 'variant_id': Identifier for each variant
+        - 'effect_size': Effect size (beta) for each variant
+        - 'pvalue': P-value for each variant
+        - 'se': Standard error for each variant (optional)
 
     ld_matrix : numpy.ndarray
-        变异之间成对相关性的连锁不平衡矩阵。
+        Linkage disequilibrium matrix with pairwise correlations between variants.
 
-    n_iterations : int, 可选
-        变分推理算法的训练迭代次数。
-        默认为5000。
+    n_iterations : int, optional
+        Number of training iterations for the variational inference algorithm.
+        Default is 5000.
 
-    learning_rate : float, 可选
-        优化算法的学习率。默认为0.01。
+    learning_rate : float, optional
+        Learning rate for the optimization algorithm. Default is 0.01.
 
-    hidden_dim : int, 可选
-        神经网络的隐藏层维度大小。默认为64。
+    hidden_dim : int, optional
+        Hidden dimension size for the neural network. Default is 64.
 
-    credible_threshold : float, 可选
-        定义可信集的阈值（例如，0.95表示95%可信集）。
-        默认为0.95。
+    credible_threshold : float, optional
+        Threshold for defining the credible set (e.g., 0.95 for a 95% credible set).
+        Default is 0.95.
 
-    返回值
+    Returns
     -------
     str
-        精细定位分析的详细研究日志，包括：
-        - 分析的变异数量
-        - 按后验包含概率排序的顶部变异
-        - 可信集变异
-        - 后验分布的可视化
+        A detailed research log of the fine-mapping analysis including:
+        - Number of variants analyzed
+        - Top variants ranked by posterior inclusion probability
+        - Credible set variants
+        - Visualizations of the posterior distributions
 
     """
     import matplotlib.pyplot as plt
@@ -333,24 +326,24 @@ def analyze_cas9_mutation_outcomes(
     cell_line_info=None,
     output_prefix="cas9_mutation_analysis",
 ):
-    """分析和分类Cas9在目标位点诱导的突变。
+    """Analyzes and categorizes mutations induced by Cas9 at target sites.
 
-    参数
+    Parameters
     ----------
     reference_sequences : dict
-        将序列ID映射到参考DNA序列（字符串）的字典
+        Dictionary mapping sequence IDs to reference DNA sequences (strings)
     edited_sequences : dict of dict
-        嵌套字典：{sequence_id: {read_id: sequence}}
-        包含每个参考序列的编辑/突变序列
-    cell_line_info : dict, 可选
-        将序列ID映射到细胞系信息的字典（例如，野生型、敲除基因）
-    output_prefix : str, 可选
-        输出文件的前缀
+        Nested dictionary: {sequence_id: {read_id: sequence}}
+        Contains the edited/mutated sequences for each reference
+    cell_line_info : dict, optional
+        Dictionary mapping sequence IDs to cell line information (e.g., wildtype, knockout gene)
+    output_prefix : str, optional
+        Prefix for output files
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     from collections import defaultdict
@@ -515,23 +508,24 @@ def analyze_cas9_mutation_outcomes(
 
 
 def analyze_crispr_genome_editing(original_sequence, edited_sequence, guide_rna, repair_template=None):
-    """通过比较原始和编辑序列分析CRISPR-Cas9基因组编辑结果。
+    """Analyzes CRISPR-Cas9 genome editing results by comparing original and edited sequences.
 
-    参数
+    Parameters
     ----------
     original_sequence : str
-        CRISPR-Cas9编辑前的原始DNA序列
+        The original DNA sequence before CRISPR-Cas9 editing
     edited_sequence : str
-        CRISPR-Cas9编辑后的DNA序列
+        The DNA sequence after CRISPR-Cas9 editing
     guide_rna : str
-        用于靶向的CRISPR向导RNA（crRNA）序列
-    repair_template : str, 可选
-        同源定向修复模板序列（如果使用）
+        The CRISPR guide RNA (crRNA) sequence used for targeting
+    repair_template : str, optional
+        The homology-directed repair template sequence, if used
 
-    返回值
+    Returns
     -------
     str
-        总结CRISPR-Cas9编辑分析的研究日志，包括识别的突变和编辑位点的特征
+        A research log summarizing the CRISPR-Cas9 editing analysis, including identified
+        mutations and characterization of the edited loci
 
     """
     import datetime
@@ -661,53 +655,53 @@ def simulate_demographic_history(
     random_seed=None,
     output_file="simulated_sequences.vcf",
 ):
-    """使用msprime模拟具有指定人口统计学和合并历史的DNA序列。
+    """Simulate DNA sequences with specified demographic and coalescent histories using msprime.
 
-    参数
+    Parameters
     ----------
     num_samples : int
-        要模拟的样本序列数量
+        Number of sample sequences to simulate
     sequence_length : int
-        模拟序列的长度（碱基对）
+        Length of the simulated sequence in base pairs
     recombination_rate : float
-        每碱基重组率
+        Per-base recombination rate
     mutation_rate : float
-        每碱基突变率
+        Per-base mutation rate
     demographic_model : str
-        要模拟的人口统计学模型类型。选项：
-        - "constant": 恒定种群大小
-        - "bottleneck": 种群瓶颈
-        - "expansion": 种群扩张
-        - "contraction": 种群收缩
-        - "sawtooth": 种群大小变化的锯齿模式
+        Type of demographic model to simulate. Options:
+        - "constant": Constant population size
+        - "bottleneck": Population bottleneck
+        - "expansion": Population expansion
+        - "contraction": Population contraction
+        - "sawtooth": Sawtooth pattern of population size changes
     demographic_params : dict
-        特定于所选人口统计学模型的参数。支持的格式：
+        Parameters specific to the chosen demographic model. Supported formats::
 
-            - 对于"constant": {"N": 种群大小}
-            - 对于"bottleneck": {
-                "N_initial": 初始种群大小,
-                "N_bottleneck": 瓶颈种群大小,
-                "T_bottleneck": 瓶颈时间（代数前）,
-                "T_recovery": 恢复时间（代数前）
+            - For "constant": {"N": population size}
+            - For "bottleneck": {
+                "N_initial": initial pop size,
+                "N_bottleneck": bottleneck pop size,
+                "T_bottleneck": time of bottleneck (generations ago),
+                "T_recovery": time of recovery (generations ago)
             }
-            - 对于"expansion": {"N_initial": 初始种群大小, "N_final": 最终种群大小, "T_expansion": 扩张时间（代数前）}
-            - 对于"contraction": {"N_initial": 初始种群大小, "N_final": 最终种群大小, "T_contraction": 收缩时间（代数前）}
-            - 对于"sawtooth": {"N_values": 种群大小列表, "times": 变化时间列表}
+            - For "expansion": {"N_initial": initial pop size, "N_final": final pop size, "T_expansion": time of expansion (generations ago)}
+            - For "contraction": {"N_initial": initial pop size, "N_final": final pop size, "T_contraction": time of contraction (generations ago)}
+            - For "sawtooth": {"N_values": list of population sizes, "times": list of times for changes}
     coalescent_model : str
-        要使用的合并模型类型。选项：
-        - "kingman": 标准Kingman合并
-        - "beta": Beta-合并模型
+        Type of coalescent model to use. Options:
+        - "kingman": Standard Kingman coalescent
+        - "beta": Beta-coalescent model
     beta_coalescent_param : float
-        beta-合并模型的参数（如果coalescent_model="beta"则必需）
+        Parameter for beta-coalescent model (required if coalescent_model="beta")
     random_seed : int
-        随机数生成器的种子（用于可重复性）
+        Seed for random number generator (for reproducibility)
     output_file : str
-        保存模拟序列的文件名（VCF格式）
+        Filename to save the simulated sequences (VCF format)
 
-    返回值
+    Returns
     -------
     str
-        总结模拟参数和结果的研究日志
+        Research log summarizing the simulation parameters and results
 
     """
     import time
@@ -855,23 +849,23 @@ def simulate_demographic_history(
 
 
 def identify_transcription_factor_binding_sites(sequence, tf_name, threshold=0.8, output_file=None):
-    """识别基因组序列中特定转录因子的结合位点。
+    """Identifies binding sites for a specific transcription factor in a genomic sequence.
 
-    参数
+    Parameters
     ----------
     sequence : str
-        要分析的基因组DNA序列
+        The genomic DNA sequence to analyze
     tf_name : str
-        要搜索的转录因子名称（例如，'Hsf1'、'GATA1'）
-    threshold : float, 可选
-        报告结合位点的最小分数阈值（0.0-1.0，默认：0.8）
-    output_file : str, 可选
-        保存结果的路径（默认：None，结果仅在日志中）
+        Name of the transcription factor to search for (e.g., 'Hsf1', 'GATA1')
+    threshold : float, optional
+        Minimum score threshold for reporting binding sites (0.0-1.0, default: 0.8)
+    output_file : str, optional
+        Path to save the results (default: None, results only in log)
 
-    返回值
+    Returns
     -------
     str
-        详细说明结合位点识别过程和结果的研究日志
+        Research log detailing the binding site identification process and results
 
     """
     import datetime
@@ -985,26 +979,29 @@ def fit_genomic_prediction_model(
     model_type="additive",
     output_file="genomic_prediction_results.csv",
 ):
-    """使用基因型和表型数据拟合基因组预测的线性混合模型。
+    """Fit a linear mixed model for genomic prediction using genotype and phenotype data.
 
-    参数
+    Parameters
     ----------
     genotypes : numpy.ndarray
-        基因型数据矩阵，个体为行，标记为列。
-        对于加性模型，值通常编码为0、1、2，或对于显性效应使用特定编码。
+        Matrix of genotype data, with individuals in rows and markers in columns.
+        Values are typically coded as 0, 1, 2 for additive models or with specific
+        encoding for dominance effects.
     phenotypes : numpy.ndarray
-        表型数据向量或矩阵，个体为行，性状为列。
-    fixed_effects : numpy.ndarray, 可选
-        固定效应矩阵（例如，环境、管理），个体为行，效应为列。
-    model_type : str, 可选
-        要拟合的遗传模型类型："additive"或"additive_dominance"。
-    output_file : str, 可选
-        保存结果的文件名。
+        Vector or matrix of phenotype data, with individuals in rows and traits in columns.
+    fixed_effects : numpy.ndarray, optional
+        Matrix of fixed effects (e.g., environment, management), with individuals in rows
+        and effects in columns.
+    model_type : str, optional
+        Type of genetic model to fit: "additive" or "additive_dominance".
+    output_file : str, optional
+        File name to save the results.
 
-    返回值
+    Returns
     -------
     str
-        总结基因组预测分析的研究日志，包括模型参数、方差组分、育种值和预测准确性指标。
+        Research log summarizing the genomic prediction analysis, including model parameters,
+        variance components, breeding values, and prediction accuracy metrics.
 
     """
     import pandas as pd
@@ -1248,33 +1245,33 @@ def perform_pcr_and_gel_electrophoresis(
     gel_percentage=2.0,
     output_prefix="pcr_result",
 ):
-    """执行目标转基因的PCR扩增，并使用琼脂糖凝胶电泳可视化结果。
+    """Performs PCR amplification of a target transgene and visualizes results using agarose gel electrophoresis.
 
-    参数
+    Parameters
     ----------
     genomic_dna : str
-        包含FASTA格式基因组DNA序列的文件路径或序列本身
-    forward_primer : str, 可选
-        正向引物序列。如果未提供，将根据target_region设计
-    reverse_primer : str, 可选
-        反向引物序列。如果未提供，将根据target_region设计
-    target_region : tuple, 可选
-        基因组DNA中目标区域的(起始, 结束)位置元组
-    annealing_temp : float, 默认=58
-        PCR退火温度（°C）
-    extension_time : int, 默认=30
-        延伸时间（秒）
-    cycles : int, 默认=35
-        PCR循环数
-    gel_percentage : float, 默认=2.0
-        琼脂糖凝胶百分比
-    output_prefix : str, 默认="pcr_result"
-        输出文件的前缀
+        Path to file containing genomic DNA sequence in FASTA format or the sequence itself
+    forward_primer : str, optional
+        Forward primer sequence. If not provided, will be designed based on target_region
+    reverse_primer : str, optional
+        Reverse primer sequence. If not provided, will be designed based on target_region
+    target_region : tuple, optional
+        Tuple of (start, end) positions for the target region in the genomic DNA
+    annealing_temp : float, default=58
+        Annealing temperature for PCR in °C
+    extension_time : int, default=30
+        Extension time in seconds
+    cycles : int, default=35
+        Number of PCR cycles
+    gel_percentage : float, default=2.0
+        Percentage of agarose gel
+    output_prefix : str, default="pcr_result"
+        Prefix for output files
 
-    返回值
+    Returns
     -------
     str
-        总结PCR和凝胶电泳程序及结果的研究日志
+        Research log summarizing the PCR and gel electrophoresis procedures and results
 
     """
     import datetime
@@ -1451,26 +1448,26 @@ def analyze_protein_phylogeny(
     alignment_method="clustalw",
     tree_method="fasttree",
 ):
-    """对一组蛋白质序列进行系统发育分析。
+    """Perform phylogenetic analysis on a set of protein sequences.
 
-    该函数接受FASTA格式的蛋白质序列，执行多序列比对，
-    构建系统发育树，并可视化进化关系。
+    This function takes protein sequences in FASTA format, performs multiple sequence alignment,
+    constructs a phylogenetic tree, and visualizes the evolutionary relationships.
 
-    参数
+    Parameters
     ----------
     fasta_sequences : str
-        包含蛋白质序列的FASTA文件路径或FASTA格式的字符串
-    output_dir : str, 可选
-        保存输出文件的目录（默认：当前目录）
-    alignment_method : str, 可选
-        序列比对方法："clustalw"、"muscle"或"pre-aligned"（默认："clustalw"）
-    tree_method : str, 可选
-        树构建方法："iqtree"（默认："iqtree"）
+        Path to a FASTA file containing protein sequences or a string with FASTA-formatted sequences
+    output_dir : str, optional
+        Directory to save output files (default: current directory)
+    alignment_method : str, optional
+        Method for sequence alignment: "clustalw", "muscle", or "pre-aligned" (default: "clustalw")
+    tree_method : str, optional
+        Method for tree construction: "iqtree" (default: "iqtree")
 
-    返回值
+    Returns
     -------
     str
-        总结系统发育分析过程的研究日志
+        Research log summarizing the phylogenetic analysis process
 
     """
     import datetime

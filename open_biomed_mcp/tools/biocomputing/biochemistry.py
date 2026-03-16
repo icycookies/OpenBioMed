@@ -7,29 +7,29 @@ def analyze_circular_dichroism_spectra(
     thermal_cd_data=None,
     output_dir="./",
 ):
-    """分析圆二色谱（CD）光谱数据以确定二级结构和热稳定性。
+    """Analyzes circular dichroism (CD) spectroscopy data to determine secondary structure and thermal stability.
 
-    参数
+    Parameters
     ----------
     sample_name : str
-        生物分子样品名称（例如"Znf706"、"G-quadruplex"）
+        Name of the biomolecule sample (e.g., "Znf706", "G-quadruplex")
     sample_type : str
-        生物分子类型（"protein"或"nucleic_acid"）
-    wavelength_data : list 或 numpy.ndarray
-        CD光谱的波长值，单位为nm
-    cd_signal_data : list 或 numpy.ndarray
-        CD信号强度值（通常以mdeg或Δε表示）
-    temperature_data : list 或 numpy.ndarray, 可选
-        热变性实验的温度值（°C）
-    thermal_cd_data : list 或 numpy.ndarray, 可选
-        在不同温度下特定波长的CD信号值
-    output_dir : str, 可选
-        保存结果文件的目录，默认为当前目录
+        Type of biomolecule ("protein" or "nucleic_acid")
+    wavelength_data : list or numpy.ndarray
+        Wavelength values in nm for CD spectrum
+    cd_signal_data : list or numpy.ndarray
+        CD signal intensity values (typically in mdeg or Δε)
+    temperature_data : list or numpy.ndarray, optional
+        Temperature values (°C) for thermal denaturation experiment
+    thermal_cd_data : list or numpy.ndarray, optional
+        CD signal values at specific wavelength across different temperatures
+    output_dir : str, optional
+        Directory to save result files, defaults to current directory
 
-    返回值
+    Returns
     -------
     str
-        总结CD分析步骤和结果的研究日志
+        Research log summarizing the CD analysis steps and results
 
     """
     import os
@@ -157,23 +157,22 @@ def analyze_circular_dichroism_spectra(
     return log
 
 
-
 def analyze_rna_secondary_structure_features(dot_bracket_structure, sequence=None):
-    """计算RNA二级结构的各种结构特征的数值。
+    """Calculate numeric values for various structural features of an RNA secondary structure.
 
-    参数
+    Parameters
     ----------
     dot_bracket_structure : str
-        点括号表示法的RNA二级结构（例如"(((...)))"）。
-        括号表示碱基对，点表示未配对的碱基。
-    sequence : str, 可选
-        与结构对应的RNA序列。如果提供，
-        将执行序列依赖的能量计算。
+        RNA secondary structure in dot-bracket notation (e.g., "(((...)))").
+        Parentheses represent base pairs, dots represent unpaired bases.
+    sequence : str, optional
+        The RNA sequence corresponding to the structure. If provided,
+        sequence-dependent energy calculations will be performed.
 
-    返回值
+    Returns
     -------
     str
-        总结计算的结构特征和分析步骤的研究日志。
+        A research log summarizing the calculated structural features and analysis steps.
 
     """
     # Initialize research log
@@ -313,34 +312,37 @@ def analyze_protease_kinetics(
     output_prefix="protease_kinetics",
     output_dir="./",
 ):
-    """分析来自荧光肽切割实验的蛋白酶动力学数据。
+    """Analyze protease kinetics data from fluorogenic peptide cleavage assays.
 
-    本函数处理蛋白酶介导的肽切割实验中的时间序列荧光数据，将数据拟合至米氏动力学方程，并确定关键动力学参数（kcat、KM以及催化效率）。
+    This function processes time-course fluorescence data from protease-mediated peptide
+    cleavage assays, fits the data to Michaelis-Menten kinetics, and determines key
+    kinetic parameters (kcat, KM, and catalytic efficiency).
 
-    参数
+    Parameters
     ----------
     time_points : numpy.ndarray
-        获取测量值的时间点数组（单位：秒）
+        Array of time points (in seconds) at which measurements were taken
 
     fluorescence_data : numpy.ndarray
-        荧光测量值的二维数组，其中每一行对应不同的底物浓度，每一列对应一个时间点
+        2D array of fluorescence measurements where each row corresponds to a different
+        substrate concentration and each column corresponds to a time point
 
     substrate_concentrations : numpy.ndarray
-        与fluorescence_data中每一行相对应的底物浓度数组（单位：μM）
+        Array of substrate concentrations (in μM) corresponding to each row in fluorescence_data
 
     enzyme_concentration : float
-        蛋白酶的浓度（单位：μM）
+        Concentration of the protease enzyme (in μM)
 
-    output_prefix : str, 可选
-        输出文件的前缀（默认为"protease_kinetics"）
+    output_prefix : str, optional
+        Prefix for output files (default: "protease_kinetics")
 
-    output_dir : str, 可选
-        保存输出文件的目录（默认为"./"）
+    output_dir : str, optional
+        Directory to save output files (default: "./")
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        A research log summarizing the analysis steps and results
 
     """
     import os
@@ -461,29 +463,29 @@ def analyze_enzyme_kinetics_assay(
     time_points=None,
     output_dir="./",
 ):
-    """执行体外酶动力学实验，并分析调节剂的剂量依赖性效应。
+    """Performs in vitro enzyme kinetics assay and analyzes the dose-dependent effects of modulators.
 
-    参数
+    Parameters
     ----------
     enzyme_name : str
-        正在测试的纯化酶名称
-    substrate_concentrations : list 或 numpy.ndarray
-        用于动力学分析的底物浓度列表（单位：μM）
+        Name of the purified enzyme being tested
+    substrate_concentrations : list or numpy.ndarray
+        List of substrate concentrations in μM for kinetic analysis
     enzyme_concentration : float
-        酶的浓度（单位：nM）
-    modulators : dict, 可选
-        调节剂字典，键为调节剂名称，值为浓度列表（单位：μM）。
-        默认为None（无调节剂）。
-    time_points : list 或 numpy.ndarray, 可选
-        用于时间序列测量的时间点（单位：分钟）。默认为None，将使用
-        [0, 5, 10, 15, 20, 30, 45, 60]。
-    output_dir : str, 可选
-        保存输出文件的目录。默认为当前目录。
+        Concentration of the enzyme in nM
+    modulators : dict, optional
+        Dictionary of modulators where keys are modulator names and values are lists of
+        concentrations in μM. Default is None (no modulators).
+    time_points : list or numpy.ndarray, optional
+        Time points in minutes for time-course measurements. Default is None, which uses
+        [0, 5, 10, 15, 20, 30, 45, 60].
+    output_dir : str, optional
+        Directory to save output files. Default is current directory.
 
-    返回值
+    Returns
     -------
     str
-        总结酶动力学实验步骤及结果的研究日志
+        Research log summarizing the enzyme kinetics assay procedure and results
 
     """
     import csv
@@ -664,6 +666,7 @@ def analyze_enzyme_kinetics_assay(
 
     return log
 
+
 def analyze_itc_binding_thermodynamics(
     itc_data_path=None,
     itc_data=None,
@@ -671,28 +674,29 @@ def analyze_itc_binding_thermodynamics(
     protein_concentration=None,
     ligand_concentration=None,
 ):
-    """分析等温滴定热量法（ITC）数据，用于确定结合亲和力和热力学参数。
+    """Analyzes isothermal titration calorimetry (ITC) data to determine binding affinity and thermodynamic parameters.
 
-    参数
+    Parameters
     ----------
-    itc_data_path : str, 可选
-        包含ITC热图数据的CSV或TSV文件路径。文件应包含注射次数、注射体积以及释放/吸收热量的列。
-        预期列名：'injection'、'volume'、'heat'
-    itc_data : numpy.ndarray, 可选
-        原始ITC热图数据的numpy数组。
-        预期形状：(n_injections, 3)，各列分别为注射次数、注射体积和热量。
-        提供此参数是为了保持向后兼容性，未来将被弃用。
-    temperature : float, 可选
-        进行实验时的温度，单位为开尔文（K）。默认为298.15 K（25°C）。
-    protein_concentration : float, 可选
-        样品池中蛋白质的初始摩尔浓度（M）。准确拟合时必须提供。
-    ligand_concentration : float, 可选
-        注射器中配体的摩尔浓度（M）。准确拟合时必须提供。
+    itc_data_path : str, optional
+        Path to CSV or TSV file containing ITC thermogram data with columns for injection number,
+        injection volume, and heat released/absorbed. Expected columns: 'injection', 'volume', 'heat'
+    itc_data : numpy.ndarray, optional
+        Raw ITC thermogram data as a numpy array.
+        Expected shape: (n_injections, 3) with columns for injection number, injection volume, and heat
+        This parameter is provided for backward compatibility and will be deprecated.
+    temperature : float, optional
+        Temperature in Kelvin at which the experiment was conducted. Default is 298.15 K (25°C).
+    protein_concentration : float, optional
+        Initial concentration of protein in the cell in molar (M). Required for accurate fitting.
+    ligand_concentration : float, optional
+        Concentration of ligand in the syringe in molar (M). Required for accurate fitting.
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志，包括结合亲和力（Kd）、结合焓（ΔH）、结合熵（ΔS）和吉布斯自由能（ΔG）。
+        A research log summarizing the analysis steps and results, including binding affinity (Kd),
+        binding enthalpy (ΔH), binding entropy (ΔS), and Gibbs free energy (ΔG).
 
     """
     import datetime
@@ -784,16 +788,16 @@ def analyze_itc_binding_thermodynamics(
 
     # Define one-site binding model function
     def one_site_model(x, Kd, dH, n):
-        """ITC数据的单位点结合模型。
+        """One-site binding model for ITC data.
 
-        参数
+        Parameters
         ----------
-        x: 摩尔比 [配体]/[蛋白质]
-        Kd: 解离常数（M）
-        dH: 焓变（cal/mol）
-        n: 化学计量比
+        x: Molar ratio [ligand]/[protein]
+        Kd: Dissociation constant (M)
+        dH: Enthalpy change (cal/mol)
+        n: Stoichiometry
 
-        返回值: 每次注射的热量
+        Returns: Heat per injection
 
         """
         # Convert x to fraction bound using the binding equation
@@ -866,19 +870,19 @@ def analyze_itc_binding_thermodynamics(
 
 
 def analyze_protein_conservation(protein_sequences, output_dir="./"):
-    """执行多序列比对和系统发育分析以识别保守的蛋白质区域。
+    """Perform multiple sequence alignment and phylogenetic analysis to identify conserved protein regions.
 
-    参数
+    Parameters
     ----------
     protein_sequences : list of str
-        来自多个生物体的FASTA格式蛋白质序列列表。
-    output_dir : str, 可选
-        保存输出文件的目录（默认为"./"）
+        List of protein sequences in FASTA format from multiple organisms.
+    output_dir : str, optional
+        Directory to save output files (default: "./output")
 
-    返回值
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志，包括已保存输出的文件名。
+        Research log summarizing the analysis steps and results, including filenames of saved outputs.
 
     """
     import os

@@ -1,12 +1,13 @@
 description = [
     # Segmentation functions
     {
-        "description": "将 4D NIfTI 文件拆分为单独的模态文件以供 nnUNet 处理。处理包含 FLAIR、T1w、t1gd 和 T2w 模态的 BRATS 数据集格式。",
+        "description": "Split a 4D NIfTI file into separate modality files for nnUNet processing. "
+        "Handles BRATS dataset format with FLAIR, T1w, t1gd, and T2w modalities.",
         "name": "split_modalities",
         "optional_parameters": [
             {
                 "default": "BRAT",
-                "description": "病例文件的基本名称",
+                "description": "Base name for the case files",
                 "name": "case_name",
                 "type": "str",
             },
@@ -14,25 +15,26 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "要拆分的 4D NIfTI 文件路径",
+                "description": "Path to the 4D NIfTI file to split",
                 "name": "input_file",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "保存拆分模态文件的目录",
+                "description": "Directory to save the split modality files",
                 "name": "output_dir",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "通过处理 4D 和预拆分的模态文件为 nnUNet 准备输入数据。自动检测文件格式并相应地准备数据。",
+        "description": "Prepare input data for nnUNet by handling both 4D and pre-split modality files. "
+        "Automatically detects file format and prepares data accordingly.",
         "name": "prepare_input_for_nnunet",
         "optional_parameters": [
             {
                 "default": "BRAT",
-                "description": "病例文件的基本名称",
+                "description": "Base name for the case files",
                 "name": "case_name",
                 "type": "str",
             },
@@ -40,67 +42,68 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "输入文件或目录的路径",
+                "description": "Path to input file or directory",
                 "name": "input_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "保存准备好的文件的目录",
+                "description": "Directory to save prepared files",
                 "name": "output_dir",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "使用 nnUNet 进行图像分割，并进行适当的环境设置。支持脑肿瘤分割和其他医学图像分割任务。",
+        "description": "Segment images using nnUNet with proper environment setup. "
+        "Supports brain tumor segmentation and other medical image segmentation tasks.",
         "name": "segment_with_nn_unet",
         "optional_parameters": [
             {
                 "default": "3d_fullres",
-                "description": "用于分割的模型类型",
+                "description": "Model type for segmentation",
                 "name": "model_type",
                 "type": "str",
             },
             {
                 "default": [0, 1, 2, 3, 4],
-                "description": "用于集成预测的模型折叠",
+                "description": "Model folds to use for ensemble prediction",
                 "name": "folds",
                 "type": "list",
             },
             {
                 "default": False,
-                "description": "使用测试时增强",
+                "description": "Use test time augmentation",
                 "name": "use_tta",
                 "type": "bool",
             },
             {
                 "default": 1,
-                "description": "预处理的线程数",
+                "description": "Number of threads for preprocessing",
                 "name": "num_threads",
                 "type": "int",
             },
             {
                 "default": True,
-                "description": "使用混合精度以加快推理速度",
+                "description": "Use mixed precision for faster inference",
                 "name": "mixed_precision",
                 "type": "bool",
             },
             {
                 "default": True,
-                "description": "启用详细日志记录",
+                "description": "Enable verbose logging",
                 "name": "verbose",
                 "type": "bool",
             },
             {
                 "default": True,
-                "description": "自动为 nnUNet 准备输入",
+                "description": "Automatically prepare input for nnUNet",
                 "name": "auto_prepare_input",
                 "type": "bool",
             },
             {
                 "default": None,
-                "description": "nnUNet 结果文件夹的路径",
+                "description": "Path to nnUNet results folder",
                 "name": "results_folder",
                 "type": "str",
             },
@@ -108,31 +111,32 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "输入图像文件或目录的路径",
+                "description": "Path to input image file or directory",
                 "name": "image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "保存分割结果的目录",
+                "description": "Directory to save segmentation results",
                 "name": "output_dir",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "任务标识符（例如 'Task001_BrainTumour'）",
+                "description": "Task identifier (e.g., 'Task001_BrainTumour')",
                 "name": "task_id",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "使用 nilearn 创建并保存分割结果的可视化。生成叠加图和多个解剖视图。",
+        "description": "Create and save visualization of segmentation results using nilearn. "
+        "Generates overlay plots and multiple anatomical views.",
         "name": "create_segmentation_visualization",
         "optional_parameters": [
             {
                 "default": "./visualization_output",
-                "description": "保存可视化图像的目录",
+                "description": "Directory to save visualization images",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -140,13 +144,13 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "原始 MRI 文件的路径",
+                "description": "Path to original MRI file",
                 "name": "original_mri",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "分割文件的路径",
+                "description": "Path to segmentation file",
                 "name": "segmentation",
                 "type": "str",
             },
@@ -154,48 +158,50 @@ description = [
     },
     # Image registration functions
     {
-        "description": "使用 SimpleITK 在两个医学图像之间执行刚性图像配准。刚性配准仅处理平移和旋转，保持形状和大小。包括预处理、相似性度量计算和可视化生成。",
+        "description": "Perform rigid image registration between two medical images using SimpleITK. "
+        "Rigid registration handles translation and rotation only, preserving shape and size. "
+        "Includes preprocessing, similarity metrics calculation, and visualization generation.",
         "name": "quick_rigid_registration",
         "optional_parameters": [
             {
                 "default": "mutual_information",
-                "description": "配准的相似性度量：'mutual_information'、'mean_squares'、'correlation' 或 'normalized_correlation'",
+                "description": "Similarity metric for registration: 'mutual_information', 'mean_squares', 'correlation', or 'normalized_correlation'",
                 "name": "metric",
                 "type": "str",
             },
             {
                 "default": "gradient_descent",
-                "description": "优化方法：'gradient_descent'、'lbfgsb'、'powell' 或 'amoeba'",
+                "description": "Optimization method: 'gradient_descent', 'lbfgsb', 'powell', or 'amoeba'",
                 "name": "optimizer",
                 "type": "str",
             },
             {
                 "default": True,
-                "description": "是否预处理图像（去噪和归一化）",
+                "description": "Whether to preprocess images (denoising and normalization)",
                 "name": "preprocess",
                 "type": "bool",
             },
             {
                 "default": True,
-                "description": "是否创建可视化图表",
+                "description": "Whether to create visualization plots",
                 "name": "create_visualizations",
                 "type": "bool",
             },
             {
                 "default": 0.01,
-                "description": "梯度下降优化器的学习率",
+                "description": "Learning rate for gradient descent optimizer",
                 "name": "learning_rate",
                 "type": "float",
             },
             {
                 "default": 100,
-                "description": "优化迭代的最大次数",
+                "description": "Maximum number of optimization iterations",
                 "name": "number_of_iterations",
                 "type": "int",
             },
             {
                 "default": 1e-6,
-                "description": "优化的收敛容差",
+                "description": "Convergence tolerance for optimization",
                 "name": "gradient_convergence_tolerance",
                 "type": "float",
             },
@@ -203,67 +209,69 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "参考（固定）图像文件的路径（支持 .nii、.nii.gz、.nrrd、.mha、.mhd 格式）",
+                "description": "Path to the reference (fixed) image file (supports .nii, .nii.gz, .nrrd, .mha, .mhd formats)",
                 "name": "fixed_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要配准的图像（移动图像）的路径",
+                "description": "Path to the image to be registered (moving image)",
                 "name": "moving_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "保存配准结果和输出的目录路径",
+                "description": "Directory path to save registration results and outputs",
                 "name": "output_dir",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "使用 SimpleITK 在两个医学图像之间执行仿射图像配准。仿射配准处理平移、旋转、缩放和剪切。比刚性配准更灵活，但仍保持平行线。",
+        "description": "Perform affine image registration between two medical images using SimpleITK. "
+        "Affine registration handles translation, rotation, scaling, and shearing. "
+        "More flexible than rigid registration but still preserves parallel lines.",
         "name": "quick_affine_registration",
         "optional_parameters": [
             {
                 "default": "mutual_information",
-                "description": "配准的相似性度量：'mutual_information'、'mean_squares'、'correlation' 或 'normalized_correlation'",
+                "description": "Similarity metric for registration: 'mutual_information', 'mean_squares', 'correlation', or 'normalized_correlation'",
                 "name": "metric",
                 "type": "str",
             },
             {
                 "default": "gradient_descent",
-                "description": "优化方法：'gradient_descent'、'lbfgsb'、'powell' 或 'amoeba'",
+                "description": "Optimization method: 'gradient_descent', 'lbfgsb', 'powell', or 'amoeba'",
                 "name": "optimizer",
                 "type": "str",
             },
             {
                 "default": True,
-                "description": "是否预处理图像（去噪和归一化）",
+                "description": "Whether to preprocess images (denoising and normalization)",
                 "name": "preprocess",
                 "type": "bool",
             },
             {
                 "default": True,
-                "description": "是否创建可视化图表",
+                "description": "Whether to create visualization plots",
                 "name": "create_visualizations",
                 "type": "bool",
             },
             {
                 "default": 0.01,
-                "description": "梯度下降优化器的学习率",
+                "description": "Learning rate for gradient descent optimizer",
                 "name": "learning_rate",
                 "type": "float",
             },
             {
                 "default": 100,
-                "description": "优化迭代的最大次数",
+                "description": "Maximum number of optimization iterations",
                 "name": "number_of_iterations",
                 "type": "int",
             },
             {
                 "default": 1e-6,
-                "description": "优化的收敛容差",
+                "description": "Convergence tolerance for optimization",
                 "name": "gradient_convergence_tolerance",
                 "type": "float",
             },
@@ -271,73 +279,75 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "参考（固定）图像文件的路径（支持 .nii、.nii.gz、.nrrd、.mha、.mhd 格式）",
+                "description": "Path to the reference (fixed) image file (supports .nii, .nii.gz, .nrrd, .mha, .mhd formats)",
                 "name": "fixed_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要配准的图像（移动图像）的路径",
+                "description": "Path to the image to be registered (moving image)",
                 "name": "moving_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "保存配准结果和输出的目录路径",
+                "description": "Directory path to save registration results and outputs",
                 "name": "output_dir",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "使用 SimpleITK 在两个医学图像之间执行可变形（B 样条）图像配准。可变形配准允许局部非线性变换，处理复杂的变形。最灵活但计算密集的配准方法。",
+        "description": "Perform deformable (B-spline) image registration between two medical images using SimpleITK. "
+        "Deformable registration allows for local non-linear transformations, handling complex deformations. "
+        "Most flexible but computationally intensive registration method.",
         "name": "quick_deformable_registration",
         "optional_parameters": [
             {
                 "default": "mutual_information",
-                "description": "配准的相似性度量：'mutual_information'、'mean_squares'、'correlation' 或 'normalized_correlation'",
+                "description": "Similarity metric for registration: 'mutual_information', 'mean_squares', 'correlation', or 'normalized_correlation'",
                 "name": "metric",
                 "type": "str",
             },
             {
                 "default": "gradient_descent",
-                "description": "优化方法：'gradient_descent'、'lbfgsb'、'powell' 或 'amoeba'",
+                "description": "Optimization method: 'gradient_descent', 'lbfgsb', 'powell', or 'amoeba'",
                 "name": "optimizer",
                 "type": "str",
             },
             {
                 "default": True,
-                "description": "是否预处理图像（去噪和归一化）",
+                "description": "Whether to preprocess images (denoising and normalization)",
                 "name": "preprocess",
                 "type": "bool",
             },
             {
                 "default": True,
-                "description": "是否创建可视化图表",
+                "description": "Whether to create visualization plots",
                 "name": "create_visualizations",
                 "type": "bool",
             },
             {
                 "default": 0.01,
-                "description": "梯度下降优化器的学习率",
+                "description": "Learning rate for gradient descent optimizer",
                 "name": "learning_rate",
                 "type": "float",
             },
             {
                 "default": 100,
-                "description": "优化迭代的最大次数",
+                "description": "Maximum number of optimization iterations",
                 "name": "number_of_iterations",
                 "type": "int",
             },
             {
                 "default": 1e-6,
-                "description": "优化的收敛容差",
+                "description": "Convergence tolerance for optimization",
                 "name": "gradient_convergence_tolerance",
                 "type": "float",
             },
             {
                 "default": 4,
-                "description": "可变形配准每个维度的 B 样条控制点数量",
+                "description": "Number of B-spline control points per dimension for deformable registration",
                 "name": "number_of_control_points",
                 "type": "int",
             },
@@ -345,73 +355,75 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "参考（固定）图像文件的路径（支持 .nii、.nii.gz、.nrrd、.mha、.mhd 格式）",
+                "description": "Path to the reference (fixed) image file (supports .nii, .nii.gz, .nrrd, .mha, .mhd formats)",
                 "name": "fixed_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "要配准的图像（移动图像）的路径",
+                "description": "Path to the image to be registered (moving image)",
                 "name": "moving_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "保存配准结果和输出的目录路径",
+                "description": "Directory path to save registration results and outputs",
                 "name": "output_dir",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "对多个图像执行批量配准到单个参考图像。自动处理目录中的所有医学图像文件并将它们配准到固定参考。支持对所有图像进行刚性、仿射或可变形配准。",
+        "description": "Perform batch registration of multiple images to a single reference image. "
+        "Automatically processes all medical image files in a directory and registers them to the fixed reference. "
+        "Supports rigid, affine, or deformable registration for all images.",
         "name": "batch_register_images",
         "optional_parameters": [
             {
                 "default": "rigid",
-                "description": "要执行的配准类型：'rigid'、'affine' 或 'deformable'",
+                "description": "Type of registration to perform: 'rigid', 'affine', or 'deformable'",
                 "name": "transform_type",
                 "type": "str",
             },
             {
                 "default": "mutual_information",
-                "description": "配准的相似性度量：'mutual_information'、'mean_squares'、'correlation' 或 'normalized_correlation'",
+                "description": "Similarity metric for registration: 'mutual_information', 'mean_squares', 'correlation', or 'normalized_correlation'",
                 "name": "metric",
                 "type": "str",
             },
             {
                 "default": "gradient_descent",
-                "description": "优化方法：'gradient_descent'、'lbfgsb'、'powell' 或 'amoeba'",
+                "description": "Optimization method: 'gradient_descent', 'lbfgsb', 'powell', or 'amoeba'",
                 "name": "optimizer",
                 "type": "str",
             },
             {
                 "default": True,
-                "description": "是否预处理图像（去噪和归一化）",
+                "description": "Whether to preprocess images (denoising and normalization)",
                 "name": "preprocess",
                 "type": "bool",
             },
             {
                 "default": True,
-                "description": "是否为每个配准创建可视化图表",
+                "description": "Whether to create visualization plots for each registration",
                 "name": "create_visualizations",
                 "type": "bool",
             },
             {
                 "default": 0.01,
-                "description": "梯度下降优化器的学习率",
+                "description": "Learning rate for gradient descent optimizer",
                 "name": "learning_rate",
                 "type": "float",
             },
             {
                 "default": 100,
-                "description": "优化迭代的最大次数",
+                "description": "Maximum number of optimization iterations",
                 "name": "number_of_iterations",
                 "type": "int",
             },
             {
                 "default": 1e-6,
-                "description": "优化的收敛容差",
+                "description": "Convergence tolerance for optimization",
                 "name": "gradient_convergence_tolerance",
                 "type": "float",
             },
@@ -419,49 +431,51 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "参考（固定）图像文件的路径",
+                "description": "Path to the reference (fixed) image file",
                 "name": "fixed_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "包含要配准的多个图像的目录路径（支持 .nii、.nii.gz、.nrrd、.mha、.mhd 格式）",
+                "description": "Directory path containing multiple images to register (supports .nii, .nii.gz, .nrrd, .mha, .mhd formats)",
                 "name": "moving_images_dir",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "保存所有图像配准结果的目录路径",
+                "description": "Directory path to save registration results for all images",
                 "name": "output_dir",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "计算两个医学图像之间的相似性度量。支持互信息、均方误差、相关性和归一化互相关。",
+        "description": "Calculate similarity metrics between two medical images. "
+        "Supports mutual information, mean squared error, correlation, and normalized cross correlation.",
         "name": "calculate_similarity_metrics",
         "required_parameters": [
             {
                 "default": None,
-                "description": "第一个图像文件的路径",
+                "description": "Path to the first image file",
                 "name": "image1_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "第二个图像文件的路径",
+                "description": "Path to the second image file",
                 "name": "image2_path",
                 "type": "str",
             },
         ],
     },
     {
-        "description": "为配准结果创建可视化图表。生成比较图、差异图像、叠加图和度量图表。",
+        "description": "Create visualization plots for registration results. "
+        "Generates comparison plots, difference images, overlays, and metric charts.",
         "name": "create_registration_visualization",
         "optional_parameters": [
             {
                 "default": "registration",
-                "description": "输出文件的前缀",
+                "description": "Prefix for output files",
                 "name": "prefix",
                 "type": "str",
             },
@@ -469,25 +483,25 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "参考（固定）图像文件的路径",
+                "description": "Path to the reference (fixed) image file",
                 "name": "fixed_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "原始移动图像文件的路径",
+                "description": "Path to the original moving image file",
                 "name": "moving_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "配准后图像文件的路径",
+                "description": "Path to the registered image file",
                 "name": "registered_image_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "保存可视化文件的目录",
+                "description": "Directory to save visualization files",
                 "name": "output_dir",
                 "type": "str",
             },

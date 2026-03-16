@@ -1,20 +1,21 @@
 def analyze_aortic_diameter_and_geometry(image_path, output_dir="./output"):
-    """从心血管成像数据中分析主动脉直径和几何形态。
+    """Analyze aortic diameter and geometry from cardiovascular imaging data.
 
-    该函数处理心血管成像数据(超声或CT/MRI)以测量主动脉根部直径、升主动脉直径,
-    并计算几何参数,如迂曲度和扩张指数。
+    This function processes cardiovascular imaging data (ultrasound or CT/MRI) to
+    measure aortic root diameter, ascending aorta diameter, and calculate
+    geometric parameters such as tortuosity and dilation indices.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        心血管成像数据的路径(DICOM、JPG、PNG)
+        Path to the cardiovascular imaging data (DICOM, JPG, PNG)
     output_dir : str, optional
-        保存输出文件的目录(默认: "./output")
+        Directory to save output files (default: "./output")
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -208,31 +209,31 @@ def analyze_atp_luminescence_assay(
     normalization_method="cell_count",
     normalization_data=None,
 ):
-    """分析基于发光的ATP检测数据以确定细胞内ATP浓度。
+    """Analyze luminescence-based ATP assay data to determine intracellular ATP concentration.
 
-    参数
+    Parameters
     ----------
     data_file : str
-        包含样本发光读数的CSV文件路径。
-        预期格式: 包含'Sample_ID'和'Luminescence_Value'列。
+        Path to CSV file containing luminescence readings from samples.
+        Expected format: columns for 'Sample_ID' and 'Luminescence_Value'.
 
     standard_curve_file : str
-        包含标准曲线数据的CSV文件路径。
-        预期格式: 包含'ATP_Concentration'(单位nM)和'Luminescence_Value'列。
+        Path to CSV file containing standard curve data.
+        Expected format: columns for 'ATP_Concentration' (in nM) and 'Luminescence_Value'.
 
     normalization_method : str, optional
-        用于归一化ATP值的方法,'cell_count'或'protein_content'。
-        默认为'cell_count'。
+        Method used to normalize ATP values, either 'cell_count' or 'protein_content'.
+        Default is 'cell_count'.
 
     normalization_data : str or dict, optional
-        包含归一化数据的CSV文件路径或以样本ID为键的字典。
-        对于'cell_count': 值应为每个样本的细胞计数。
-        对于'protein_content': 值应为蛋白质浓度(μg/mL)。
+        Either path to CSV file with normalization data or dictionary with sample IDs as keys.
+        For 'cell_count': values should be cell counts per sample.
+        For 'protein_content': values should be protein concentration (μg/mL).
 
-    返回
+    Returns
     -------
     str
-        总结ATP含量测量过程和结果的研究日志。
+        Research log summarizing the ATP content measurement process and results.
 
     """
     from datetime import datetime
@@ -349,20 +350,20 @@ def analyze_atp_luminescence_assay(
 
 
 def analyze_thrombus_histology(image_path, output_dir="./output"):
-    """分析H&E染色的血栓样本组织学图像,以识别和量化不同的血栓成分
-    (新鲜血栓、细胞溶解、内皮化、成纤维细胞反应)。
+    """Analyze histological images of thrombus samples stained with H&E to identify and quantify
+    different thrombus components (fresh, cellular lysis, endothelialization, fibroblastic reaction).
 
-    参数
+    Parameters
     ----------
     image_path : str
-        H&E染色的血栓样本组织学图像的路径
+        Path to the histological image of thrombus sample stained with H&E
     output_dir : str, optional
-        保存输出文件的目录(默认: "./output")
+        Directory to save output files (default: "./output")
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -506,23 +507,23 @@ def analyze_thrombus_histology(image_path, output_dir="./output"):
 def analyze_intracellular_calcium_with_rhod2(
     background_image_path, control_image_path, sample_image_path, output_dir="./output"
 ):
-    """使用Rhod-2荧光指示剂从显微镜图像中分析细胞内钙浓度。
+    """Analyzes intracellular calcium concentration using Rhod-2 fluorescent indicator from microscopy images.
 
-    参数
+    Parameters
     ----------
     background_image_path : str
-        背景图像的路径(无细胞,仅培养基)
+        Path to the background image (no cells, just media)
     control_image_path : str
-        对照图像的路径(无钙刺激的细胞)
+        Path to the control image (cells without calcium stimulus)
     sample_image_path : str
-        样本图像的路径(有钙刺激的细胞)
+        Path to the sample image (cells with calcium stimulus)
     output_dir : str, optional
-        保存输出文件的目录,默认为"./output"
+        Directory to save output files, default is "./output"
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -602,23 +603,23 @@ Analysis complete. The sample shows {calcium_concentration:.2f} nM intracellular
 
 
 def quantify_corneal_nerve_fibers(image_path, marker_type, output_dir="./output", threshold_method="otsu"):
-    """量化免疫荧光标记的角膜神经纤维的体积/密度。
+    """Quantify the volume/density of immunofluorescence-labeled corneal nerve fibers.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        免疫荧光显微镜图像文件的路径
+        Path to the immunofluorescence microscopy image file
     marker_type : str
-        神经纤维标记物类型(例如,'βIII-tubulin'、'SP'、'L1CAM')
+        Type of nerve fiber marker (e.g., 'βIII-tubulin', 'SP', 'L1CAM')
     output_dir : str, optional
-        保存输出文件的目录(默认: './output')
+        Directory to save output files (default: './output')
     threshold_method : str, optional
-        阈值分割方法('otsu'、'adaptive'、'manual'),默认为'otsu'
+        Method for thresholding ('otsu', 'adaptive', 'manual'), default is 'otsu'
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import os
@@ -744,23 +745,23 @@ Output Files:
 def segment_and_quantify_cells_in_multiplexed_images(
     image_path, markers_list, nuclear_channel_index=0, output_dir="./output"
 ):
-    """从多通道组织图像中分割细胞并量化蛋白质表达水平。
+    """Segment cells and quantify protein expression levels from multichannel tissue images.
 
-    参数
+    Parameters
     ----------
     image_path : str
-        多通道图像文件的路径(tiff堆栈或类似格式)
+        Path to the multichannel image file (tiff stack or similar format)
     markers_list : list of str
-        与图像中每个通道对应的标记物名称列表
+        List of marker names corresponding to each channel in the image
     nuclear_channel_index : int, optional
-        核标记物通道的索引(默认: 0,通常为DAPI)
+        Index of the nuclear marker channel (default: 0, typically DAPI)
     output_dir : str, optional
-        保存输出文件的目录(默认: "./output")
+        Directory to save output files (default: "./output")
 
-    返回
+    Returns
     -------
     str
-        总结执行步骤和输出文件位置的研究日志
+        Research log summarizing the steps performed and output file locations
 
     """
     import os
@@ -893,25 +894,25 @@ def segment_and_quantify_cells_in_multiplexed_images(
 
 
 def analyze_bone_microct_morphometry(input_file_path, output_dir="./results", threshold_value=None):
-    """从3D显微CT图像中分析骨微结构参数。
+    """Analyze bone microarchitecture parameters from 3D micro-CT images.
 
-    对骨微结构进行定量分析,从显微CT数据中计算骨矿物质密度(BMD)、
-    骨体积(BV)、骨小梁数量(Tb.N)、骨小梁厚度(Tb.Th)和
-    骨小梁间距(Tb.S)。
+    Performs quantitative analysis of bone microstructure to calculate bone mineral density (BMD),
+    bone volume (BV), trabecular number (Tb.N), trabecular thickness (Tb.Th), and
+    trabecular separation (Tb.S) from micro-CT data.
 
-    参数
+    Parameters
     ----------
     input_file_path : str
-        显微CT扫描数据文件的路径(TIFF堆栈或类似的3D格式)
+        Path to the micro-CT scan data file (TIFF stack or similar 3D format)
     output_dir : str, optional
-        保存输出文件的目录,默认为"./results"
+        Directory to save output files, default is "./results"
     threshold_value : float, optional
-        骨分割的阈值。如果为None,将使用Otsu方法
+        Threshold value for bone segmentation. If None, Otsu's method will be used
 
-    返回
+    Returns
     -------
     str
-        总结分析步骤和结果的研究日志
+        Research log summarizing the analysis steps and results
 
     """
     import json

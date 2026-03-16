@@ -1,62 +1,64 @@
 description = [
     {
-        "description": "在notebook环境中执行提供的Python命令并返回输出",
+        "description": "Executes the provided Python command in the notebook environment and returns the output.",
         "name": "run_python_repl",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "要在notebook环境中执行的Python命令",
+                "description": "Python command to execute in the notebook environment",
                 "name": "command",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "从任何模块路径读取函数的源代码",
+        "description": "Read the source code of a function from any module path.",
         "name": "read_function_source_code",
         "optional_parameters": [],
         "required_parameters": [
             {
                 "default": None,
-                "description": "完全限定的函数名（例如'bioagentos.tool.support_tools.write_python_code'）",
+                "description": "Fully qualified function name "
+                "(e.g., "
+                "'bioagentos.tool.support_tools.write_python_code')",
                 "name": "function_name",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "使用实体ID从Synapse下载数据。需要SYNAPSE_AUTH_TOKEN环境变量进行身份验证。重要提示：始终根据要下载的内容指定entity_type参数（file、dataset、folder、project）。检查用户提示（如'files'）或搜索结果以确定正确的类型。多个ID仅适用于entity_type='file'。递归下载仅适用于entity_type='folder'",
+        "description": "Download data from Synapse using entity IDs. Requires SYNAPSE_AUTH_TOKEN environment variable for authentication. CRITICAL: Always specify entity_type parameter based on what you're downloading (file, dataset, folder, project). Check user hints like 'files' or search results to determine correct type. Multiple IDs only work with entity_type='file'. Recursive only works with entity_type='folder'.",
         "name": "download_synapse_data",
         "optional_parameters": [
             {
                 "name": "download_location",
                 "type": "str",
-                "description": "文件下载的目录",
+                "description": "Directory where files will be downloaded",
                 "default": ".",
             },
             {
                 "name": "follow_link",
                 "type": "bool",
-                "description": "是否跟随链接下载链接的实体",
+                "description": "Whether to follow links to download the linked entity",
                 "default": False,
             },
             {
                 "name": "recursive",
                 "type": "bool",
-                "description": "是否递归下载文件夹及其内容。仅对entity_type='folder'有效",
+                "description": "Whether to recursively download folders and their contents. ONLY valid with entity_type='folder'",
                 "default": False,
             },
             {
                 "name": "timeout",
                 "type": "int",
-                "description": "每个下载操作的超时时间，单位为秒",
+                "description": "Timeout in seconds for each download operation",
                 "default": 300,
             },
             {
                 "name": "entity_type",
                 "type": "str",
-                "description": "Synapse实体类型：'file'、'dataset'、'folder'或'project'。必须与实际实体类型匹配！检查用户提示（例如'files'表示entity_type='file'）或搜索结果（'node_type'字段）。默认值'dataset'仅应用于实际的数据集",
+                "description": "Type of Synapse entity: 'file', 'dataset', 'folder', or 'project'. MUST match actual entity type! Check user hints (e.g., 'files' means entity_type='file') or search results ('node_type' field). Default 'dataset' should only be used for actual datasets.",
                 "default": "dataset",
             },
         ],
@@ -64,7 +66,7 @@ description = [
             {
                 "name": "entity_ids",
                 "type": "str|list[str]",
-                "description": "要下载的Synapse实体ID。对于文件：单个ID或ID列表。对于数据集/文件夹/项目：仅单个ID",
+                "description": "Synapse entity ID(s) to download. For files: single ID or list of IDs. For datasets/folders/projects: single ID only",
                 "default": None,
             }
         ],

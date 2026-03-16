@@ -11,14 +11,14 @@ from googlesearch import search
 
 
 def fetch_supplementary_info_from_doi(doi: str, output_dir: str = "supplementary_info"):
-    """根据给定的DOI获取论文的补充信息并返回研究日志。
+    """Fetches supplementary information for a paper given its DOI and returns a research log.
 
-    参数
-        doi: 论文DOI。
-        output_dir: 保存补充文件的目录。
+    Args:
+        doi: The paper DOI.
+        output_dir: Directory to save supplementary files.
 
-    返回
-        dict: 包含研究日志和下载文件路径的字典。
+    Returns:
+        dict: A dictionary containing a research log and the downloaded file paths.
 
     """
     research_log = []
@@ -88,16 +88,16 @@ def fetch_supplementary_info_from_doi(doi: str, output_dir: str = "supplementary
 
 
 def query_arxiv(query: str, max_papers: int = 10) -> str:
-    """根据提供的搜索查询在arXiv上查询论文。
+    """Query arXiv for papers based on the provided search query.
 
-    参数
+    Parameters
     ----------
-    - query (str): 搜索查询字符串。
-    - max_papers (int): 要检索的最大论文数量（默认：10）。
+    - query (str): The search query string.
+    - max_papers (int): The maximum number of papers to retrieve (default: 10).
 
-    返回
+    Returns
     -------
-    - str: 格式化的搜索结果或错误消息。
+    - str: The formatted search results or an error message.
 
     """
     import arxiv
@@ -112,15 +112,15 @@ def query_arxiv(query: str, max_papers: int = 10) -> str:
 
 
 def query_scholar(query: str) -> str:
-    """根据提供的搜索查询在Google Scholar上查询论文。
+    """Query Google Scholar for papers based on the provided search query.
 
-    参数
+    Parameters
     ----------
-    - query (str): 搜索查询字符串。
+    - query (str): The search query string.
 
-    返回
+    Returns
     -------
-    - str: 格式化的第一个搜索结果或错误消息。
+    - str: The first search result formatted or an error message.
 
     """
     from scholarly import ProxyGenerator, scholarly
@@ -142,17 +142,17 @@ def query_scholar(query: str) -> str:
 
 
 def query_pubmed(query: str, max_papers: int = 10, max_retries: int = 3) -> str:
-    """根据提供的搜索查询在PubMed上查询论文。
+    """Query PubMed for papers based on the provided search query.
 
-    参数
+    Parameters
     ----------
-    - query (str): 搜索查询字符串。
-    - max_papers (int): 要检索的最大论文数量（默认：10）。
-    - max_retries (int): 使用修改后的查询进行重试的最大次数（默认：3）。
+    - query (str): The search query string.
+    - max_papers (int): The maximum number of papers to retrieve (default: 10).
+    - max_retries (int): Maximum number of retry attempts with modified queries (default: 3).
 
-    返回
+    Returns
     -------
-    - str: 格式化的搜索结果或错误消息。
+    - str: The formatted search results or an error message.
 
     """
     from pymed import PubMed
@@ -184,16 +184,16 @@ def query_pubmed(query: str, max_papers: int = 10, max_retries: int = 3) -> str:
 
 
 def search_google(query: str, num_results: int = 3, language: str = "en") -> list[dict]:
-    """使用Google搜索进行搜索。
+    """Search using Google search.
 
-    参数
-        query (str): 搜索查询（例如，"协议文本或搜索问题"）
-        num_results (int): 要返回的结果数量（默认：10）
-        language (str): 搜索结果的语言代码（默认：'en'）
-        pause (float): 搜索之间的暂停时间以避免速率限制（默认：2.0秒）
+    Args:
+        query (str): The search query (e.g., "protocol text or seach question")
+        num_results (int): Number of results to return (default: 10)
+        language (str): Language code for search results (default: 'en')
+        pause (float): Pause between searches to avoid rate limiting (default: 2.0 seconds)
 
-    返回
-        List[dict]: 包含搜索结果的字典列表，包含标题和URL
+    Returns:
+        List[dict]: List of dictionaries containing search results with title and URL
 
     """
     try:
@@ -221,22 +221,22 @@ def advanced_web_search_claude(
     max_retries: int = 3,
 ) -> tuple[str, list[dict[str, str]], list]:
     """
-    通过启动专门的代理来发起高级网络搜索，该代理通过多轮网络搜索为给定查询收集相关信息和引用。
-    仔细制作查询，以便搜索代理找到最相关的信息。
+    Initiate an advanced web search by launching a specialized agent to collect relevant information and citations through multiple rounds of web searches for a given query.
+    Craft the query carefully for the search agent to find the most relevant information.
 
-    参数
+    Parameters
     ----------
     query : str
-        您希望Claude查找的搜索短语。
+        The search phrase you want Claude to look up.
     max_searches : int, optional
-        Claude在此请求中可能发出的搜索次数上限。
+        Upper-bound on searches Claude may issue inside this request.
     max_retries : int, optional
-        使用指数退避的最大重试次数。
+        Maximum number of retry attempts with exponential backoff.
 
-    返回
+    Returns
     -------
     full_text : str
-        包含来自Claude的完整文本响应和引用的格式化字符串。
+        A formatted string containing the full text response from Claude and the citations.
     """
     import random
 
@@ -301,13 +301,13 @@ def advanced_web_search_claude(
 
 
 def extract_url_content(url: str) -> str:
-    """使用requests和BeautifulSoup提取网页的文本内容。
+    """Extract the text content of a webpage using requests and BeautifulSoup.
 
-    参数
-        url: 要提取内容的网页URL
+    Args:
+        url: Webpage URL to extract content from
 
-    返回
-        网页的文本内容
+    Returns:
+        Text content of the webpage
 
     """
     response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
@@ -341,13 +341,13 @@ def extract_url_content(url: str) -> str:
 
 
 def extract_pdf_content(url: str) -> str:
-    """根据给定的URL提取PDF文件的文本内容。
+    """Extract the text content of a PDF file given its URL.
 
-    参数
-        url: 要提取文本的PDF文件的URL
+    Args:
+        url: URL of the PDF file to extract text from
 
-    返回
-        从PDF中提取的文本内容
+    Returns:
+        The extracted text content from the PDF
 
     """
     try:

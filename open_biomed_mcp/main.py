@@ -13,43 +13,43 @@ from fastapi.responses import JSONResponse
 from fastapi_mcp import FastApiMCP
 
 
-# 导入MCP工具注册中心
+# Import MCP tool registry
 from registry import setup_mcp_tools, registry
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# 禁用第三方库的 INFO 日志
+# Disable INFO logs from third-party libraries
 logging.getLogger('numexpr').setLevel(logging.WARNING)
 logging.getLogger('fastapi_mcp').setLevel(logging.WARNING)
 logging.getLogger('fastapi_mcp.server').setLevel(logging.WARNING)
 
 # ============================================================================
-# 创建FastAPI应用
+# Create FastAPI application
 # ============================================================================
 app = FastAPI(
     title="Pharmolix Tools with MCP Integration",
-    description="本项目为OpenBioMed集成外部MCP工具服务",
+    description="This project integrates external MCP tool services for OpenBioMed",
     version="0.2.0",
 )
 
 # ============================================================================
-# 注册MCP工具为FastAPI端点
+# Register MCP tools as FastAPI endpoints
 # ============================================================================
 setup_mcp_tools()
 
-# 将所有MCP工具注册到应用
-# 所有工具端点将在 /tools 前缀下
+# Register all MCP tools to the app
+# All tool endpoints will be under the /tools prefix
 registry.register_to_app(app, base_prefix="/tools")
 
-# 添加工具摘要端点
-@app.get("/tools/summary", tags=["工具管理"])
+# Add tools summary endpoint
+@app.get("/tools/summary", tags=["Tool Management"])
 def get_tools_summary():
-    """获取所有已注册MCP工具的摘要信息"""
+    """Get summary information of all registered MCP tools"""
     return registry.get_tools_summary()
 
 # ============================================================================
-# MCP服务化（将现有FastAPI转为MCP SSE端点）
+# MCP serving (convert existing FastAPI to MCP SSE endpoints)
 # ============================================================================
 mcp = FastApiMCP(
     app,
@@ -59,14 +59,14 @@ mcp = FastApiMCP(
 mcp.mount()
 
 # ============================================================================
-# 按模块拆分的 MCP 端点
+# Per-module MCP endpoints
 # ============================================================================
 for config in registry.tool_configs:
     try:
-        # 为每个模块创建一个独立的子 FastAPI 应用，只包含该模块的路由
+        # Create an independent sub FastAPI app for each module, containing only that module's routes
         sub_app = FastAPI(title=config.get("description", ""))
         
-        # 把该模块的工具端点注册到子应用
+        # Register the module's tool endpoints to the sub-app
         sub_router = create_mcp_fastapi_router(
             mcp_server=config["mcp_server"],
             prefix=config["prefix"],
@@ -74,12 +74,12 @@ for config in registry.tool_configs:
         )
         sub_app.include_router(sub_router)
         
-        # 基于子应用创建 FastApiMCP 并挂载到主应用
+        # Create FastApiMCP from the sub-app and mount to the main app
         module_mcp = FastApiMCP(
             sub_app,
             name=config.get("description", config["prefix"]),
         )
-        # 挂载路径示例: /chembl/mcp, /biocomputing_literature/mcp
+        # Mount path example: /chembl/mcp, /biocomputing_literature/mcp
         module_mcp.mount(app, mount_path=f"{config['prefix']}/mcp")
         
         logger.info(f"Mounted MCP endpoint at {config['prefix']}/mcp")
@@ -88,7 +88,7 @@ for config in registry.tool_configs:
 
 
 # ============================================================================
-# 健康检查端点
+# Health check endpoint
 # ============================================================================
 @app.get("/healthz")
 def ping():
@@ -99,7 +99,7 @@ def ping():
     }
 
 # ============================================================================
-# 异常处理
+# Exception handling
 # ============================================================================
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -111,7 +111,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 # ============================================================================
-# 启动信息
+# Startup information
 # ============================================================================
 @app.on_event("startup")
 async def startup_event():
@@ -120,7 +120,7 @@ async def startup_event():
     logger.info(f"Registered {len(registry.mcp_servers)} MCP tool servers")
     logger.info("=" * 60)
     
-    # 打印所有注册的工具
+    # Print all registered tools
     summary = registry.get_tools_summary()
     for server in summary["servers"]:
         logger.info(f"  - {server['name']}: {server['tool_count']} tools at {server['prefix']}")

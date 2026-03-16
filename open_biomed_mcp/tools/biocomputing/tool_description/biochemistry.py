@@ -1,23 +1,24 @@
 description = [
     {
-        "description": "分析圆二色谱 (CD) 光谱数据以确定二级结构和热稳定性。",
+        "description": "Analyzes circular dichroism (CD) spectroscopy data to "
+        "determine secondary structure and thermal stability.",
         "name": "analyze_circular_dichroism_spectra",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "热变性实验的温度值（°C）",
+                "description": "Temperature values (°C) for thermal denaturation experiment",
                 "name": "temperature_data",
                 "type": "list or numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "不同温度下特定波长的 CD 信号值",
+                "description": "CD signal values at specific wavelength across different temperatures",
                 "name": "thermal_cd_data",
                 "type": "list or numpy.ndarray",
             },
             {
                 "default": "./",
-                "description": "保存结果文件的目录",
+                "description": "Directory to save result files",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -25,37 +26,40 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": '生物分子样品的名称（例如 "Znf706"、"G-quadruplex"）',
+                "description": 'Name of the biomolecule sample (e.g., "Znf706", "G-quadruplex")',
                 "name": "sample_name",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": '生物分子的类型（"protein" 或 "nucleic_acid"）',
+                "description": 'Type of biomolecule ("protein" or "nucleic_acid")',
                 "name": "sample_type",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "CD 光谱的波长值（单位：nm）",
+                "description": "Wavelength values in nm for CD spectrum",
                 "name": "wavelength_data",
                 "type": "list or numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "CD 信号强度值（通常以 mdeg 或 Δε 为单位）",
+                "description": "CD signal intensity values (typically in mdeg or Δε)",
                 "name": "cd_signal_data",
                 "type": "list or numpy.ndarray",
             },
         ],
     },
     {
-        "description": "计算 RNA 二级结构各种结构特征的数值。",
+        "description": "Calculate numeric values for various structural features of an RNA secondary structure.",
         "name": "analyze_rna_secondary_structure_features",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "与结构对应的 RNA 序列。如果提供，将执行序列依赖的能量计算。",
+                "description": "The RNA sequence corresponding to "
+                "the structure. If provided, "
+                "sequence-dependent energy "
+                "calculations will be performed.",
                 "name": "sequence",
                 "type": "str",
             }
@@ -63,25 +67,31 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "点括号表示法的 RNA 二级结构（例如 \"(((...)))\")。括号表示碱基配对，点表示未配对的碱基。",
+                "description": "RNA secondary structure in "
+                "dot-bracket notation (e.g., "
+                '"(((...)))"). Parentheses represent '
+                "base pairs, dots represent unpaired "
+                "bases.",
                 "name": "dot_bracket_structure",
                 "type": "str",
             }
         ],
     },
     {
-        "description": "分析来自荧光肽切割测定的蛋白酶动力学数据，将数据拟合到 Michaelis-Menten 动力学，并确定关键动力学参数。",
+        "description": "Analyze protease kinetics data from fluorogenic peptide "
+        "cleavage assays, fit the data to Michaelis-Menten kinetics, "
+        "and determine key kinetic parameters.",
         "name": "analyze_protease_kinetics",
         "optional_parameters": [
             {
                 "default": "protease_kinetics",
-                "description": "输出文件的前缀",
+                "description": "Prefix for output files",
                 "name": "output_prefix",
                 "type": "str",
             },
             {
                 "default": "./",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -89,49 +99,57 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "进行测量的时间点数组（单位：秒）",
+                "description": "Array of time points (in seconds) at which measurements were taken",
                 "name": "time_points",
                 "type": "numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "荧光测量的二维数组，其中每行对应不同的底物浓度，每列对应一个时间点",
+                "description": "2D array of fluorescence "
+                "measurements where each row "
+                "corresponds to a different "
+                "substrate concentration and each "
+                "column corresponds to a time point",
                 "name": "fluorescence_data",
                 "type": "numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "与 fluorescence_data 中每行对应的底物浓度数组（单位：μM）",
+                "description": "Array of substrate concentrations "
+                "(in μM) corresponding to each row "
+                "in fluorescence_data",
                 "name": "substrate_concentrations",
                 "type": "numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "蛋白酶的浓度（单位：μM）",
+                "description": "Concentration of the protease enzyme (in μM)",
                 "name": "enzyme_concentration",
                 "type": "float",
             },
         ],
     },
     {
-        "description": "执行体外酶动力学测定并分析调节剂的剂量依赖性效应。",
+        "description": "Performs in vitro enzyme kinetics assay and analyzes the dose-dependent effects of modulators.",
         "name": "analyze_enzyme_kinetics_assay",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "调节剂字典，其中键为调节剂名称，值为浓度列表（单位：μM）",
+                "description": "Dictionary of modulators where keys "
+                "are modulator names and values are "
+                "lists of concentrations in μM",
                 "name": "modulators",
                 "type": "dict",
             },
             {
                 "default": None,
-                "description": "时间进程测量的时间点（单位：分钟）",
+                "description": "Time points in minutes for time-course measurements",
                 "name": "time_points",
                 "type": "list or numpy.ndarray",
             },
             {
                 "default": "./",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             },
@@ -139,55 +157,62 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "正在测试的纯化酶的名称",
+                "description": "Name of the purified enzyme being tested",
                 "name": "enzyme_name",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "用于动力学分析的底物浓度列表（单位：μM）",
+                "description": "List of substrate concentrations in μM for kinetic analysis",
                 "name": "substrate_concentrations",
                 "type": "list or numpy.ndarray",
             },
             {
                 "default": None,
-                "description": "酶的浓度（单位：nM）",
+                "description": "Concentration of the enzyme in nM",
                 "name": "enzyme_concentration",
                 "type": "float",
             },
         ],
     },
     {
-        "description": "分析等温滴定量热法 (ITC) 数据以确定结合亲和力和热力学参数。",
+        "description": "Analyzes isothermal titration calorimetry (ITC) data to "
+        "determine binding affinity and thermodynamic parameters.",
         "name": "analyze_itc_binding_thermodynamics",
         "optional_parameters": [
             {
                 "default": None,
-                "description": "包含 ITC 热谱图数据的 CSV 或 TSV 文件路径，包含注射次数、注射体积和释放/吸收热量的列。",
+                "description": "Path to CSV or TSV file containing "
+                "ITC thermogram data with columns "
+                "for injection number, injection "
+                "volume, and heat released/absorbed.",
                 "name": "itc_data_path",
                 "type": "str",
             },
             {
                 "default": None,
-                "description": "原始 ITC 热谱图数据，作为形状为 (n_injections, 3) 的 numpy 数组，包含注射次数、注射体积和热量。",
+                "description": "Raw ITC thermogram data as a numpy "
+                "array with shape (n_injections, 3) "
+                "containing injection number, "
+                "injection volume, and heat.",
                 "name": "itc_data",
                 "type": "numpy.ndarray",
             },
             {
                 "default": 298.15,
-                "description": "进行实验的温度（单位：开尔文）。",
+                "description": "Temperature in Kelvin at which the experiment was conducted.",
                 "name": "temperature",
                 "type": "float",
             },
             {
                 "default": None,
-                "description": "样品池中蛋白质的初始浓度（单位：摩尔 M）。",
+                "description": "Initial concentration of protein in the cell in molar (M).",
                 "name": "protein_concentration",
                 "type": "float",
             },
             {
                 "default": None,
-                "description": "注射器中配体的浓度（单位：摩尔 M）。",
+                "description": "Concentration of ligand in the syringe in molar (M).",
                 "name": "ligand_concentration",
                 "type": "float",
             },
@@ -195,12 +220,13 @@ description = [
         "required_parameters": [],
     },
     {
-        "description": "执行多序列比对和系统发育分析以识别保守的蛋白质区域。",
+        "description": "Perform multiple sequence alignment and phylogenetic "
+        "analysis to identify conserved protein regions.",
         "name": "analyze_protein_conservation",
         "optional_parameters": [
             {
                 "default": "./",
-                "description": "保存输出文件的目录",
+                "description": "Directory to save output files",
                 "name": "output_dir",
                 "type": "str",
             }
@@ -208,7 +234,7 @@ description = [
         "required_parameters": [
             {
                 "default": None,
-                "description": "来自多个生物体的 FASTA 格式蛋白质序列列表。",
+                "description": "List of protein sequences in FASTA format from multiple organisms.",
                 "name": "protein_sequences",
                 "type": "list of str",
             }

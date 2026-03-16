@@ -1,14 +1,5 @@
-"""
-生物成像 
-用途: 用于医学图像分割和配准的综合工具 主要功能:
-
-SegmentationTool类: 使用nnUNet进行医学图像分割，处理BRATS数据集，模态分离和分割可视化
-ImageRegistrationTool类: 使用SimpleITK进行医学图像配准，支持刚性、仿射和可变形配准
-便捷函数: 提供分割、配准、预处理和相似性度量的快速接口
-"""
 import logging
 import os
-import sys
 import zipfile
 
 import matplotlib
@@ -20,18 +11,15 @@ import numpy as np
 import SimpleITK as sitk
 import torch
 import torch.serialization
+from nnunet.inference.predict import predict_from_folder
 
-# 禁用 nnunet 的输出
-import warnings
-warnings.filterwarnings('ignore')
-# 临时重定向 stdout 来抑制 nnunet 的 print 输出
-from io import StringIO
-_original_stdout = sys.stdout
-sys.stdout = StringIO()
-try:
-    from nnunet.inference.predict import predict_from_folder
-finally:
-    sys.stdout = _original_stdout
+# Apply safe globals for torch serialization
+torch.serialization.add_safe_globals([tuple, list, dict, set, int, float, str, bytes, bytearray])
+torch.serialization.add_safe_globals([complex, slice, range])
+torch.serialization.add_safe_globals([np.core.multiarray.scalar])
+
+# Configure logging
+logger = logging.getLogger(__name__)
 
 
 # ============================================================================
@@ -41,24 +29,24 @@ finally:
 
 class SegmentationTool:
     """
-    使用nnUNet进行医学图像分割的综合工具。
-    处理BRATS数据集处理、模态分割和分割可视化。
+    A comprehensive tool for medical image segmentation using nnUNet.
+    Handles BRATS dataset processing, modality splitting, and segmentation visualization.
     """
 
     def __init__(self):
-        """初始化SegmentationTool。"""
+        """Initialize the SegmentationTool."""
         self.supported_formats = [".nii", ".nii.gz"]
         logger.info("SegmentationTool initialized")
 
     def split_modalities(self, input_file, output_dir, case_name="BRAT"):
         """
-        将4D NIfTI文件分割为nnUNet的单独模态文件
-        参数:
-            input_file: 4D NIfTI文件的路径
-            output_dir: 保存分割文件的目录
-            case_name: 病例的基本名称（默认：BRAT）
-        返回值:
-            output_dir: 包含分割模态文件的目录路径
+        Split a 4D NIfTI file into separate modality files for nnUNet
+        Args:
+            input_file: Path to the 4D NIfTI file
+            output_dir: Directory to save the split files
+            case_name: Base name for the case (default: BRAT)
+        Returns:
+            output_dir: Path to directory containing split modality files
         """
         os.makedirs(output_dir, exist_ok=True)
 
@@ -98,13 +86,13 @@ class SegmentationTool:
 
     def prepare_input_for_nnunet(self, input_path, output_dir, case_name="BRAT"):
         """
-        通过处理4D和预分割模态文件为nnUNet准备输入数据
-        参数:
-            input_path: 输入文件或目录的路径
-            output_dir: 保存准备好的文件的目录
-            case_name: 病例的基本名称（默认：BRAT）
-        返回值:
-            prepared_dir: 包含nnUNet就绪文件的目录路径
+        Prepare input data for nnUNet by handling both 4D and pre-split modality files
+        Args:
+            input_path: Path to input file or directory
+            output_dir: Directory to save prepared files
+            case_name: Base name for the case (default: BRAT)
+        Returns:
+            prepared_dir: Path to directory with nnUNet-ready files
         """
         os.makedirs(output_dir, exist_ok=True)
 
@@ -166,11 +154,11 @@ class SegmentationTool:
 
     def setup_nnunet_environment(self, results_folder=None, raw_data_base=None, preprocessed=None):
         """
-        根据官方文档设置nnU-Net环境变量
-        参数:
-            results_folder: nnUNet结果文件夹的路径（默认：~/nnUNet_results）
-            raw_data_base: 原始数据基础路径（默认：~/nnUNet_raw_data_base）
-            preprocessed: 预处理数据路径（默认：~/nnUNet_preprocessed）
+        Setup nnU-Net environment variables according to official documentation
+        Args:
+            results_folder: Path to nnUNet results folder (default: ~/nnUNet_results)
+            raw_data_base: Path to raw data base (default: ~/nnUNet_raw_data_base)
+            preprocessed: Path to preprocessed data (default: ~/nnUNet_preprocessed)
         """
         # Set nnUNet environment variables as per official documentation
         if results_folder:
@@ -203,7 +191,7 @@ class SegmentationTool:
 
     def _download_model_with_browser_headers(self, url, output_path):
         """
-        使用类浏览器头下载模型以绕过Zenodo的反机器人保护
+        Download model with browser-like headers to bypass Zenodo's anti-bot protection
         """
         headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
@@ -236,7 +224,7 @@ class SegmentationTool:
 
     def _download_and_extract_model(self, task_id, model_type="3d_fullres"):
         """
-        使用类浏览器头下载并提取nnUNet模型 - 直接提取到nnUNet目录
+        Download and extract nnUNet model with browser-like headers - extracts directly to nnUNet directory
         """
         results_folder = os.environ.get("nnUNet_RESULTS_FOLDER", "~/nnUNet_results")
         results_folder = os.path.expanduser(results_folder)
@@ -303,20 +291,20 @@ class SegmentationTool:
         auto_download=True,
     ):
         """
-        使用nnUNet进行图像分割，具有适当的环境设置和自动模型下载
-        参数:
-            image_path: 输入图像文件或目录的路径
-            output_dir: 保存分割结果的目录
-            task_id: 任务标识符（例如'Task001_BrainTumour'）
-            model_type: 模型类型（默认：'3d_fullres'）
-            folds: 要使用的模型折叠（默认：[0, 1, 2, 3, 4]）
-            use_tta: 使用测试时增强（默认：False）
-            num_threads: 预处理的线程数（默认：1）
-            mixed_precision: 使用混合精度（默认：True）
-            verbose: 详细日志记录（默认：True）
-            auto_prepare_input: 自动为nnUNet准备输入（默认：True）
-            results_folder: nnUNet结果文件夹的路径（默认：None，将使用环境变量或默认值）
-            auto_download: 自动下载缺失的模型（默认：True）
+        Segment images using nnUNet with proper environment setup and automatic model downloading
+        Args:
+            image_path: Path to input image file or directory
+            output_dir: Directory to save segmentation results
+            task_id: Task identifier (e.g., 'Task001_BrainTumour')
+            model_type: Model type (default: '3d_fullres')
+            folds: Model folds to use (default: [0, 1, 2, 3, 4])
+            use_tta: Use test time augmentation (default: False)
+            num_threads: Number of threads for preprocessing (default: 1)
+            mixed_precision: Use mixed precision (default: True)
+            verbose: Verbose logging (default: True)
+            auto_prepare_input: Automatically prepare input for nnUNet (default: True)
+            results_folder: Path to nnUNet results folder (default: None, will use environment variable or default)
+            auto_download: Automatically download missing models (default: True)
         """
         if folds is None:
             folds = [0, 1, 2, 3, 4]
@@ -478,13 +466,13 @@ class SegmentationTool:
 
     def create_segmentation_visualization(self, original_mri, segmentation, output_dir="./visualization_output"):
         """
-        使用nilearn创建并保存分割结果的可视化
-        参数:
-            original_mri: 原始MRI文件的路径
-            segmentation: 分割文件的路径
-            output_dir: 保存可视化图像的目录
-        返回值:
-            list: 已保存图像文件路径的列表
+        Create and save visualization of segmentation results using nilearn
+        Args:
+            original_mri: Path to original MRI file
+            segmentation: Path to segmentation file
+            output_dir: Directory to save visualization images
+        Returns:
+            list: List of saved image file paths
         """
         try:
             # Import nilearn here to avoid dependency issues
@@ -590,24 +578,24 @@ class SegmentationTool:
 
 class ImageRegistrationTool:
     """
-    使用SimpleITK进行医学图像配准的综合工具。
-    支持刚性、仿射和可变形配准，具有预处理和可视化功能。
+    A comprehensive tool for medical image registration using SimpleITK.
+    Supports rigid, affine, and deformable registration with preprocessing and visualization.
     """
 
     def __init__(self):
-        """初始化ImageRegistrationTool。"""
+        """Initialize the ImageRegistrationTool."""
         self.supported_formats = [".nii", ".nii.gz", ".nrrd", ".mha", ".mhd"]
         logger.info("ImageRegistrationTool initialized")
 
     def load_image(self, image_path: str) -> sitk.Image:
         """
-        使用SimpleITK加载医学图像。
+        Load a medical image using SimpleITK.
 
-        参数:
-            image_path: 图像文件的路径
+        Args:
+            image_path: Path to the image file
 
-        返回值:
-            SimpleITK Image对象
+        Returns:
+            SimpleITK Image object
         """
         if not os.path.exists(image_path):
             raise FileNotFoundError(f"Image file not found: {image_path}")
@@ -623,11 +611,11 @@ class ImageRegistrationTool:
 
     def save_image(self, image: sitk.Image, output_path: str) -> None:
         """
-        将SimpleITK图像保存到文件。
+        Save a SimpleITK image to file.
 
-        参数:
-            image: SimpleITK Image对象
-            output_path: 保存图像的路径（必须包含文件名和扩展名）
+        Args:
+            image: SimpleITK Image object
+            output_path: Path to save the image (must include filename and extension)
         """
         # Validate output path
         if os.path.isdir(output_path):
@@ -651,15 +639,15 @@ class ImageRegistrationTool:
 
     def preprocess_image(self, image: sitk.Image, denoise: bool = True, normalize: bool = True) -> sitk.Image:
         """
-        使用去噪和归一化预处理图像。
+        Preprocess an image with denoising and normalization.
 
-        参数:
-            image: 输入SimpleITK图像
-            denoise: 是否应用去噪
-            normalize: 是否应用归一化
+        Args:
+            image: Input SimpleITK image
+            denoise: Whether to apply denoising
+            normalize: Whether to apply normalization
 
-        返回值:
-            预处理后的SimpleITK图像
+        Returns:
+            Preprocessed SimpleITK image
         """
         logger.info("Preprocessing image...")
         processed_image = sitk.Image(image)
@@ -688,15 +676,15 @@ class ImageRegistrationTool:
         self, fixed_image: sitk.Image, moving_image: sitk.Image, initial_transform: sitk.Transform | None = None
     ) -> sitk.Transform:
         """
-        为图像配准创建刚性变换。
+        Create a rigid transform for image registration.
 
-        参数:
-            fixed_image: 参考（固定）图像
-            moving_image: 要配准的图像
-            initial_transform: 可选的初始变换
+        Args:
+            fixed_image: Reference (fixed) image
+            moving_image: Image to be registered
+            initial_transform: Optional initial transform
 
-        返回值:
-            刚性变换对象
+        Returns:
+            Rigid transform object
         """
         logger.info("Creating rigid transform...")
 
@@ -712,15 +700,15 @@ class ImageRegistrationTool:
         self, fixed_image: sitk.Image, moving_image: sitk.Image, initial_transform: sitk.Transform | None = None
     ) -> sitk.Transform:
         """
-        为图像配准创建仿射变换。
+        Create an affine transform for image registration.
 
-        参数:
-            fixed_image: 参考（固定）图像
-            moving_image: 要配准的图像
-            initial_transform: 可选的初始变换
+        Args:
+            fixed_image: Reference (fixed) image
+            moving_image: Image to be registered
+            initial_transform: Optional initial transform
 
-        返回值:
-            仿射变换对象
+        Returns:
+            Affine transform object
         """
         logger.info("Creating affine transform...")
 
@@ -736,15 +724,15 @@ class ImageRegistrationTool:
         self, fixed_image: sitk.Image, moving_image: sitk.Image, number_of_control_points: int = 4
     ) -> sitk.Transform:
         """
-        为图像配准创建可变形（B样条）变换。
+        Create a deformable (B-spline) transform for image registration.
 
-        参数:
-            fixed_image: 参考（固定）图像
-            moving_image: 要配准的图像
-            number_of_control_points: 每个维度的B样条控制点数量
+        Args:
+            fixed_image: Reference (fixed) image
+            moving_image: Image to be registered
+            number_of_control_points: Number of B-spline control points per dimension
 
-        返回值:
-            可变形变换对象
+        Returns:
+            Deformable transform object
         """
         logger.info("Creating deformable transform...")
 
@@ -763,18 +751,18 @@ class ImageRegistrationTool:
         gradient_convergence_tolerance: float = 1e-6,
     ) -> sitk.ImageRegistrationMethod:
         """
-        使用指定参数设置配准方法。
+        Setup the registration method with specified parameters.
 
-        参数:
-            transform: 变换对象
-            metric: 相似性度量名称
-            optimizer: 优化器名称
-            learning_rate: 梯度下降的学习率
-            number_of_iterations: 最大迭代次数
-            gradient_convergence_tolerance: 收敛容差
+        Args:
+            transform: Transform object
+            metric: Similarity metric name
+            optimizer: Optimizer name
+            learning_rate: Learning rate for gradient descent
+            number_of_iterations: Maximum number of iterations
+            gradient_convergence_tolerance: Convergence tolerance
 
-        返回值:
-            配置好的配准方法
+        Returns:
+            Configured registration method
         """
         logger.info(f"Setting up registration method: {metric} metric, {optimizer} optimizer")
 
@@ -834,16 +822,16 @@ class ImageRegistrationTool:
         registration_method: sitk.ImageRegistrationMethod,
     ) -> tuple[sitk.Transform, sitk.Image]:
         """
-        执行图像配准。
+        Perform image registration.
 
-        参数:
-            fixed_image: 参考（固定）图像
-            moving_image: 要配准的图像
-            transform: 变换对象
-            registration_method: 配置好的配准方法
+        Args:
+            fixed_image: Reference (fixed) image
+            moving_image: Image to be registered
+            transform: Transform object
+            registration_method: Configured registration method
 
-        返回值:
-            (final_transform, registered_image)的元组
+        Returns:
+            Tuple of (final_transform, registered_image)
         """
         logger.info("Starting image registration...")
 
@@ -878,14 +866,14 @@ class ImageRegistrationTool:
 
     def calculate_similarity_metrics(self, image1: sitk.Image, image2: sitk.Image) -> dict[str, float]:
         """
-        计算两个图像之间的相似性度量。
+        Calculate similarity metrics between two images.
 
-        参数:
-            image1: 第一个图像
-            image2: 第二个图像
+        Args:
+            image1: First image
+            image2: Second image
 
-        返回值:
-            相似性度量的字典
+        Returns:
+            Dictionary of similarity metrics
         """
         logger.info("Calculating similarity metrics...")
         metrics = {}
@@ -975,13 +963,13 @@ class ImageRegistrationTool:
 
 # Segmentation convenience functions
 def split_modalities(input_file, output_dir, case_name="BRAT"):
-    """分割模态的便捷函数"""
+    """Convenience function for splitting modalities"""
     tool = SegmentationTool()
     return tool.split_modalities(input_file, output_dir, case_name)
 
 
 def prepare_input_for_nnunet(input_path, output_dir, case_name="BRAT"):
-    """准备nnUNet输入的便捷函数"""
+    """Convenience function for preparing nnUNet input"""
     tool = SegmentationTool()
     return tool.prepare_input_for_nnunet(input_path, output_dir, case_name)
 
@@ -999,7 +987,7 @@ def segment_with_nn_unet(
     auto_prepare_input=True,
     results_folder=None,
 ):
-    """nnUNet分割的便捷函数"""
+    """Convenience function for nnUNet segmentation"""
     tool = SegmentationTool()
     return tool.segment_with_nn_unet(
         image_path,
@@ -1017,7 +1005,7 @@ def segment_with_nn_unet(
 
 
 def create_segmentation_visualization(original_mri, segmentation, output_dir="./visualization_output"):
-    """分割可视化的便捷函数"""
+    """Convenience function for segmentation visualization"""
     tool = SegmentationTool()
     return tool.create_segmentation_visualization(original_mri, segmentation, output_dir)
 
@@ -1025,16 +1013,16 @@ def create_segmentation_visualization(original_mri, segmentation, output_dir="./
 # Registration convenience functions
 def preprocess_image(image_path: str, output_path: str, denoise: bool = True, normalize: bool = True) -> str:
     """
-    用于Biomni集成的独立图像预处理函数。
+    Standalone image preprocessing function for Biomni integration.
 
-    参数:
-        image_path: 输入图像的路径
-        output_path: 保存预处理图像的路径
-        denoise: 是否应用去噪（默认：True）
-        normalize: 是否应用归一化（默认：True）
+    Args:
+        image_path: Path to input image
+        output_path: Path to save preprocessed image
+        denoise: Whether to apply denoising (default: True)
+        normalize: Whether to apply normalization (default: True)
 
-    返回值:
-        已保存预处理图像的路径
+    Returns:
+        Path to the saved preprocessed image
     """
     tool = ImageRegistrationTool()
     image = tool.load_image(image_path)
@@ -1056,22 +1044,22 @@ def quick_rigid_registration(
     gradient_convergence_tolerance: float = 1e-6,
 ) -> dict:
     """
-    用于Biomni集成的快速刚性配准函数。
+    Quick rigid registration function for Biomni integration.
 
-    参数:
-        fixed_image_path: 参考图像的路径
-        moving_image_path: 要配准的图像路径
-        output_dir: 保存结果的目录
-        metric: 相似性度量
-        optimizer: 优化方法
-        preprocess: 是否预处理图像
-        create_visualizations: 是否创建可视化
-        learning_rate: 优化器的学习率
-        number_of_iterations: 最大迭代次数
-        gradient_convergence_tolerance: 收敛容差
+    Args:
+        fixed_image_path: Path to reference image
+        moving_image_path: Path to image to register
+        output_dir: Directory to save results
+        metric: Similarity metric
+        optimizer: Optimization method
+        preprocess: Whether to preprocess images
+        create_visualizations: Whether to create visualizations
+        learning_rate: Learning rate for optimizer
+        number_of_iterations: Maximum iterations
+        gradient_convergence_tolerance: Convergence tolerance
 
-    返回值:
-        包含配准结果的字典
+    Returns:
+        Dictionary with registration results
     """
     tool = ImageRegistrationTool()
 
@@ -1132,22 +1120,22 @@ def quick_affine_registration(
     gradient_convergence_tolerance: float = 1e-6,
 ) -> dict:
     """
-    用于Biomni集成的快速仿射配准函数。
+    Quick affine registration function for Biomni integration.
 
-    参数:
-        fixed_image_path: 参考图像的路径
-        moving_image_path: 要配准的图像路径
-        output_dir: 保存结果的目录
-        metric: 相似性度量
-        optimizer: 优化方法
-        preprocess: 是否预处理图像
-        create_visualizations: 是否创建可视化
-        learning_rate: 优化器的学习率
-        number_of_iterations: 最大迭代次数
-        gradient_convergence_tolerance: 收敛容差
+    Args:
+        fixed_image_path: Path to reference image
+        moving_image_path: Path to image to register
+        output_dir: Directory to save results
+        metric: Similarity metric
+        optimizer: Optimization method
+        preprocess: Whether to preprocess images
+        create_visualizations: Whether to create visualizations
+        learning_rate: Learning rate for optimizer
+        number_of_iterations: Maximum iterations
+        gradient_convergence_tolerance: Convergence tolerance
 
-    返回值:
-        包含配准结果的字典
+    Returns:
+        Dictionary with registration results
     """
     tool = ImageRegistrationTool()
 
@@ -1209,23 +1197,23 @@ def quick_deformable_registration(
     number_of_control_points: int = 4,
 ) -> dict:
     """
-    用于Biomni集成的快速可变形配准函数。
+    Quick deformable registration function for Biomni integration.
 
-    参数:
-        fixed_image_path: 参考图像的路径
-        moving_image_path: 要配准的图像路径
-        output_dir: 保存结果的目录
-        metric: 相似性度量
-        optimizer: 优化方法
-        preprocess: 是否预处理图像
-        create_visualizations: 是否创建可视化
-        learning_rate: 优化器的学习率
-        number_of_iterations: 最大迭代次数
-        gradient_convergence_tolerance: 收敛容差
-        number_of_control_points: B样条控制点数量
+    Args:
+        fixed_image_path: Path to reference image
+        moving_image_path: Path to image to register
+        output_dir: Directory to save results
+        metric: Similarity metric
+        optimizer: Optimization method
+        preprocess: Whether to preprocess images
+        create_visualizations: Whether to create visualizations
+        learning_rate: Learning rate for optimizer
+        number_of_iterations: Maximum iterations
+        gradient_convergence_tolerance: Convergence tolerance
+        number_of_control_points: Number of B-spline control points
 
-    返回值:
-        包含配准结果的字典
+    Returns:
+        Dictionary with registration results
     """
     tool = ImageRegistrationTool()
 
@@ -1287,23 +1275,23 @@ def batch_register_images(
     gradient_convergence_tolerance: float = 1e-6,
 ) -> dict:
     """
-    将多个图像批量配准到单个参考图像。
+    Batch registration of multiple images to a single reference.
 
-    参数:
-        fixed_image_path: 参考图像的路径
-        moving_images_dir: 包含要配准图像的目录
-        output_dir: 保存结果的目录
-        transform_type: 配准类型（'rigid'、'affine'、'deformable'）
-        metric: 相似性度量
-        optimizer: 优化方法
-        preprocess: 是否预处理图像
-        create_visualizations: 是否创建可视化
-        learning_rate: 优化器的学习率
-        number_of_iterations: 最大迭代次数
-        gradient_convergence_tolerance: 收敛容差
+    Args:
+        fixed_image_path: Path to reference image
+        moving_images_dir: Directory containing images to register
+        output_dir: Directory to save results
+        transform_type: Type of registration ('rigid', 'affine', 'deformable')
+        metric: Similarity metric
+        optimizer: Optimization method
+        preprocess: Whether to preprocess images
+        create_visualizations: Whether to create visualizations
+        learning_rate: Learning rate for optimizer
+        number_of_iterations: Maximum iterations
+        gradient_convergence_tolerance: Convergence tolerance
 
-    返回值:
-        包含批量配准结果的字典
+    Returns:
+        Dictionary with batch registration results
     """
     logger.info(f"Starting batch {transform_type} registration...")
 
@@ -1391,14 +1379,14 @@ def batch_register_images(
 
 def calculate_similarity_metrics(image1_path: str, image2_path: str) -> dict[str, float]:
     """
-    计算两个图像之间的相似性度量。
+    Calculate similarity metrics between two images.
 
-    参数:
-        image1_path: 第一个图像的路径
-        image2_path: 第二个图像的路径
+    Args:
+        image1_path: Path to first image
+        image2_path: Path to second image
 
-    返回值:
-        相似性度量的字典
+    Returns:
+        Dictionary of similarity metrics
     """
     tool = ImageRegistrationTool()
     image1 = tool.load_image(image1_path)
